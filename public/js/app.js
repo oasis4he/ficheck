@@ -51,18 +51,18 @@
   var monthlyTrackingContainer = $('.monthly-tracking')
 
   // handler for the add tracking record control
-  monthlyTrackingContainer.on('click', 'button.add', function(e){
-    var currentRecord = $(this).closest('form');
-    var newRecord = currentRecord.clone();
-
-    $(':input', newRecord).val('').removeAttr('disabled').closest('form').removeClass('changed');
-
-    currentRecord.after(newRecord);
-
-    newRecord.find('input:visible').first().trigger('focus');
-
-    return false;
-  });
+  // monthlyTrackingContainer.on('click', 'button.add', function(e){
+  //   var currentRecord = $(this).closest('form');
+  //   var newRecord = currentRecord.clone();
+  //
+  //   $(':input', newRecord).val('').removeAttr('disabled').closest('form').removeClass('changed');
+  //
+  //   currentRecord.after(newRecord);
+  //
+  //   newRecord.find('input:visible').first().trigger('focus');
+  //
+  //   return false;
+  // });
 
   // disable in/out if other if filled in  (only one or the other should be active)
   monthlyTrackingContainer.on('change', '[name=in],[name=out]', function(){
@@ -78,7 +78,7 @@
   }).find('[name=in],[name=out]').trigger('change');
 
   // if an input changes and the form is valid, submit it via ajax
-  monthlyTrackingContainer.on('change', 'input', function(){
+  monthlyTrackingContainer.on('change', '.row:not(.new) input', function(){
     var form = $(this).closest('form');
 
     var changed = false;
