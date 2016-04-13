@@ -1,2 +1,63 @@
+body {
+  margin-top: 60px; }
+
+.monthly-tracking [class^=col-] {
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top: #767676 solid 4px;
+  border-right: #767676 solid 4px; }
+  .monthly-tracking [class^=col-]:nth-child(4) {
+    border-right: 0 none; }
+
+.monthly-tracking .header [class^=col-] {
+  font-size: 1.4em;
+  background-color: #333;
+  color: #fff;
+  padding: 8px; }
+
+.monthly-tracking .header :nth-child(2) {
+  background: #090; }
+
+.monthly-tracking .header :nth-child(3) {
+  background: #f00; }
+
+.monthly-tracking .body {
+  margin-left: -15px;
+  margin-right: -15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-bottom: #767676 solid 4px; }
+  .monthly-tracking .body [class^=col-]:nth-of-type(even) {
+    background-color: #fafafa; }
+  .monthly-tracking .body [class^=col-] input {
+    border: 0 none;
+    background: transparent;
+    padding: 0;
+    box-shadow: none; }
+    .monthly-tracking .body [class^=col-] input:focus {
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); }
+  .monthly-tracking .body form .new {
+    opacity: .6; }
+  .monthly-tracking .body form .control {
+    display: none;
+    position: absolute;
+    bottom: -64px;
+    z-index: 999;
+    right: -15px;
+    background: #036;
+    padding: 15px;
+    border-radius: 0 0 5px 5px; }
+  .monthly-tracking .body form.active {
+    position: relative;
+    z-index: 99; }
+    .monthly-tracking .body form.active .new {
+      opacity: 1; }
+    .monthly-tracking .body form.active [class^=col-] {
+      border-color: #036;
+      border-bottom: solid 5px #036; }
+    .monthly-tracking .body form.active .control {
+      display: block; }
+  .monthly-tracking .body .changed [class^=col-] {
+    background-color: #f90; }
 
 /*# sourceMappingURL=app.css.map */

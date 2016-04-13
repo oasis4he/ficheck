@@ -20,3 +20,4 @@ Route::auth();
 Route::get('/home', 'HomeController@index');
 Route::get('/monthly-tracking', 'MonthlyTrackingController@index');
 Route::post('/monthly-tracking', 'MonthlyTrackingController@saveRecord');
+Route::get('/monthly-tracking/delete/{id}', 'MonthlyTrackingController@deleteRecord');

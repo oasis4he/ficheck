@@ -25,7 +25,7 @@ class MonthlyTrackingController extends Controller
 
     function saveRecord(MonthlyTrackingRequest $request)
     {
-      $record = MonthlyTrackingRecords::findOrNew($request);
+      $record = MonthlyTrackingRecords::findOrNew($request->input('id'));
 
       if($record->user_id && $record->user_id != Auth::user()->id) {
         abort(403, 'Unauthorized action.');
@@ -35,9 +35,7 @@ class MonthlyTrackingController extends Controller
 
       $record->occurred_at = $request->get('date');
 
-      if(!$record->value) {
-        $record->value = 0;
-      }
+      $record->value = 0;
 
       if($request->has('in')) {
         $record->value += $request->get('in');
@@ -52,6 +50,19 @@ class MonthlyTrackingController extends Controller
       }
 
       $record->save();
+
+      return Redirect::back();
+    }
+
+    function deleteRecord($id)
+    {
+      $record = MonthlyTrackingRecords::findOrFail($id);
+
+      if($record->user_id && $record->user_id != Auth::user()->id) {
+        abort(403, 'Unauthorized action.');
+      }
+
+      $record->delete();
 
       return Redirect::back();
     }
