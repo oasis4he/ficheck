@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="financial-goals">
+  <div class="ficheck-sections financial-goals">
     @include('layouts.title', ['title'=>'Financial Goals'])
 
     @include('partials.form-errors')
 
     @foreach($goalTypes as $goalType)
-      <div class="financial-goal-type financial-goal-type-{{$goalType->slug}} row">
+      <div class="ficheck-section-type financial-goal-type financial-goal-type-{{$goalType->slug}} row">
         <h2>{{$goalType->title}}s | {{$goalType->description}}</h2>
 
         @foreach($goalType->goals as $goal)

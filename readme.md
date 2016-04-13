@@ -13,3 +13,8 @@ Edit from resources/assets not public/js or public/css
 
     npm install
     gulp watch
+
+# Seeders
+
+    php artisan db:seed --class=FinancialGoalTypesSeeder
+    php artisan db:seed --class=FinancialRatioTypesSeeder

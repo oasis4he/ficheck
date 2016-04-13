@@ -27,4 +27,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('/financial-goals', ['uses'=>'FinancialGoalsController@index', 'as'=>'financial-goals']);
     Route::post('/financial-goals', 'FinancialGoalsController@saveRecord');
     Route::get('/financial-goals/delete/{id}', 'FinancialGoalsController@deleteRecord');
+
+    Route::get('/financial-ratios', ['uses'=>'FinancialRatiosController@index', 'as'=>'financial-ratios']);
+    // Route::post('/financial-goals', 'FinancialGoalsController@saveRecord');
+    // Route::get('/financial-goals/delete/{id}', 'FinancialGoalsController@deleteRecord');
 });
