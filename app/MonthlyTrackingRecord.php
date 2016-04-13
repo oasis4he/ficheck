@@ -8,6 +8,6 @@ class MonthlyTrackingRecord extends Model
 {
     function user()
     {
-      $this->belongsTo('User');
+        $this->belongsTo('App\User');
     }
 }

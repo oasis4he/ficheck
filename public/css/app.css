@@ -83,4 +83,10 @@ body.financial-goals .navbar-nav > li > a[href*=financial-goals] {
   .monthly-tracking .body .changed [class^=col-] {
     background-color: #f90; }
 
+.financial-goals .financial-goal-type .body > :first-child .delete, .financial-goals .financial-goal-type .template .delete {
+  display: none; }
+
+.financial-goals .financial-goal-type .body + .template {
+  display: none; }
+
 /*# sourceMappingURL=app.css.map */

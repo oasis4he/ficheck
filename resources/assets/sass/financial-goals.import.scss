@@ -1,5 +1,12 @@
 @import 'colors.import';
 
 .financial-goals {
-  
+  .financial-goal-type {
+    .body > :first-child, .template {
+      .delete {
+        display: none;
+      }
+    }
+    .body + .template { display: none; }
+  }
 }
