@@ -17,7 +17,7 @@
 
       text-decoration: underline;
 
-      &.active {
+      &.active, &:active, &a:focus {
         text-decoration: none;
         color: inherit;
       }

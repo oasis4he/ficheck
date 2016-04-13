@@ -2,11 +2,58 @@
 
 .financial-goals {
   .financial-goal-type {
-    .body > :first-child, .template {
+    padding-bottom: 3em;
+    border-bottom: solid 35px $light-background;
+
+
+    h2 {
+      color: #fff;
+      padding: 15px;
+      font-size: 2em;
+      cursor: pointer;
+    }
+
+    &:nth-of-type(3n-1) {
+      background-color: $secondary-color;
+    }
+
+    &:nth-of-type(3n) {
+      background-color: $primary-color;
+    }
+
+    &:nth-of-type(3n+1) {
+      background-color: $tertiary-color;
+    }
+
+    form {
+      background-color: $hilight-background;
+      overflow: hidden;
+      padding: 15px;
+    }
+
+    .delete {
+      background-color: $primary-color-liability;
+      color: #fff;
+    }
+
+    .template, .new {
       .delete {
         display: none;
       }
     }
     .body + .template { display: none; }
+
+    .control {
+      float: right;
+      margin-bottom: 1em;
+    }
+
+    > a {
+      clear: both;
+      padding: 15px;
+      display: inline-block;
+      color: #fff;
+      text-decoration: underline;
+    }
   }
 }

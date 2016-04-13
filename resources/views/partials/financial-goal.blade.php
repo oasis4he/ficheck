@@ -2,6 +2,7 @@
   {{ csrf_field() }}
 
   <input type="hidden" name="id" value="{{$goal->id}}">
+  <input type="hidden" name="financial_goal_type_id" value="{{$goalType->id}}">
 
   <div class="row">
     <div class="form-group col-xs-12">

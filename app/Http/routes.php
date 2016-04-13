@@ -24,5 +24,5 @@ Route::post('/monthly-tracking', 'MonthlyTrackingController@saveRecord');
 Route::get('/monthly-tracking/delete/{id}', 'MonthlyTrackingController@deleteRecord');
 
 Route::get('/financial-goals', ['uses'=>'FinancialGoalsController@index', 'as'=>'financial-goals']);
-// Route::post('/financial-goals', 'FinancialGoalsController@saveRecord');
-// Route::get('/financial-goals/delete/{id}', 'FinancialGoalsController@deleteRecord');
+Route::post('/financial-goals', 'FinancialGoalsController@saveRecord');
+Route::get('/financial-goals/delete/{id}', 'FinancialGoalsController@deleteRecord');

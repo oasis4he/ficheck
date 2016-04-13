@@ -11,17 +11,7 @@
 
   <div class="monthly-tracking">
 
-    <div class="row">
-      @if (count($errors) > 0)
-        <div class="alert alert-danger">
-          <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-          </ul>
-        </div>
-      @endif
-    </div>
+    @include('partials.form-errors')
 
     <div class="row header">
       <div class="col-xs-4">Date</div>

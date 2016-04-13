@@ -21,7 +21,7 @@ body.page-financial-goals .navbar-nav > li > a[href*=financial-goals] {
       display: inline-block;
       margin-left: 15px;
       text-decoration: underline; }
-      .page-title .toggler a.active {
+      .page-title .toggler a.active, .page-title .toggler a:active, .page-title .toggler aa:focus {
         text-decoration: none;
         color: inherit; }
 
@@ -84,10 +84,39 @@ body.page-financial-goals .navbar-nav > li > a[href*=financial-goals] {
   .monthly-tracking .body .changed [class^=col-] {
     background-color: #f90; }
 
-.financial-goals .financial-goal-type .body > :first-child .delete, .financial-goals .financial-goal-type .template .delete {
-  display: none; }
-
-.financial-goals .financial-goal-type .body + .template {
-  display: none; }
+.financial-goals .financial-goal-type {
+  padding-bottom: 3em;
+  border-bottom: solid 35px #767676; }
+  .financial-goals .financial-goal-type h2 {
+    color: #fff;
+    padding: 15px;
+    font-size: 2em;
+    cursor: pointer; }
+  .financial-goals .financial-goal-type:nth-of-type(3n-1) {
+    background-color: #039; }
+  .financial-goals .financial-goal-type:nth-of-type(3n) {
+    background-color: #036; }
+  .financial-goals .financial-goal-type:nth-of-type(3n+1) {
+    background-color: #004EEA; }
+  .financial-goals .financial-goal-type form {
+    background-color: #fafafa;
+    overflow: hidden;
+    padding: 15px; }
+  .financial-goals .financial-goal-type .delete {
+    background-color: #f00;
+    color: #fff; }
+  .financial-goals .financial-goal-type .template .delete, .financial-goals .financial-goal-type .new .delete {
+    display: none; }
+  .financial-goals .financial-goal-type .body + .template {
+    display: none; }
+  .financial-goals .financial-goal-type .control {
+    float: right;
+    margin-bottom: 1em; }
+  .financial-goals .financial-goal-type > a {
+    clear: both;
+    padding: 15px;
+    display: inline-block;
+    color: #fff;
+    text-decoration: underline; }
 
 /*# sourceMappingURL=app.css.map */
