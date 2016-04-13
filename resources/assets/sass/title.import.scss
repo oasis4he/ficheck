@@ -1,4 +1,8 @@
+@import 'colors.import';
+
 .page-title {
+  border-bottom: solid 35px $light-background;
+
   h1 {
     font-size: 2em;
   }
