@@ -1,0 +1,101 @@
+@import 'colors.import';
+
+.monthly-tracking {
+  [class^=col-] {
+    padding-left: 5px;
+    padding-right: 5px;
+    border-top: $light-background solid 4px;
+    border-right: $light-background solid 4px;
+
+    &:nth-child(4) {
+      border-right: 0 none;
+    }
+  }
+
+  .header {
+    [class^=col-] {
+      font-size: 1.4em;
+      background-color: #333;
+      color: #fff;
+      padding: 8px;
+    }
+
+    :nth-child(2) {
+      background: $primary-color-asset;
+    }
+
+    :nth-child(3) {
+      background: $primary-color-liability;
+    }
+  }
+
+  .body {
+    margin-left: -15px;
+    margin-right: -15px;
+
+    padding-left: 15px;
+    padding-right: 15px;
+
+    border-bottom: $light-background solid 4px;
+
+    [class^=col-] {
+      &:nth-of-type(even) {
+        background-color: $hilight-background;
+      }
+
+      input {
+        border: 0 none;
+        background: transparent;
+        padding: 0;
+        box-shadow: none;
+
+        &:focus {
+          box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        }
+      }
+    }
+
+
+    form
+    {
+      .new {
+        opacity: .6;
+      }
+
+
+      .control {
+        display: none;
+        position: absolute;
+        bottom: -64px;
+        z-index: 999;
+        right: -15px;
+        background: $primary-color;
+        padding: 15px;
+        border-radius: 0 0 5px 5px;
+      }
+
+      &.active {
+        .new {
+          opacity: 1;
+        }
+
+        position: relative;
+        z-index: 99;
+
+        [class^=col-] {
+          border-color: $primary-color;
+          border-bottom: solid 5px $primary-color;
+        }
+        .control {
+          display: block;
+        }
+      }
+    }
+
+    .changed {
+      [class^=col-] {
+        background-color: $hilight-color;
+      }
+    }
+  }
+}
