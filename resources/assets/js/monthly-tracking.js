@@ -1,5 +1,9 @@
 (function($){
-  var monthlyTrackingContainer = $('.monthly-tracking').on('click', 'button.add', function(e){
+  // store the monthlyTrackingContainer
+  var monthlyTrackingContainer = $('.monthly-tracking')
+
+  // handler for the add tracking record control
+  monthlyTrackingContainer.on('click', 'button.add', function(e){
     console.log('here');
 
     var currentRecord = $(this).closest('form');
@@ -14,7 +18,7 @@
     return false;
   });
 
-  // disable in/out if other if filled in
+  // disable in/out if other if filled in  (only one or the other should be active)
   monthlyTrackingContainer.on('change', '[name=in],[name=out]', function(){
     var form = $(this).closest('form');
 
@@ -25,10 +29,9 @@
     } else {
       sibling.removeAttr('disabled');
     }
-  })
+  }).find('[name=in],[name=out]').trigger('change');
 
-  monthlyTrackingContainer.find('[name=in],[name=out]').trigger('change');
-
+  // if an input changes and the form is valid, submit it via ajax
   monthlyTrackingContainer.on('change', 'input', function(){
     var form = $(this).closest('form');
 
@@ -55,7 +58,6 @@
           form.removeClass('changed');
 
           if(form.hasClass('new')) {
-            console.log(form.find('.add').trigger('click'));
             form.removeClass('new');
           }
         }
@@ -63,6 +65,7 @@
     }
   });
 
+  // track the active form (show controls via css)
   monthlyTrackingContainer.on('focus', 'form input', function() {
     monthlyTrackingContainer.find('form').removeClass('active');
 
