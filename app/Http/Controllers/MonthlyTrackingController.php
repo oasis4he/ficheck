@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\MonthlyTrackingRecords;
+use App\MonthlyTrackingRecord;
 use App\Http\Requests\MonthlyTrackingRequest;
 
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ class MonthlyTrackingController extends Controller
     function index()
     {
       $data = [
-        'monthlyTrackingRecords' => MonthlyTrackingRecords::where('user_id', Auth::user()->id)->get()
+        'monthlyTrackingRecords' => MonthlyTrackingRecord::where('user_id', Auth::user()->id)->get()
       ];
 
       return view('monthly-tracking', $data);
@@ -25,7 +25,7 @@ class MonthlyTrackingController extends Controller
 
     function saveRecord(MonthlyTrackingRequest $request)
     {
-      $record = MonthlyTrackingRecords::findOrNew($request->input('id'));
+      $record = MonthlyTrackingRecord::findOrNew($request->input('id'));
 
       if($record->user_id && $record->user_id != Auth::user()->id) {
         abort(403, 'Unauthorized action.');
@@ -56,7 +56,7 @@ class MonthlyTrackingController extends Controller
 
     function deleteRecord($id)
     {
-      $record = MonthlyTrackingRecords::findOrFail($id);
+      $record = MonthlyTrackingRecord::findOrFail($id);
 
       if($record->user_id && $record->user_id != Auth::user()->id) {
         abort(403, 'Unauthorized action.');

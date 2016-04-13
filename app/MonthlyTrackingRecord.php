@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MonthlyTrackingRecords extends Model
+class MonthlyTrackingRecord extends Model
 {
     function user()
     {
