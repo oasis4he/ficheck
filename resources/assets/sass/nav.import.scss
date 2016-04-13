@@ -1,0 +1,13 @@
+body{
+  &.monthly-tracking {
+    .navbar-nav {
+      > li {
+        > a[href*=monthly-tracking] {
+          background-color: #fff;
+          color: #080808;
+        }
+
+      }
+    }
+  }
+}

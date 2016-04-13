@@ -25,8 +25,8 @@
         }
     </style>
 </head>
-<body id="app-layout">
-    <nav class="navbar navbar-default navbar-fixed-top">
+<body id="app-layout" class="{{\Request::route()->getName()}}">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
 
@@ -47,6 +47,7 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
+                    <li><a href="{{ route('monthly-tracking') }}" class="">Monthly Tracking</a></li>
                     <li><a href="{{ url('/monthly-tracking') }}">Monthly Tracking</a></li>
                 </ul>
 
