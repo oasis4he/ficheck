@@ -4,8 +4,6 @@
 
   // handler for the add tracking record control
   monthlyTrackingContainer.on('click', 'button.add', function(e){
-    console.log('here');
-
     var currentRecord = $(this).closest('form');
     var newRecord = currentRecord.clone();
 
