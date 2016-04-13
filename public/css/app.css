@@ -5,6 +5,10 @@ body.monthly-tracking .navbar-nav > li > a[href*=monthly-tracking] {
   background-color: #fff;
   color: #080808; }
 
+body.financial-goals .navbar-nav > li > a[href*=financial-goals] {
+  background-color: #fff;
+  color: #080808; }
+
 .monthly-tracking [class^=col-] {
   padding-left: 5px;
   padding-right: 5px;

@@ -8,5 +8,8 @@ use App\Http\Requests;
 
 class FinancialGoalsController extends Controller
 {
-    //
+    function index()
+    {
+      return view('financial-goals');
+    }
 }

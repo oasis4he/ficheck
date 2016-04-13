@@ -1,12 +1,18 @@
-body{
-  &.monthly-tracking {
-    .navbar-nav {
-      > li {
-        > a[href*=monthly-tracking] {
-          background-color: #fff;
-          color: #080808;
-        }
+$routes: (
+  "monthly-tracking",
+  "financial-goals",
+);
 
+body {
+  @each $route in $routes {
+    &.#{$route} {
+      .navbar-nav {
+        > li {
+          > a[href*=#{$route}] {
+            background-color: #fff;
+            color: #080808;
+          }
+        }
       }
     }
   }
