@@ -9,6 +9,20 @@ body.financial-goals .navbar-nav > li > a[href*=financial-goals] {
   background-color: #fff;
   color: #080808; }
 
+.page-title h1 {
+  font-size: 2em; }
+
+.page-title .toggler {
+  margin-top: 25px; }
+  .page-title .toggler a {
+    white-space: nowrap;
+    display: inline-block;
+    margin-left: 15px;
+    text-decoration: underline; }
+    .page-title .toggler a.active {
+      text-decoration: none;
+      color: inherit; }
+
 .monthly-tracking [class^=col-] {
   padding-left: 5px;
   padding-right: 5px;
