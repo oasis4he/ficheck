@@ -48,7 +48,7 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     <li><a href="{{ route('monthly-tracking') }}" class="">Monthly Tracking</a></li>
-                    <li><a href="{{ url('/monthly-tracking') }}">Monthly Tracking</a></li>
+                    <li><a href="{{ route('financial-goals') }}" class="">Financial Goals</a></li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->

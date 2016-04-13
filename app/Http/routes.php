@@ -18,6 +18,11 @@ Route::get('/', function () {
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+
 Route::get('/monthly-tracking', ['uses'=>'MonthlyTrackingController@index', 'as'=>'monthly-tracking']);
 Route::post('/monthly-tracking', 'MonthlyTrackingController@saveRecord');
 Route::get('/monthly-tracking/delete/{id}', 'MonthlyTrackingController@deleteRecord');
+
+Route::get('/financial-goals', ['uses'=>'FinancialGoalsController@index', 'as'=>'financial-goals']);
+// Route::post('/financial-goals', 'FinancialGoalsController@saveRecord');
+// Route::get('/financial-goals/delete/{id}', 'FinancialGoalsController@deleteRecord');
