@@ -1,11 +1,12 @@
 body {
-  margin-top: 60px; }
+  margin-top: 60px;
+  font-family: 'Lato'; }
 
-body.monthly-tracking .navbar-nav > li > a[href*=monthly-tracking] {
+body.page-monthly-tracking .navbar-nav > li > a[href*=monthly-tracking] {
   background-color: #fff;
   color: #080808; }
 
-body.financial-goals .navbar-nav > li > a[href*=financial-goals] {
+body.page-financial-goals .navbar-nav > li > a[href*=financial-goals] {
   background-color: #fff;
   color: #080808; }
 

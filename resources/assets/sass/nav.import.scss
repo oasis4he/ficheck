@@ -5,7 +5,7 @@ $routes: (
 
 body {
   @each $route in $routes {
-    &.#{$route} {
+    &.page-#{$route} {
       .navbar-nav {
         > li {
           > a[href*=#{$route}] {

@@ -1,7 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
+  <div class="page-title row">
+    <h1 class="col-xs-7">Monthly Tracking</h1>
+    <div class="col-xs-5 toggler text-right">
+      <a href="#categories">categories</a>
+    </div>
+  </div>
+
+
   <div class="monthly-tracking">
+
     <div class="row">
       @if (count($errors) > 0)
         <div class="alert alert-danger">
