@@ -16,7 +16,7 @@ class FinancialRatiosController extends Controller
       $data = [
         'ratioTypes' => FinancialRatioType::with('records')->orderBy('order')->get()
       ];
-
+      // dd($data["ratioTypes"]);
       return view('financial-ratios', $data);
     }
 }
