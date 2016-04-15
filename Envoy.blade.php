@@ -22,7 +22,7 @@
 
 @task('deploy', ['on' => $env])
 
-	cd /var/www/meade-client-messaging-portal/
+	cd /var/www/ficheck-laravel/
   sudo chown -R ubuntu:ubuntu ./
 	php artisan down
     git pull
@@ -30,5 +30,13 @@
     php artisan migrate --force
     php artisan optimize
 	php artisan up
-  sudo chown -R www-data:www-data public/ storage/
+  sudo chown -R www-data:www-data public/ storage/ bootstrap/
+@endtask
+
+@task('nginx', ['on' => $env])
+  sudo nginx -t
+@endtask
+
+@task('nginx-restart', ['on' => $env])
+  sudo service nginx restart
 @endtask
