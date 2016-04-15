@@ -1,0 +1,34 @@
+@servers(['local' => 'localhost', 'stage' => 'popetech-stage', 'production' => 'popetech-rabbit1', 'vagrant' => 'vagrant'])
+
+
+@setup
+    $env = (isset($env)) ? $env : 'stage';
+
+    $processUser = posix_getpwuid(posix_geteuid());
+    $user = $processUser['name'];
+
+    $message = function($task, $env, $user)
+    {
+        switch($task) {
+            case 'deploy':
+                return sprintf("%s has deployed to %s.", $user, $env);
+            break;
+
+            default:
+                return sprintf('%s ran the "%s" task on %s.', $user, $task, $env);
+        }
+    };
+@endsetup
+
+@task('deploy', ['on' => $env])
+
+	cd /var/www/meade-client-messaging-portal/
+  sudo chown -R ubuntu:ubuntu ./
+	php artisan down
+    git pull
+    composer install
+    php artisan migrate --force
+    php artisan optimize
+	php artisan up
+  sudo chown -R www-data:www-data public/ storage/
+@endtask
