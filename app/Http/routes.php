@@ -12,12 +12,10 @@
 */
 
 Route::get('/', function () {
-    return view('ficheck');
+    return redirect()->route('monthly-tracking');
 });
 
 Route::auth();
-
-Route::get('/home', 'HomeController@index');
 
 Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('/monthly-tracking', ['uses'=>'MonthlyTrackingController@index', 'as'=>'monthly-tracking']);
