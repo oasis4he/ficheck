@@ -36,11 +36,13 @@
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ route('monthly-tracking') }}">Monthly Tracking</a></li>
-                    <li><a href="{{ route('financial-goals') }}">Financial Goals</a></li>
-                    <li><a href="{{ route('financial-ratios') }}">Financial Ratios</a></li>
-                </ul>
+                @if (!Auth::guest())
+                  <ul class="nav navbar-nav">
+                      <li><a href="{{ route('monthly-tracking') }}">Monthly Tracking</a></li>
+                      <li><a href="{{ route('financial-goals') }}">Financial Goals</a></li>
+                      <li><a href="{{ route('financial-ratios') }}">Financial Ratios</a></li>
+                  </ul>
+                @endif
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
