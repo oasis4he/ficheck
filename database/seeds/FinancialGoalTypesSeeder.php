@@ -40,7 +40,11 @@ class FinancialGoalTypesSeeder extends Seeder
             $newGoalType->slug = $goalType['slug'];
             $newGoalType->order = $i;
 
-            $newGoalType->save();
+            try {
+                $newGoalType->save();
+            } catch (Exception $e) {
+                // pass
+            }
         }
     }
 }

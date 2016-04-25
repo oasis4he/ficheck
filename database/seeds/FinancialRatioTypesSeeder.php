@@ -94,7 +94,11 @@ your ability to make current debt payments.</p>
             $newRatioType->ratio_label = $ratioType['ratio_label'];
             $newRatioType->ratio_description = $ratioType['ratio_description'];
 
-            $newRatioType->save();
+            try {
+                $newRatioType->save();
+            } catch (Exception $e) {
+                // pass
+            }
         }
     }
 }
