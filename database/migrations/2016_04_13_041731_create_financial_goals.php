@@ -20,7 +20,7 @@ class CreateFinancialGoals extends Migration
             $table->text('description');
             $table->text('plan');
 
-            $table->float('cost');
+            $table->decimal('cost', 19, 2);
             $table->date('date');
 
             $table->timestamps();

@@ -18,9 +18,9 @@ class CreateFinancialRatioRecordsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('financial_ratio_type_id')->unsigned();
 
-            $table->float('asset');
-            $table->float('liability');
-            $table->float('ratio');
+            $table->decimal('asset', 19, 2);
+            $table->decimal('liability', 19, 2);
+            $table->decimal('ratio', 19, 2);
 
             $table->timestamps();
 

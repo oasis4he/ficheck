@@ -16,7 +16,7 @@ class CreateMonthlyTrackingTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
 
-            $table->float('value')->nullable();
+            $table->decimal('value', 19, 2)->nullable();
             $table->date('occurred_at');
             $table->string('category')->index();
 

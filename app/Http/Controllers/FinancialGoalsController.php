@@ -17,11 +17,14 @@ class FinancialGoalsController extends Controller
 {
     function index()
     {
-      $data = [
-        'goalTypes' => FinancialGoalType::with('goals')->orderBy('order')->get()
-      ];
+        $user = Auth::user();
+        $data = [
+            'goalTypes' => FinancialGoalType::with(['goals'=>function($query) use ($user) {
+                $query->where('user_id', $user->id)->orderBy('date');
+            }])->orderBy('order')->get()
+        ];
 
-      return view('financial-goals', $data);
+        return view('financial-goals', $data);
     }
 
     function saveRecord(FinancialGoalRequest $request)
