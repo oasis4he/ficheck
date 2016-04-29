@@ -90,7 +90,7 @@
             <div class="row">
               <div class="form-group col-xs-12">
                 <label for="additional_annual_income_required">The additional annual income you will need:</label>
-                <input name="additional_annual_income_required" id="additional_annual_income_required" value="{{$retirementNeeds->additional_annual_income_required}}" class="form-control">
+                <input name="additional_annual_income_required" id="additional_annual_income_required" value="{{$retirementNeeds->additional_annual_income_required}}" class="form-control" readonly>
               </div>
             </div>
 
@@ -152,7 +152,9 @@
               <br><br>
               <div class="form-group col-xs-12">
                 <label for="retirment_goal">Retirement Goal</label>
-                <input name="retirment_goal" id="retirment_goal" value="{{$retirementNeeds->retirment_goal}}" class="form-control">
+                <br>
+                multiply anual income needed by factor to get goal
+                <input name="retirment_goal" id="retirment_goal" value="{{$retirementNeeds->retirment_goal}}" class="form-control" readonly>
               </div>
             </div>
 
@@ -163,6 +165,19 @@
       </div><!-- .ficheck-section-type -->
 
     </div><!-- .ficheck-sections -->
+
+    <pre>
+      Current Value of Savings & Investments
+      calculate Current Value of Savings/Investments by adding 3 previous fields
+
+      Future Value of Savings & Investments
+      calculate Future Value of Savings/Investments = Current Value of Savings/Investments * previous age factor
+
+      Annual Savings Needed for Goal = This is the additional savings that you will need for retirement. = Enter your Retirement Goal - Enter your Savings/Investments Future Value
+
+      pre populate age value from savings and investments age value
+      Annual Savings needed to reach your Retirement Goal. = This is the additional savings that you will need for retirement. / factor
+    </pre>
 
     <div class="control pull-right">
       <button type="submit" class="btn btn-primary">Save</button>
