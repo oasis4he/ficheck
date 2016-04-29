@@ -37,9 +37,9 @@ body.page-financial-ratios .navbar-nav > li > a[href*=financial-ratios] {
     padding: 15px;
     font-size: 2em;
     cursor: pointer; }
-  .ficheck-sections .ficheck-section-type:nth-of-type(2n) {
+  .ficheck-sections .ficheck-section-type:nth-of-type(2n), .ficheck-sections .ficheck-section-type:nth-of-type(2n) .description {
     background-color: #039; }
-  .ficheck-sections .ficheck-section-type:nth-of-type(2n+1) {
+  .ficheck-sections .ficheck-section-type:nth-of-type(2n+1), .ficheck-sections .ficheck-section-type:nth-of-type(2n+1) .description {
     background-color: #036; }
   .ficheck-sections .ficheck-section-type form {
     background-color: #fafafa;
@@ -61,6 +61,14 @@ body.page-financial-ratios .navbar-nav > li > a[href*=financial-ratios] {
     display: inline-block;
     color: #fff;
     text-decoration: underline; }
+
+.ficheck-sections .description {
+  padding: 1.5em;
+  margin: 3em 0;
+  display: none; }
+  .ficheck-sections .description .description-content {
+    padding: 1.5em;
+    background: #fff; }
 
 .monthly-tracking [class^=col-] {
   padding-left: 5px;

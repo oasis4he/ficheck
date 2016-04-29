@@ -5,30 +5,75 @@
 
   <div class="row">
     <div class="form-group col-xs-12">
+      <label for="liability" value = "test">{{$ratioType->liability_label}}</label>
+      <input name="liability" id="liability" value="{{$ratio->liability}}" class="form-control">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-xs-12">
+      @if($ratioType->liability_link)
+        <a class="pull-right" href="{{$ratioType->liability_link}}">{{$ratioType->liability_link_text}}</a>
+      @endif
+
+      <div class="help-controls">
+        <a href="#show-help">show help</a>
+        <a href="#hide-help" class="hide">hide help</a>
+      </div>
+
+    </div>
+    <div class="description">
+      <div class="description-content">
+        {!! $ratioType->liability_description !!}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-xs-12">
       <label for="asset">{{$ratioType->asset_label}}</label>
-      <input name="asset" id="description" value="{{$ratio->description}}" class="form-control">
+      <input name="asset" id="asset" value="{{$ratio->asset}}" class="form-control">
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-xs-12">
-      <a>test</a>
-      <a>test</a>
-      <a>test</a>
+      @if($ratioType->asset_link)
+        <a class="pull-right" href="{{$ratioType->asset_link}}">{{$ratioType->asset_link_text}}</a>
+      @endif
+
+      <div class="help-controls">
+        <a href="#show-help">show help</a>
+        <a href="#hide-help" class="hide">hide help</a>
+      </div>
+
+    </div>
+    <div class="description">
+      <div class="description-content">
+        {!! $ratioType->asset_description !!}
+      </div>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-xs-12">
-      <label for="plan" value = "test">{{$ratioType->liability_label}}</label>
-      <input name="plan" id="plan" value="{{$ratio->slug}}" class="form-control">
+      <label for="ratio">{{$ratioType->ratio_label}}</label>
+      <input name="ratio" id="ratio" value="{{$ratio->ratio}}" class="form-control ratio-output" readonly>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-xs-12">
-      <label for="cost">{{$ratioType->ratio_label}}</label>
-      <input name="cost" id="cost" value="{{$ratio->cost}}" class="form-control">
+      <div class="help-controls">
+        <a href="#show-help">show help</a>
+        <a href="#hide-help" class="hide">hide help</a>
+      </div>
+
+    </div>
+    <div class="description">
+      <div class="description-content">
+        {!! $ratioType->ratio_description !!}
+      </div>
     </div>
   </div>
 
@@ -36,41 +81,3 @@
     <button type="submit" class="btn btn-primary">Save</button>
   </div>
 </form>
-
-<!-- Old code
-<form method="post" class="financial-ratio">
-  {{ csrf_field() }}
-
-  <input type="hidden" name="id" value="{{$ratio->id}}">
-  <input type="hidden" name="financial_ratio_type_id" value="{{$ratioType->id}}">
-
-  <div class="row">
-    <div class="form-group col-xs-12">
-      <label for="description">Description</label>
-      <input name="description" id="description" value="{{$ratio->description}}" class="form-control">
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="form-group col-xs-12">
-      <label for="plan">Plan</label>
-      <input name="plan" id="plan" value="{{$ratio->plan}}" class="form-control">
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="form-group col-xs-6">
-      <label for="cost">Cost</label>
-      <input name="cost" id="cost" value="{{$ratio->cost}}" class="form-control">
-    </div>
-
-    <div class="form-group col-xs-6">
-      <label for="date">Date</label>
-      <input name="date" id="date" value="{{$ratio->date}}" class="form-control">
-    </div>
-  </div>
-
-  <div class="control">
-    <button type="submit" class="btn btn-primary">Save</button>
-  </div>
-</form> -->

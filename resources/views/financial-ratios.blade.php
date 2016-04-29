@@ -10,15 +10,15 @@
       <div class="ficheck-section-type financial-ratio-type financial-ratio-type-{{$ratioType->slug}} row">
         <h2>{{$ratioType->title}}</h2>
 
-        @foreach($ratioType->records as $ratio)
+        @if($ratioType->records->count() > 0)
           <div class="body">
-            @include('partials.financial-ratio', ['record'=>$ratio])
+            @include('partials.financial-ratio', ['ratio'=>$ratioType->records[0]])
           </div>
-        @endforeach
-
-        <div class="template">
-          @include('partials.financial-ratio', ['ratio'=>new \App\FinancialRatioRecord()])
-        </div>
+        @else
+          <div class="body">
+            @include('partials.financial-ratio', ['ratio'=>new \App\FinancialRatioRecord()])
+          </div>
+        @endif
       </div>
     @endforeach
   </div>

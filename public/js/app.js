@@ -1,48 +1,104 @@
 
 (function($){
-  // store the financialGoalsContainer
-  var financialGoalsContainer = $('.financial-goals');
+  $(function(){
+    // store the financialGoalsContainer
+    var financialGoalsContainer = $('.financial-goals');
 
-  // handler for the add tracking record control
-  financialGoalsContainer.on('click', 'a[href=#add]', function(e){
-    var goalWrapper = $(this).closest('.financial-goal-type');
-    var goals = goalWrapper.find('.body').last();
-    var template = goalWrapper.find('.template');
-    var newRecord = template.find('form').clone();
+    // handler for the add tracking record control
+    financialGoalsContainer.on('click', 'a[href=#add]', function(e){
+      var goalWrapper = $(this).closest('.financial-goal-type');
+      var goals = goalWrapper.find('.body').last();
+      var template = goalWrapper.find('.template');
+      var newRecord = template.find('form').clone();
 
-    if(!goals.length) {
-      console.log('no goals for you');
-      goals = $('<div class="body"/>');
-      template.before(goals);
-    }
+      if(!goals.length) {
+        console.log('no goals for you');
+        goals = $('<div class="body"/>');
+        template.before(goals);
+      }
 
-    newRecord.addClass('new');
+      newRecord.addClass('new');
 
-    goals.append(newRecord);
+      goals.append(newRecord);
 
-    newRecord.find('input:visible').first().trigger('focus');
+      newRecord.find('input:visible').first().trigger('focus');
 
-    $(this).remove();
+      $(this).remove();
 
-    return false;
+      return false;
+    });
   });
+}(jQuery));
 
-  financialGoalsContainer.on('click', 'a[href=#expand]', function(e){
-    $('.body,[href=#add]', financialGoalsContainer).slideDown();
+(function($){
+  $(function(){
+    // store the financialGoalsContainer
+    var financialRatiosContainer = $('.financial-ratios');
 
-    return false;
+    var helpControls = $('.help-controls', financialRatiosContainer).on('click', 'a', function(){
+      var ratioElement = $(this).closest('.financial-ratio');
+      var row = $(this).closest('.row');
+      var description = row.find('.description')
+
+      $('.help-controls .hide', row).removeClass('hide');
+      $(this).addClass('hide');
+
+      if($(this).attr('href').search('show')>=0) {
+        description.show();
+      } else {
+        description.hide();
+      }
+
+      return false;
+    });
+
+    $('.ficheck-section-type', financialRatiosContainer).on('change', 'input', function() {
+      var wrapper = $(this).closest('.ficheck-section-type');
+      var asset = wrapper.find('[name=asset]');
+      var liability = wrapper.find('[name=liability]');
+      var ratio = wrapper.find('[name=ratio]');
+      var result;
+
+      if(asset.val() && liability.val()) {
+        if(wrapper.hasClass('financial-ratio-type-basic-liquidity')) {
+          result = asset.val() / liability.val();
+        } else if(wrapper.hasClass('financial-ratio-type-debt-to-asset')) {
+          result = liability.val() / asset.val();
+        } else if(wrapper.hasClass('financial-ratio-type-debt-payment-to-income')) {
+          result = liability.val() / asset.val();
+        }
+      }
+
+      if(result) {
+        result = Math.round(result * 100) / 100;
+        ratio.val(result);
+      }
+    });
+
   });
+}(jQuery));
 
-  financialGoalsContainer.on('click', 'a[href=#collapse]', function(e){
-    $('.body,[href=#add]', financialGoalsContainer).slideUp();
+(function($){
+  $(function(){
+    var ficheckSections = $('.ficheck-sections');
 
-    return false;
-  });
+    ficheckSections.on('click', 'a[href=#expand]', function(e){
+      $('.body,[href=#add]', ficheckSections).slideDown();
 
-  financialGoalsContainer.on('click', 'h2', function(e){
-    $('.body,[href=#add]', $(this).closest('.financial-goal-type ')).slideToggle();
+      return false;
+    });
 
-    return false;
+    ficheckSections.on('click', 'a[href=#collapse]', function(e){
+      $('.body,[href=#add]', ficheckSections).slideUp();
+
+      return false;
+    });
+
+    ficheckSections.on('click', 'h2', function(e){
+      $('.body,[href=#add]', $(this).closest('.ficheck-section-type')).slideToggle();
+
+      return false;
+    });
   });
 }(jQuery));
 

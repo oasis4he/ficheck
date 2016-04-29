@@ -68,7 +68,7 @@ the better. Over 1.0 is insolvent.</strong>',
                 'asset_description' => '<-- help text -->',
 
                 'ratio_label' => 'Debt P-to-I Ratio',
-                'ratio_description' => '<p>TThe debt payment-to-income ratio shows
+                'ratio_description' => '<p>The debt payment-to-income ratio shows
 your ability to make current debt payments.</p>
 <strong>Recommendation: <ul><li>below .36 is adequate</li><li>.37 to .41 is marginal</li><li>above .41 is risky</li></ul></strong>',
                 'order' => '3',
