@@ -19,5 +19,22 @@
 
       return false;
     });
+
+    var helpControls = $('.help-controls', ficheckSections).on('click', 'a', function(){
+      var ratioElement = $(this).closest('.financial-section-type');
+      var row = $(this).closest('.row');
+      var description = row.find('.description')
+
+      $('.help-controls .hide', row).removeClass('hide');
+      $(this).addClass('hide');
+
+      if($(this).attr('href').search('show')>=0) {
+        description.show();
+      } else {
+        description.hide();
+      }
+
+      return false;
+    });
   });
 }(jQuery));

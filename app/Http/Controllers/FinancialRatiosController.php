@@ -16,10 +16,14 @@ class FinancialRatiosController extends Controller
 {
     function index()
     {
+      $user = Auth::user();
+
       $data = [
-        'ratioTypes' => FinancialRatioType::with('records')->orderBy('order')->get()
+        'ratioTypes' => FinancialRatioType::with(['records'=>function($query) use ($user) {
+            $query->where('user_id', $user->id);
+        }])->orderBy('order')->get()
       ];
-      // dd($data["ratioTypes"]);
+
       return view('financial-ratios', $data);
     }
 

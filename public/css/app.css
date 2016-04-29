@@ -14,6 +14,10 @@ body.page-financial-ratios .navbar-nav > li > a[href*=financial-ratios] {
   background-color: #fff;
   color: #080808; }
 
+body.page-retirement-needs .navbar-nav > li > a[href*=retirement-needs] {
+  background-color: #fff;
+  color: #080808; }
+
 .page-title {
   border-bottom: solid 35px #767676; }
   .page-title h1 {
@@ -41,7 +45,7 @@ body.page-financial-ratios .navbar-nav > li > a[href*=financial-ratios] {
     background-color: #039; }
   .ficheck-sections .ficheck-section-type:nth-of-type(2n+1), .ficheck-sections .ficheck-section-type:nth-of-type(2n+1) .description {
     background-color: #036; }
-  .ficheck-sections .ficheck-section-type form {
+  .ficheck-sections .ficheck-section-type form, .ficheck-sections .ficheck-section-type .ficheck-section-body {
     background-color: #fafafa;
     overflow: hidden;
     padding: 15px; }

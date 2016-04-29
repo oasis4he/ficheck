@@ -5,7 +5,7 @@
 
   <div class="row">
     <div class="form-group col-xs-12">
-      <label for="liability" value = "test">{{$ratioType->liability_label}}</label>
+      <label for="liability">{{$ratioType->liability_label}}</label>
       <input name="liability" id="liability" value="{{$ratio->liability}}" class="form-control">
     </div>
   </div>

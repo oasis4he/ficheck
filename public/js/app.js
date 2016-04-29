@@ -35,23 +35,6 @@
     // store the financialGoalsContainer
     var financialRatiosContainer = $('.financial-ratios');
 
-    var helpControls = $('.help-controls', financialRatiosContainer).on('click', 'a', function(){
-      var ratioElement = $(this).closest('.financial-ratio');
-      var row = $(this).closest('.row');
-      var description = row.find('.description')
-
-      $('.help-controls .hide', row).removeClass('hide');
-      $(this).addClass('hide');
-
-      if($(this).attr('href').search('show')>=0) {
-        description.show();
-      } else {
-        description.hide();
-      }
-
-      return false;
-    });
-
     $('.ficheck-section-type', financialRatiosContainer).on('change', 'input', function() {
       var wrapper = $(this).closest('.ficheck-section-type');
       var asset = wrapper.find('[name=asset]');
@@ -96,6 +79,23 @@
 
     ficheckSections.on('click', 'h2', function(e){
       $('.body,[href=#add]', $(this).closest('.ficheck-section-type')).slideToggle();
+
+      return false;
+    });
+
+    var helpControls = $('.help-controls', ficheckSections).on('click', 'a', function(){
+      var ratioElement = $(this).closest('.financial-section-type');
+      var row = $(this).closest('.row');
+      var description = row.find('.description')
+
+      $('.help-controls .hide', row).removeClass('hide');
+      $(this).addClass('hide');
+
+      if($(this).attr('href').search('show')>=0) {
+        description.show();
+      } else {
+        description.hide();
+      }
 
       return false;
     });
