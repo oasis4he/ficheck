@@ -64,11 +64,16 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'external_id' => $data['password'],
         ]);
+
+        // doesn't seem to like the external id being set in the create method?
+        $user->external_id = $data['external_id'];
+        $user->save();
+
+        return $user;
     }
 }
