@@ -3,9 +3,9 @@
 @section('content')
   <div class="page-title row">
     <h1 class="col-xs-7">Monthly Tracking</h1>
-    <div class="col-xs-5 toggler text-right">
+    <!-- <div class="col-xs-5 toggler text-right">
       <a href="#categories">categories</a>
-    </div>
+    </div> -->
   </div>
 
 
@@ -44,7 +44,7 @@
         {{ csrf_field() }}
 
         <div class="row new">
-          <div class="col-xs-4"><input class="form-control" name="date" type="text" value="{{old('date')}}" placeholder="yyyy-mm-dd"></div>
+          <div class="col-xs-4"><input class="form-control" name="date" type="text" value="{{old('date')}}"></div>
           <div class="col-xs-2"><input class="form-control" name="in" type="text" value="{{old('in')}}"></div>
           <div class="col-xs-2"><input class="form-control" name="out" type="text" value="{{old('out')}}"></div>
           <div class="col-xs-4"><input class="form-control" name="category" type="text" value="{{old('category')}}"></div>
