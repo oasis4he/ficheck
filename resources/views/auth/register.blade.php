@@ -38,6 +38,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('external_id') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">A-Number</label>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="external_id" value="{{ old('external_id') }}">
+
+                                @if ($errors->has('external_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('external_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Password</label>
 
