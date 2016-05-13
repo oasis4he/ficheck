@@ -1,3 +1,8 @@
+// remove fields or add datepicker (mm/dd/yyyy) - jquery UI
+// monthly tracking hide categories link
+// delete button on right side of category field (removes row)
+// reset button on monthly tracker, with are you sure dialog
+// stage for george
 
 (function($){
   $(function(){
@@ -172,6 +177,129 @@
     monthlyTrackingContainer.find('form').removeClass('active');
 
     $(this).closest('form').addClass('active');
+  });
+}(jQuery));
+
+
+(function($){
+  $(function(){
+    var retirementGoals = $('.retirement-needs-type-annual-savings-required');
+
+    // $(retirementGoals).on('change', 'input', function() {
+    //     var wrapper = $(this).closest('.ficheck-section-type');
+    //
+    //     var annualIncome = (wrapper.find('[name=annual_income]').val() || 0) / 1;
+    //     var annualSsBenefit = (wrapper.find('[name=annual_ss_benefit]').val() || 0) / 1;
+    //     var annualEmployerBenefit = (wrapper.find('[name=annual_employer_benefit]').val() || 0) / 1;
+    //     var additionalAnnualIncomeRequiredElement = wrapper.find('[name=additional_annual_income_required]');
+    //
+    //     var additionalAnnualIncomeRequired = annualIncome - annualSsBenefit - annualEmployerBenefit;
+    //     additionalAnnualIncomeRequiredElement.val(additionalAnnualIncomeRequired);
+    //
+    //     var factor = $('[name="retirment_age_factor"]', wrapper).val();
+    //     var goal = Math.round(additionalAnnualIncomeRequired * factor * 100) / 100;
+    //
+    //     var retirmentGoal = $('[name="retirment_goal"]', wrapper);
+    //     retirmentGoal.val(goal);
+    // });
+    //
+    // $(retirementGoals).on('change', 'select', function() {
+    //     var value = parseInt($(this).val(), 10);
+    //
+    //     var factor = $(':selected', this).data('factor') / 1;
+    //
+    //     var wrapper = $(this).closest('.row');
+    //     var factorElement = $('[name="retirment_age_factor"]', wrapper);
+    //
+    //     factorElement.val(factor).trigger('change');
+    // });
+
+  });
+}(jQuery));
+
+
+(function($){
+  $(function(){
+    var futureSavingsInvestments = $('.retirement-needs-type-future-savings-investments');
+
+    $(futureSavingsInvestments).on('change', 'input', function() {
+        var wrapper = $(this).closest('.ficheck-sections');
+        var currentValueSavingsAndInvestments = wrapper.find('[name=current_value_savings_and_investments]').val() / 1;
+
+        var factor = $('[name="retirment_years_factor"]', wrapper).val();
+        var goal = Math.round(currentValueSavingsAndInvestments * factor * 100) / 100;
+
+        var futureValueSavingsAndInvestmentsElement = $('[name="future_value_of_savings_and_investments"]', wrapper);
+        futureValueSavingsAndInvestmentsElement.val(goal);
+    });
+
+    $(futureSavingsInvestments).on('change', 'select', function() {
+        var factor = $(':selected', this).data('factor');
+
+        var wrapper = $(this).closest('.row');
+        var factorElement = $('[name="retirment_years_factor"]', wrapper);
+
+        factorElement.val(factor).trigger('change');
+    });
+
+  });
+}(jQuery));
+
+
+(function($){
+  $(function(){
+    var retirementGoals = $('.retirement-needs-type-retirement-goal');
+
+    $(retirementGoals).on('change', 'input', function() {
+        var wrapper = $(this).closest('.ficheck-section-type');
+
+        var annualIncome = (wrapper.find('[name=annual_income]').val() || 0) / 1;
+        var annualSsBenefit = (wrapper.find('[name=annual_ss_benefit]').val() || 0) / 1;
+        var annualEmployerBenefit = (wrapper.find('[name=annual_employer_benefit]').val() || 0) / 1;
+        var additionalAnnualIncomeRequiredElement = wrapper.find('[name=additional_annual_income_required]');
+
+        var additionalAnnualIncomeRequired = annualIncome - annualSsBenefit - annualEmployerBenefit;
+        additionalAnnualIncomeRequiredElement.val(additionalAnnualIncomeRequired);
+
+        var factor = $('[name="retirment_age_factor"]', wrapper).val();
+        var goal = Math.round(additionalAnnualIncomeRequired * factor * 100) / 100;
+
+        var retirmentGoal = $('[name="retirment_goal"]', wrapper);
+        retirmentGoal.val(goal);
+    });
+
+    $(retirementGoals).on('change', 'select', function() {
+        var value = parseInt($(this).val(), 10);
+
+        var factor = $(':selected', this).data('factor') / 1;
+
+        var wrapper = $(this).closest('.row');
+        var factorElement = $('[name="retirment_age_factor"]', wrapper);
+
+        factorElement.val(factor).trigger('change');
+    });
+
+  });
+}(jQuery));
+
+
+(function($){
+  $(function(){
+    var savingsInvestments = $('.retirement-needs-type-savings-investements');
+
+    $(savingsInvestments).on('change', 'input', function() {
+        var wrapper = $(this).closest('.ficheck-section-type');
+
+        var currentValueEmployeeRetirementSavings = (wrapper.find('[name=current_value_employee_retirement_savings]').val() || 0) / 1;
+        var currentValuePersonalRetirementSavings = (wrapper.find('[name=current_value_personal_retirement_savings]').val() || 0) / 1;
+        var currentValueInvestments = (wrapper.find('[name=current_value_investments]').val() || 0) / 1;
+        var currentValueSavingsAndInvestmentsElement = wrapper.find('[name=current_value_savings_and_investments]');
+
+        var currentValueSavingsAndInvestments = Math.round((currentValueEmployeeRetirementSavings + currentValuePersonalRetirementSavings + currentValueInvestments) * 100) / 100;
+        currentValueSavingsAndInvestmentsElement.val(currentValueSavingsAndInvestments);
+
+        wrapper.next('.ficheck-section-type').find('[name="retirment_years_factor"]').trigger('change');
+    });
   });
 }(jQuery));
 

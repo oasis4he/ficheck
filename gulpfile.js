@@ -15,6 +15,6 @@ elixir(function(mix) {
     mix.sass('app.scss');
 
     elixir(function(mix) {
-      mix.scripts(['app.js', '**.js'], 'public/js/app.js');
+      mix.scripts(['app.js', '**.js', '**/*.js'], 'public/js/app.js');
     });
 });
