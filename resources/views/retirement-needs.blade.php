@@ -64,20 +64,18 @@
 
         </div><!-- .body -->
 
+        <div class="col-sm-12">
+            <br>
+            <br>
+            <br>
+            <div class="control pull-right">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
       </div><!-- .ficheck-section-type -->
 
     </div><!-- .ficheck-sections -->
 
-    <pre>
-      Annual Savings Needed for Goal = This is the additional savings that you will need for retirement. = Enter your Retirement Goal - Enter your Savings/Investments Future Value
-
-      pre populate age value from savings and investments age value
-      Annual Savings needed to reach your Retirement Goal. = This is the additional savings that you will need for retirement. / factor
-    </pre>
-
-    <div class="control pull-right">
-      <button type="submit" class="btn btn-primary">Save</button>
-    </div>
 
   </form>
 @endsection
