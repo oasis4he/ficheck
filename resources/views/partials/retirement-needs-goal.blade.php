@@ -105,12 +105,12 @@
       <option></option>
 
       @foreach(['55'=>21,'60'=>18.9,'65'=>16.4,'70'=>13.6] as $age=>$factor)
-        <option @if($retirementNeeds->desired_retirement_age==$age) value="{{$retirementNeeds->desired_retirement_age}}" @endif data-factor="{{$factor}}">{{$age}}</option>
+        <option @if($retirementNeeds->desired_retirement_age==$age) selected @endif data-factor="{{$factor}}">{{$age}}</option>
       @endforeach
     </select>
   </div>
   <div class="col-xs-6">
-    <input name="retirment_age_factor" id="retirment_age_factor" value="{{$retirementNeeds->retirment_age_factor}}" class="form-control" readonly>
+    <input name="retirement_age_factor" id="retirement_age_factor" value="{{$retirementNeeds->retirement_age_factor}}" class="form-control" readonly>
   </div>
 </div>
 
@@ -133,8 +133,8 @@
 <div class="row">
   <br><br>
   <div class="form-group col-xs-12">
-    <label for="retirment_goal">Retirement Goal</label>
+    <label for="retirement_goal">Retirement Goal</label>
     <br>
-    <input name="retirment_goal" id="retirment_goal" value="{{$retirementNeeds->retirment_goal}}" class="form-control" readonly>
+    <input name="retirement_goal" id="retirement_goal" value="{{$retirementNeeds->retirement_goal}}" class="form-control" readonly>
   </div>
 </div>

@@ -44,20 +44,20 @@ class RetirementNeedsController extends Controller
       $record->annual_employer_benefit = $request->get('annual_employer_benefit');
       $record->additional_annual_income_required = $request->get('additional_annual_income_required');
       $record->desired_retirement_age = $request->get('desired_retirement_age');
-      $record->retirment_age_factor = $request->get('retirment_age_factor');
-      $record->retirment_goal = $request->get('retirment_goal');
-      $record->employee_retirment_savings = $request->get('employee_retirment_savings');
-      $record->personal_retirment_savings = $request->get('personal_retirment_savings');
+      $record->retirement_age_factor = $request->get('retirement_age_factor');
+      $record->retirement_goal = $request->get('retirement_goal');
+      $record->employee_retirement_savings = $request->get('employee_retirement_savings');
+      $record->personal_retirement_savings = $request->get('personal_retirement_savings');
       $record->investements_value = $request->get('investements_value');
       $record->retirement_savings_and_investments = $request->get('retirement_savings_and_investments');
-      $record->retirment_years_age = $request->get('retirment_years_age');
-      $record->retirment_years_factor = $request->get('retirment_years_factor');
+      $record->desired_years_until_retirement = $request->get('desired_years_until_retirement');
+      $record->retirement_years_factor = $request->get('retirement_years_factor');
       $record->future_value_of_savings_and_investments = $request->get('future_value_of_savings_and_investments');
-      $record->entered_retirment_goal = $request->get('entered_retirment_goal');
+      $record->entered_retirement_goal = $request->get('entered_retirement_goal');
       $record->entered_future_value_of_savings_and_investments = $request->get('entered_future_value_of_savings_and_investments');
       $record->additional_savings_needed_for_retirement = $request->get('additional_savings_needed_for_retirement');
       $record->entered_desired_retirement_age = $request->get('entered_desired_retirement_age');
-      $record->entered_retirment_age_factor = $request->get('entered_retirment_age_factor');
+      $record->entered_retirement_age_factor = $request->get('entered_retirement_age_factor');
       $record->addition_annual_savings_required = $request->get('addition_annual_savings_required');
 
       $record->save();

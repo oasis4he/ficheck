@@ -1,7 +1,7 @@
 <div class="row">
   <div class="form-group col-xs-12">
-    <label for="entered_retirment_goal">Enter your Retirement Goal.</label>
-    <input name="entered_retirment_goal" id="entered_retirment_goal" value="{{$retirementNeeds->entered_retirment_goal}}" class="form-control">
+    <label for="entered_retirement_goal">Enter your Retirement Goal.</label>
+    <input name="entered_retirement_goal" id="entered_retirement_goal" value="{{$retirementNeeds->entered_retirement_goal}}" class="form-control">
   </div>
 </div>
 
@@ -80,12 +80,12 @@
       <option></option>
 
       @foreach(['05'=>5.53,'10'=>12.58,'15'=>21.58,'20'=>33.07, '25'=>44.73, '30'=>66.44, 40=>120.8] as $age=>$factor)
-        <option @if($retirementNeeds->entered_desired_retirement_age==$age) value="{{$retirementNeeds->entered_desired_retirement_age}}" @endif data-factor="{{$factor}}">{{$age}}</option>
+        <option @if($retirementNeeds->entered_desired_retirement_age==$age) selected @endif data-factor="{{$factor}}">{{$age}}</option>
       @endforeach
     </select>
   </div>
   <div class="col-xs-6">
-    <input name="retirment_age_factor" id="entered_retirment_age_factor" value="{{$retirementNeeds->entered_retirment_age_factor}}" class="form-control" readonly>
+    <input name="entered_retirement_age_factor" id="entered_retirement_age_factor" value="{{$retirementNeeds->entered_retirement_age_factor}}" class="form-control" readonly>
   </div>
 </div>
 

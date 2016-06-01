@@ -188,17 +188,17 @@
     $(retirementGoals).on('change', 'input', function() {
         var wrapper = $(this).closest('.ficheck-section-type');
 
-        var enteredRetirmentGoal = (wrapper.find('[name=entered_retirment_goal]').val() || 0) / 1;
+        var enteredretirementGoal = (wrapper.find('[name=entered_retirement_goal]').val() || 0) / 1;
         var enteredFutureValueOfSavingsAndInvestments = (wrapper.find('[name=entered_future_value_of_savings_and_investments]').val() || 0) / 1;
         var additionalSavingsNeededForRetirementElement = wrapper.find('[name=additional_savings_needed_for_retirement]');
 
         console.log(additionalSavingsNeededForRetirementElement);
 
-        var additionalSavingsNeededForRetirement = enteredRetirmentGoal - enteredFutureValueOfSavingsAndInvestments;
+        var additionalSavingsNeededForRetirement = enteredretirementGoal - enteredFutureValueOfSavingsAndInvestments;
         additionalSavingsNeededForRetirementElement.val(additionalSavingsNeededForRetirement);
 
-        var factor = $('[name="retirment_age_factor"]', wrapper).val();
-        var goal = Math.round(additionalSavingsNeededForRetirement * factor * 100) / 100;
+        var factor = $('[name="entered_retirement_age_factor"]', wrapper).val();
+        var goal = Math.round(additionalSavingsNeededForRetirement / factor * 100) / 100;
 
         var additionAnnualSavingsRequired = $('[name="addition_annual_savings_required"]', wrapper);
         additionAnnualSavingsRequired.val(goal);
@@ -210,7 +210,7 @@
         var factor = $(':selected', this).data('factor') / 1;
 
         var wrapper = $(this).closest('.row');
-        var factorElement = $('[name="entered_retirment_age_factor"]', wrapper);
+        var factorElement = $('[name="entered_retirement_age_factor"]', wrapper);
 
         factorElement.val(factor).trigger('change');
     });
@@ -225,9 +225,9 @@
 
     $(futureSavingsInvestments).on('change', 'input', function() {
         var wrapper = $(this).closest('.ficheck-sections');
-        var currentValueSavingsAndInvestments = wrapper.find('[name=current_value_savings_and_investments]').val() / 1;
+        var currentValueSavingsAndInvestments = wrapper.find('[name=retirement_savings_and_investments]').val() / 1;
 
-        var factor = $('[name="retirment_years_factor"]', wrapper).val();
+        var factor = $('[name="retirement_years_factor"]', wrapper).val();
         var goal = Math.round(currentValueSavingsAndInvestments * factor * 100) / 100;
 
         var futureValueSavingsAndInvestmentsElement = $('[name="future_value_of_savings_and_investments"]', wrapper);
@@ -238,7 +238,7 @@
         var factor = $(':selected', this).data('factor');
 
         var wrapper = $(this).closest('.row');
-        var factorElement = $('[name="retirment_years_factor"]', wrapper);
+        var factorElement = $('[name="retirement_years_factor"]', wrapper);
 
         factorElement.val(factor).trigger('change');
     });
@@ -259,14 +259,14 @@
         var annualEmployerBenefit = (wrapper.find('[name=annual_employer_benefit]').val() || 0) / 1;
         var additionalAnnualIncomeRequiredElement = wrapper.find('[name=additional_annual_income_required]');
 
-        var additionalAnnualIncomeRequired = annualIncome - annualSsBenefit - annualEmployerBenefit;
+        var additionalAnnualIncomeRequired = Math.round((annualIncome - annualSsBenefit - annualEmployerBenefit) * 100) / 100;
         additionalAnnualIncomeRequiredElement.val(additionalAnnualIncomeRequired);
 
-        var factor = $('[name="retirment_age_factor"]', wrapper).val();
+        var factor = $('[name="retirement_age_factor"]', wrapper).val();
         var goal = Math.round(additionalAnnualIncomeRequired * factor * 100) / 100;
 
-        var retirmentGoal = $('[name="retirment_goal"]', wrapper);
-        retirmentGoal.val(goal);
+        var retirementGoal = $('[name="retirement_goal"]', wrapper);
+        retirementGoal.val(goal);
     });
 
     $(retirementGoals).on('change', 'select', function() {
@@ -275,7 +275,7 @@
         var factor = $(':selected', this).data('factor') / 1;
 
         var wrapper = $(this).closest('.row');
-        var factorElement = $('[name="retirment_age_factor"]', wrapper);
+        var factorElement = $('[name="retirement_age_factor"]', wrapper);
 
         factorElement.val(factor).trigger('change');
     });
@@ -291,15 +291,15 @@
     $(savingsInvestments).on('change', 'input', function() {
         var wrapper = $(this).closest('.ficheck-section-type');
 
-        var currentValueEmployeeRetirementSavings = (wrapper.find('[name=employee_retirment_savings]').val() || 0) / 1;
-        var currentValuePersonalRetirementSavings = (wrapper.find('[name=personal_retirment_savings]').val() || 0) / 1;
+        var currentValueEmployeeRetirementSavings = (wrapper.find('[name=employee_retirement_savings]').val() || 0) / 1;
+        var currentValuePersonalRetirementSavings = (wrapper.find('[name=personal_retirement_savings]').val() || 0) / 1;
         var currentValueInvestments = (wrapper.find('[name=investements_value]').val() || 0) / 1;
         var currentValueSavingsAndInvestmentsElement = wrapper.find('[name=retirement_savings_and_investments]');
 
         var currentValueSavingsAndInvestments = Math.round((currentValueEmployeeRetirementSavings + currentValuePersonalRetirementSavings + currentValueInvestments) * 100) / 100;
         currentValueSavingsAndInvestmentsElement.val(currentValueSavingsAndInvestments);
 
-        wrapper.next('.ficheck-section-type').find('[name="retirment_years_factor"]').trigger('change');
+        wrapper.next('.ficheck-section-type').find('[name="retirement_years_factor"]').trigger('change');
     });
   });
 }(jQuery));

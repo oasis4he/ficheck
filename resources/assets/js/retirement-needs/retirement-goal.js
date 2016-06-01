@@ -11,14 +11,14 @@
         var annualEmployerBenefit = (wrapper.find('[name=annual_employer_benefit]').val() || 0) / 1;
         var additionalAnnualIncomeRequiredElement = wrapper.find('[name=additional_annual_income_required]');
 
-        var additionalAnnualIncomeRequired = annualIncome - annualSsBenefit - annualEmployerBenefit;
+        var additionalAnnualIncomeRequired = Math.round((annualIncome - annualSsBenefit - annualEmployerBenefit) * 100) / 100;
         additionalAnnualIncomeRequiredElement.val(additionalAnnualIncomeRequired);
 
-        var factor = $('[name="retirment_age_factor"]', wrapper).val();
+        var factor = $('[name="retirement_age_factor"]', wrapper).val();
         var goal = Math.round(additionalAnnualIncomeRequired * factor * 100) / 100;
 
-        var retirmentGoal = $('[name="retirment_goal"]', wrapper);
-        retirmentGoal.val(goal);
+        var retirementGoal = $('[name="retirement_goal"]', wrapper);
+        retirementGoal.val(goal);
     });
 
     $(retirementGoals).on('change', 'select', function() {
@@ -27,7 +27,7 @@
         var factor = $(':selected', this).data('factor') / 1;
 
         var wrapper = $(this).closest('.row');
-        var factorElement = $('[name="retirment_age_factor"]', wrapper);
+        var factorElement = $('[name="retirement_age_factor"]', wrapper);
 
         factorElement.val(factor).trigger('change');
     });

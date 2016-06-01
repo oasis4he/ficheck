@@ -1,21 +1,21 @@
 <div class="row">
   <div class="form-group col-xs-12">
-    <label for="desired_retirement_age">Choose the number closest to number of years until you plan to retire.</label>
+    <label for="desired_years_until_retirement">Choose the number closest to number of years until you plan to retire.</label>
   </div>
 </div>
 
 <div class="row">
   <div class="col-xs-6">
-    <select name="retirment_years_age" id="retirment_years_age" class="form-control">
+    <select name="desired_years_until_retirement" id="desired_years_until_retirement" class="form-control">
       <option></option>
 
       @foreach(['05'=>1.28,'10'=>1.63,'15'=>2.08,'20'=>2.85, '25'=>3.39, '30'=>4.32, 40=>7.04] as $age=>$factor)
-        <option @if($retirementNeeds->retirment_years_age==$age) value="{{$retirementNeeds->retirment_years_age}}" @endif data-factor="{{$factor}}">{{$age}}</option>
+        <option @if($retirementNeeds->desired_years_until_retirement==$age) selected @endif data-factor="{{$factor}}">{{$age}}</option>
       @endforeach
     </select>
   </div>
   <div class="col-xs-6">
-    <input name="retirment_years_factor" id="retirment_years_factor" value="{{$retirementNeeds->retirment_years_factor}}" class="form-control" readonly>
+    <input name="retirement_years_factor" id="retirement_years_factor" value="{{$retirementNeeds->retirement_years_factor}}" class="form-control" readonly>
   </div>
 </div>
 
