@@ -28,7 +28,7 @@ class CreateLifeInsuranceRecordsTable extends Migration
             $table->decimal('entered_total_income_replacement', 19, 2)->nullable();
             $table->decimal('total_expenses', 19, 2)->nullable();
 
-            $table->integer('gevernment_benefits')->nullable();
+            $table->decimal('government_benefits', 19, 2)->nullable();
             $table->decimal('other_funds', 19, 2)->nullable();
             $table->decimal('total_funds_from_other_sources', 19, 2)->nullable();
 
