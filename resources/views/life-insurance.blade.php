@@ -1,67 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
-  <form method="post" class="retirement-needs">
+  <form method="post" class="life-insurance">
     {{ csrf_field() }}
-    <input type="hidden" name="id" value="{{$retirementNeeds->id}}">
+    <input type="hidden" name="id" value="{{$lifeInsurance->id}}">
 
-    <div class="ficheck-sections retirement-needs-record">
-      @include('layouts.title', ['title'=>'Retirement Needs'])
+    <div class="ficheck-sections life-insurance-record">
+      @include('layouts.title', ['title'=>'Life Insurance'])
 
       @include('partials.form-errors')
 
-      <div class="ficheck-section-type retirement-needs-type retirement-needs-type-retirement-goal row">
-        <h2>Retirement Goal</h2>
+      <div class="ficheck-section-type life-insurance-type life-insurance-type-income-replacement row">
+        <h2>Life Insurance</h2>
 
         <div class="body">
           <div class="ficheck-section-body">
 
-            <!-- <div class="row">
-              <div class="form-group col-xs-12">
-                <label for="annual_income">What annual income will you need for retirement?</label>
-                <input name="annual_income" id="annual_income" value="{{$retirementNeeds->annual_income}}" class="form-control">
-              </div>
-            </div>
+              @include('partials.life-insurance-needs-goal')
 
-            <div class="row">
-              <div class="form-group col-xs-12">
-                <a class="pull-right" href="/net-worth">view Net Worth Statement</a>
-
-                <div class="help-controls">
-                  <a href="#show-help">show help</a>
-                  <a href="#hide-help" class="hide">hide help</a>
-                </div>
-
-              </div>
-              <div class="description">
-                <div class="description-content">
-                  &lt;-- help text --&gt;
-                </div>
-              </div>
-            </div><!-- .row:has(:input) --> -->
-
-            <pre>
-              Income Replacement For Survivors
-
-              We’ll calculate your insurance needs based on 75% of your annual income. = .75 * What is your annual income?
-              Total for Income Replacement = We’ll calculate your insurance needs based on 75% of your annual income. * factor
-
-              Expenses
-              Total for Income Replacement = Total for Income Replacement from previous section
-              Total Expenses = sum of all other fields in this section
-
-              Funds from other Sources
-              Total Funds from other Sources = sum of other fields in this section
-
-              Insurance Needed
-              Insurance Needed = sum of all other fields in this section
-
-            </pre>
           </div><!-- .ficheck-section-body -->
 
         </div><!-- .body -->
 
       </div><!-- .ficheck-section-type -->
+
+
 
     </div><!-- .ficheck-sections -->
 
@@ -71,4 +34,21 @@
     </div>
 
   </form>
+  <pre>
+    Income Replacement For Survivors
+
+    We’ll calculate your insurance needs based on 75% of your annual income. = .75 * What is your annual income?
+    Total for Income Replacement = We’ll calculate your insurance needs based on 75% of your annual income. * factor
+
+    Expenses
+    Total for Income Replacement = Total for Income Replacement from previous section
+    Total Expenses = sum of all other fields in this section
+
+    Funds from other Sources
+    Total Funds from other Sources = sum of other fields in this section
+
+    Insurance Needed
+    Insurance Needed = sum of all other fields in this section
+
+  </pre>
 @endsection

@@ -31,4 +31,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::get('/retirement-needs', ['uses'=>'RetirementNeedsController@index', 'as'=>'retirement-needs']);
     Route::post('/retirement-needs', 'RetirementNeedsController@saveRecord');
+
+    Route::get('/life-insurance', ['uses'=>'LifeInsuranceController@index', 'as'=>'life-insurance']);
+    Route::post('/life-insurance', 'LifeInsuranceController@saveRecord');
 });
