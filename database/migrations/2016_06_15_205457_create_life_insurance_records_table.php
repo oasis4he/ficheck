@@ -36,8 +36,6 @@ class CreateLifeInsuranceRecordsTable extends Migration
             $table->decimal('entered_total_funds_from_other_sources', 19, 2)->nullable();
             $table->decimal('insurance_needed', 19, 2)->nullable();
 
-            $table->timestamps();
-
             $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();
