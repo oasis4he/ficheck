@@ -2,6 +2,7 @@
 
     cp .env.example .env
     # fix .env as necessary for environment
+    php artisan key:generate
     composer install
     php artisan migrate
     # run seeders
