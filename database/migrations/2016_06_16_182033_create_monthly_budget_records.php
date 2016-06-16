@@ -23,6 +23,7 @@ class CreateMonthlyBudgetRecords extends Migration
             $table->string('category');
 
             $table->string('description');
+            $table->integer('order')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');
 
