@@ -24,7 +24,47 @@
 
       </div><!-- .ficheck-section-type -->
 
+      <div class="ficheck-section-type life-insurance-type life-insurance-type-expenses row">
+        <h2>Expenses</h2>
 
+        <div class="body">
+          <div class="ficheck-section-body">
+
+            @include('partials.life-insurance-expenses')
+
+          </div><!-- .ficheck-section-body -->
+
+        </div><!-- .body -->
+
+      </div><!-- .ficheck-section-type -->
+
+      <div class="ficheck-section-type life-insurance-type life-insurance-type-other-sources row">
+        <h2>Funds from other Sources</h2>
+
+        <div class="body">
+          <div class="ficheck-section-body">
+
+            @include('partials.life-insurance-other-sources')
+
+          </div><!-- .ficheck-section-body -->
+
+        </div><!-- .body -->
+
+      </div><!-- .ficheck-section-type -->
+
+      <div class="ficheck-section-type life-insurance-type life-insurance-type-insurance-needed row">
+        <h2>Insurance Needed</h2>
+
+        <div class="body">
+          <div class="ficheck-section-body">
+
+            @include('partials.life-insurance-insurance-needed')
+
+          </div><!-- .ficheck-section-body -->
+
+        </div><!-- .body -->
+
+      </div><!-- .ficheck-section-type -->
 
     </div><!-- .ficheck-sections -->
 
