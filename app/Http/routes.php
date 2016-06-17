@@ -22,6 +22,12 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('/monthly-tracking', 'MonthlyTrackingController@saveRecord');
     Route::get('/monthly-tracking/delete/{id}', 'MonthlyTrackingController@deleteRecord');
 
+    Route::get('/monthly-budget', ['uses'=>'MonthlyBudgetController@index', 'as'=>'monthly-budget']);
+    Route::post('/monthly-budget', 'MonthlyBudgetController@saveRecord');
+
+    Route::get('/income-and-expense-statement', ['uses'=>'MonthlyBudgetController@ieStatement', 'as'=>'income-and-expense-statement']);
+    Route::get('/net-worth-statement', ['uses'=>'MonthlyBudgetController@netWorthStatement', 'as'=>'net-worth-statement']);
+
     Route::get('/financial-goals', ['uses'=>'FinancialGoalsController@index', 'as'=>'financial-goals']);
     Route::post('/financial-goals', 'FinancialGoalsController@saveRecord');
     Route::get('/financial-goals/delete/{id}', 'FinancialGoalsController@deleteRecord');
@@ -35,6 +41,4 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('/life-insurance', ['uses'=>'LifeInsuranceController@index', 'as'=>'life-insurance']);
     Route::post('/life-insurance', 'LifeInsuranceController@saveRecord');
 
-    Route::get('/monthly-budget', ['uses'=>'MonthlyBudgetController@index', 'as'=>'monthly-budget']);
-    Route::post('/monthly-budget', 'MonthlyBudgetController@saveRecord');
 });

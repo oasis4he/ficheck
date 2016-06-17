@@ -64,17 +64,18 @@
 
         </div><!-- .body -->
 
+        <br>
+        <div class="control pull-right">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
       </div><!-- .ficheck-section-type -->
 
     </div><!-- .ficheck-sections -->
 
 
-    <div class="control pull-right">
-      <button type="submit" class="btn btn-primary">Save</button>
-    </div>
 
   </form>
-  <pre>
+  <!-- <pre>
     Income Replacement For Survivors
 
     We’ll calculate your insurance needs based on 75% of your annual income. = .75 * What is your annual income?
@@ -90,5 +91,5 @@
     Insurance Needed
     Insurance Needed = sum of all other fields in this section
 
-  </pre>
+  </pre> -->
 @endsection
