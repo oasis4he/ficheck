@@ -40,11 +40,11 @@
                   <ul class="nav navbar-nav">
                       <li><a href="{{ route('monthly-tracking') }}">Monthly Tracking</a></li>
                       <li><a href="{{ route('monthly-budget') }}">Monthly Budget</a></li>
-                      <li><a href="{{ route('income-and-expense-statement') }}">Income and Expense Statement</a></li>
+                      <!-- <li><a href="{{ route('income-and-expense-statement') }}">Income and Expense Statement</a></li> -->
                       <li><a href="{{ route('financial-goals') }}">Financial Goals</a></li>
                       <li><a href="{{ route('financial-ratios') }}">Financial Ratios</a></li>
                       <li><a href="{{ route('retirement-needs') }}">Retirement Needs</a></li>
-                      <li><a href="{{ route('life-insurance') }}">Life Insurance</a></li>
+                      <!-- <li><a href="{{ route('life-insurance') }}">Life Insurance</a></li> -->
                   </ul>
                 @endif
 
