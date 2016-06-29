@@ -135,4 +135,27 @@ body.page-retirement-needs .navbar-nav > li > a[href*=retirement-needs] {
   .monthly-tracking .body .changed [class^=col-] {
     background-color: #f90; }
 
+.budget-view .valueType.planned, .budget-view .valueType.actual, .budget-view .valueType.difference, .budget-view .valueTypeTotal.planned, .budget-view .valueTypeTotal.actual, .budget-view .valueTypeTotal.difference {
+  display: none; }
+  .budget-view .valueType.planned.active, .budget-view .valueType.actual.active, .budget-view .valueType.difference.active, .budget-view .valueTypeTotal.planned.active, .budget-view .valueTypeTotal.actual.active, .budget-view .valueTypeTotal.difference.active {
+    display: block; }
+
+.budget-view .valueTypeTemplate {
+  display: none; }
+
+.budget-view .toggleBudgetInputs {
+  background: #000;
+  color: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  margin-right: 5px; }
+  .budget-view .toggleBudgetInputs:hover {
+    background: #ff9900;
+    opacity: .7; }
+  .budget-view .toggleBudgetInputs.active {
+    background: #ff9900; }
+    .budget-view .toggleBudgetInputs.active:hover {
+      background: #000000; }
+
 /*# sourceMappingURL=app.css.map */

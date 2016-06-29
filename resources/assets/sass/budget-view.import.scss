@@ -1,0 +1,39 @@
+.budget-view {
+
+  .valueType, .valueTypeTotal {
+    &.planned, &.actual, &.difference {
+      display:none;
+
+      &.active {
+        display:block;
+      }
+    }
+  }
+
+  .valueTypeTemplate {
+    display:none;
+  }
+
+  .toggleBudgetInputs {
+    background:#000;
+    color:#fff;
+    border:none;
+    width:40px;
+    height:40px;
+    margin-right:5px;
+
+    &:hover {
+      background:#ff9900;
+      opacity:.7;
+    }
+
+    &.active{
+      background:#ff9900;
+
+      &:hover {
+        background:#000000;
+      }
+    }
+  }
+
+}

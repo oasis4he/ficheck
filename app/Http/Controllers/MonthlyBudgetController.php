@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\MonthlyBudgetRecord;
+use App\MonthlyBudgetRecordValue;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -56,5 +57,13 @@ class MonthlyBudgetController extends Controller
 
     public function saveRecord(Request $request)
     {
+      dd($request->all());
+        foreach ($request['values'] as $type => $values) {
+            foreach ($values as $id => $value) {
+                $recordValue = MonthlyBudgetRecordValue::find($id);
+                $recordValue->value = $value;
+                $recordValue->save();
+            }
+        }
     }
 }

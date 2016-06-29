@@ -13,11 +13,17 @@ class MonthlyBudgetRecord extends Model
 
     public function values()
     {
-        return $this->belongsTo('App\MonthlyBudgetRecordValue', 'record_id', 'id');
+        return $this->hasMany('App\MonthlyBudgetRecordValue', 'record_id', 'id');
     }
 
     static public function setupDefaultRecords($user_id)
     {
+        $recordValueTypes = [
+            "planned",
+            "actual",
+            "difference"
+        ];
+
         $categories = [
             'income' => [
                 'Salary (take home)',
@@ -73,6 +79,15 @@ class MonthlyBudgetRecord extends Model
                 $newRecord->order = $count;
 
                 $newRecord->save();
+
+                //Loop through record values and set default to 0
+                foreach ($recordValueTypes as $type) {
+                    $newValue = new MonthlyBudgetRecordValue();
+                    $newValue->record_id = $newRecord->id;
+                    $newValue->type = $type;
+                    $newValue->value = 0;
+                    $newValue->save();
+                }
             }
         }
     }
