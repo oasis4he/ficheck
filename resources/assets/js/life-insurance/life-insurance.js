@@ -17,6 +17,7 @@
 
         var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]');
         enteredTotalIncomeForReplacement.val(totalIncomeForReplacement.val());
+        enteredTotalIncomeForReplacement.trigger("change");
     });
 
     $(lifeInsurace).on('change', 'select', function() {

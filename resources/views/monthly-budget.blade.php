@@ -4,7 +4,7 @@
   <form method="post" action="/monthly-budget" class="budget-view {{isset($statement) ? 'readonly' : ''}} {{isset($onlyActual) ? 'onlyActual' : ''}}">
     {{ csrf_field() }}
     <input type="hidden" name="calculator" value="{{$calculator}}">
-    <div class="ficheck-sections budget-view-record container">
+    <div class="ficheck-sections budget-view-record">
       @include('layouts.title', ['title'=>$title])
 
       @include('partials.form-errors')
@@ -32,7 +32,6 @@
 
           </div><!-- .ficheck-section-type -->
       @endforeach
-      <button type="submit" class="btn btn-primary">Submit</button>
 
     </div><!-- .ficheck-sections -->
   </form>

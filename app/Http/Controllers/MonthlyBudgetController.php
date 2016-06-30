@@ -6,6 +6,7 @@ use App\MonthlyBudgetRecord;
 use App\MonthlyBudgetRecordValue;
 use Illuminate\Http\Request;
 use Auth;
+use Redirect;
 
 class MonthlyBudgetController extends Controller
 {
@@ -174,6 +175,8 @@ class MonthlyBudgetController extends Controller
                 MonthlyBudgetRecord::destroy($id);
             }
         }
+
+        return Redirect::back();
 
     }
 }

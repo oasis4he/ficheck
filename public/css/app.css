@@ -18,6 +18,52 @@ body.page-retirement-needs .navbar-nav > li > a[href*=retirement-needs] {
   background-color: #fff;
   color: #080808; }
 
+body.page-net-worth-statement .navbar-nav > li > a[href*=net-worth-statement] {
+  background-color: #fff;
+  color: #080808; }
+
+body.page-life-insurance .navbar-nav > li > a[href*=life-insurance] {
+  background-color: #fff;
+  color: #080808; }
+
+body.page-income-and-expense-statement .navbar-nav > li > a[href*=income-and-expense-statement] {
+  background-color: #fff;
+  color: #080808; }
+
+body.page-monthly-budget .navbar-nav > li > a[href*=monthly-budget] {
+  background-color: #fff;
+  color: #080808; }
+
+.navbar-header {
+  float: none; }
+
+.navbar-toggle {
+  display: block; }
+
+.navbar-collapse.collapse {
+  display: none !important;
+  max-height: none; }
+
+.navbar-nav {
+  float: none !important; }
+
+.navbar-nav > li {
+  float: none; }
+  .navbar-nav > li a {
+    padding: 5px;
+    font-size: 1.1em;
+    border-bottom: 1px solid #767676; }
+
+.navbar-collapse.collapse.in {
+  display: block !important; }
+
+.dropdown-menu {
+  width: 100%;
+  background: #222;
+  position: static; }
+  .dropdown-menu li a {
+    color: #fff; }
+
 .page-title {
   border-bottom: solid 35px #767676; }
   .page-title h1 {
@@ -233,5 +279,8 @@ body.page-retirement-needs .navbar-nav > li > a[href*=retirement-needs] {
       padding-top: .5em; }
     .budget-view .budget-sums .budget-sum input {
       border-radius: 0; }
+
+.budget-view .btn-primary {
+  margin-bottom: 1em; }
 
 /*# sourceMappingURL=app.css.map */
