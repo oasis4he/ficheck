@@ -26,7 +26,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('/monthly-budget', 'MonthlyBudgetController@saveRecord');
 
     Route::get('/income-and-expense-statement/{user_id?}', ['uses'=>'MonthlyBudgetController@ieStatement', 'as'=>'income-and-expense-statement']);
-    Route::get('/net-worth-statement', ['uses'=>'MonthlyBudgetController@netWorthStatement', 'as'=>'net-worth-statement']);
+    Route::get('/net-worth-statement/{user_id?}', ['uses'=>'MonthlyBudgetController@netWorthStatement', 'as'=>'net-worth-statement']);
 
     Route::get('/financial-goals/{user_id?}', ['uses'=>'FinancialGoalsController@index', 'as'=>'financial-goals']);
     Route::post('/financial-goals', 'FinancialGoalsController@saveRecord');

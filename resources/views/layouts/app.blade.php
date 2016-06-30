@@ -29,23 +29,29 @@
                 </button>
 
                 <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    FiCheck
-                </a>
+                    @if(Request::route('user_id'))
+                        <a class="navbar-brand" href="{{ url('/admin') }}">
+                            {{App\User::find(Request::route('user_id'))->email}}
+                        </a>
+                    @else
+                        <a class="navbar-brand" href="{{ url('/') }}">
+                            FiCheck
+                        </a>
+                    @endif
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 @if (!Auth::guest())
                   <ul class="nav navbar-nav">
-                      <li><a href="{{ route('monthly-tracking') }}">Monthly Tracking</a></li>
-                      <li><a href="{{ route('monthly-budget') }}">Monthly Budget</a></li>
-                      <li><a href="{{ route('income-and-expense-statement') }}">Income and Expense Statement</a></li>
-                      <li><a href="{{ route('financial-goals') }}">Financial Goals</a></li>
-                      <li><a href="{{ route('financial-ratios') }}">Financial Ratios</a></li>
-                      <li><a href="{{ route('retirement-needs') }}">Retirement Needs</a></li>
-                      <li><a href="{{ route('life-insurance') }}">Life Insurance</a></li>
-                      <li><a href="{{ route('net-worth-statement') }}">Net Worth</a></li>
+                      <li><a href="{{ route('monthly-tracking', ['user_id'=>Request::route('user_id')]) }}">Monthly Tracking</a></li>
+                      <li><a href="{{ route('monthly-budget', ['user_id'=>Request::route('user_id')]) }}">Monthly Budget</a></li>
+                      <li><a href="{{ route('income-and-expense-statement', ['user_id'=>Request::route('user_id')]) }}">Income and Expense Statement</a></li>
+                      <li><a href="{{ route('financial-goals', ['user_id'=>Request::route('user_id')]) }}">Financial Goals</a></li>
+                      <li><a href="{{ route('financial-ratios', ['user_id'=>Request::route('user_id')]) }}">Financial Ratios</a></li>
+                      <li><a href="{{ route('retirement-needs', ['user_id'=>Request::route('user_id')]) }}">Retirement Needs</a></li>
+                      <li><a href="{{ route('life-insurance', ['user_id'=>Request::route('user_id')]) }}">Life Insurance</a></li>
+                      <li><a href="{{ route('net-worth-statement', ['user_id'=>Request::route('user_id')]) }}">Net Worth</a></li>
                   </ul>
                 @endif
 
@@ -61,7 +67,12 @@
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
 
+
                             <ul class="dropdown-menu" role="menu">
+                                @if(Auth::user()->hasRole(['grader', 'administrator']))
+                                <li><a href="{{ url('/admin') }}">Admin</a></li>
+                                @endif
+
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
                         </li>

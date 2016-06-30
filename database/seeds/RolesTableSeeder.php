@@ -5,10 +5,6 @@ use App\Role;
 class RolesTableSeeder extends Seeder{
     public function run()
     {
-        if (App::environment() === 'production') {
-            exit('I just stopped you getting fired. Love, Amo.');
-        }
-        DB::table('roles')->truncate();
         Role::create([
             'id'            => 1,
             'name'          => 'Root',
