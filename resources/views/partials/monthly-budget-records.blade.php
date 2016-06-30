@@ -1,7 +1,7 @@
 @foreach($records as $record)
 
     @foreach($record['values'] as $index => $value)
-        <div class="row valueType {{$value['type']}} {{$value['type'] == 'planned' || (isset($onlyActual) && $value['type'] == 'actual') ? 'active' : ''}}" data-record-id="{{$record->id}}">
+        <div class="row valueType {{$value['type']}} {{($value['type'] == 'planned' && !isset($onlyActual)) || (isset($onlyActual) && $value['type'] == 'actual') ? 'active' : ''}}" data-record-id="{{$record->id}}">
             <div class="form-group col-xs-6 text-left editable" aria-label="Edit Label">
                 <span class="editLabel glyphicon glyphicon-pencil" record-id="{{$record->id}}" input-id="value_{{$value->id}}"></span>
                 <label for="value_{{$value->id}}">

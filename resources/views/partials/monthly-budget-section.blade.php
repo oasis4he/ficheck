@@ -17,7 +17,7 @@
       </div>
     @endif
 
-    <div class="row valueTypeTotal planned active">
+    <div class="row valueTypeTotal planned {{!isset($onlyActual) ? 'active' : ''}}">
         <div class="form-group col-xs-6 text-left">
             <label for="total_{{$category}}_planned">Total {{$monthlyBudgetCategories[$category]['title']}}</label>
         </div>
@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div class="row valueTypeTotal actual">
+    <div class="row valueTypeTotal actual {{isset($onlyActual) ? 'active' : ''}}">
         <div class="form-group col-xs-6 text-left">
             <label for="total_{{$category}}_actual">Total {{$monthlyBudgetCategories[$category]['title']}}</label>
         </div>

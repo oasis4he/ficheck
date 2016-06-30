@@ -35,7 +35,10 @@ class MonthlyBudgetController extends Controller
             $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('order')->get();
         }
 
-        return view('monthly-budget', ['calculator' => 'monthly-budget', 'monthlyBudgetCategories' => $this->getMonthlyBudgetCategories(), 'monthlyBudgetRecords' => $monthlyBudgetRecords, 'statement' => true, "showTotals" => true, 'title' => 'I & E Statement']);
+        return view('monthly-budget', ['calculator' => 'monthly-budget', "onlyActual" => true,
+                    'monthlyBudgetCategories' => $this->getMonthlyBudgetCategories(),
+                    'monthlyBudgetRecords' => $monthlyBudgetRecords, 'statement' => true,
+                    "showTotals" => true, 'title' => 'I & E Statement']);
     }
 
     public function netWorthStatement()

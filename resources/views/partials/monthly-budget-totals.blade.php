@@ -2,7 +2,7 @@
   <div class="row budget-sum budget-sum-income">
     <div class="col-xs-7">
       <label for="incomeTotal">
-        Total Income
+        Total {{$calculator == 'monthly-budget' ? 'Income' : 'Assets'}}
       </label>
     </div>
 
@@ -14,7 +14,7 @@
   <div class="row budget-sum budget-sum-expenses">
     <div class="col-xs-7">
       <label for="expenseTotal">
-        Total Expenses
+        Total {{$calculator == 'monthly-budget' ? 'Expenses' : 'Liabilities'}}
       </label>
     </div>
 
@@ -26,7 +26,7 @@
   <div class="row budget-sum budget-sum-net">
     <div class="col-xs-7">
       <label for="netTotal">
-        Net Gain/Loss
+        Net {{$calculator == 'monthly-budget' ? 'Gain/Loss' : 'Worth'}}
       </label>
     </div>
 

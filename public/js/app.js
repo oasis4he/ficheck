@@ -92,20 +92,24 @@
     function sumTotal(element)
     {
       var type = getType (element);
-      var monthlyBudgetType = element.parents(".monthly-budget-type");
+      if(type)
+      {
+        var monthlyBudgetType = element.closest(".monthly-budget-type");
 
-      var inputsToUpdate = monthlyBudgetType.find(".valueType." + type);
+        var inputsToUpdate = monthlyBudgetType.find(".valueType." + type);
 
-      var total = 0;
+        var total = 0;
 
-      $.each(inputsToUpdate, function(index, input){
-        var inputTotal = Number($(input).find(".valueInput").val());
-        total += inputTotal;
-      });
+        $.each(inputsToUpdate, function(index, input){
+          var inputTotal = Number($(input).find(".valueInput").val());
+          total += inputTotal;
+        });
 
-      var totalInput = monthlyBudgetType.find("." + type + " .totalInput");
+        var totalInput = monthlyBudgetType.find("." + type + " .totalInput");
 
-      totalInput.val(total.toFixed(2));
+        totalInput.val(total.toFixed(2));
+      }
+
     }
 
     //editable labels
@@ -271,17 +275,22 @@
     //hide editing controls and make inputs readonly
     $(".budget-view input").attr("readonly", "readonly");
     $(".budget-view .editLabel").hide();
+  }
 
-    //calculate totals for I & E
+  //if we should calculate totals do it
+  if ($(".budget-sums").length)
+  {
+    //calculate totals
     var actualIncomeInputs = $(".ficheck-section-type[data-type='income'] .valueType.actual .valueInput");
     var actualExpenseInputs = $(".ficheck-section-type[data-type='expense'] .valueType.actual .valueInput");
-
     var incomeTotal = 0;
     var expenseTotal = 0;
 
     $.each(actualIncomeInputs, function(index, input) {
+      console.log($(input).val());
       incomeTotal += Number($(input).val());
     });
+
 
     $("#incomeTotal").val(incomeTotal.toFixed(2));
 
