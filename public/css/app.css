@@ -34,6 +34,10 @@ body.page-monthly-budget .navbar-nav > li > a[href*=monthly-budget] {
   background-color: #fff;
   color: #080808; }
 
+body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
+  background-color: #fff;
+  color: #080808; }
+
 .navbar-header {
   float: none; }
 
@@ -235,6 +239,14 @@ body.page-monthly-budget .navbar-nav > li > a[href*=monthly-budget] {
 
 .budget-view .ficheck-sections .record-type-expense {
   background: #ff0000; }
+
+.budget-view .ficheck-sections .record-type-month {
+  background: #000;
+  border-bottom-width: 5px; }
+  .budget-view .ficheck-sections .record-type-month:nth-child(2n) {
+    background: #D9D9D9; }
+    .budget-view .ficheck-sections .record-type-month:nth-child(2n) h2 {
+      color: #000; }
 
 .budget-view .ficheck-sections h2 {
   font-size: 1.4em;

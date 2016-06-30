@@ -9,6 +9,7 @@
     var activeClass = "planned";
 
     //whether the page only should show actual
+    var revolvingSavings = $(".budget-view").hasClass("revolving-savings") ? true : false;
     var onlyActual = $(".budget-view").hasClass("onlyActual") ? true : false;
 
     if (onlyActual)
@@ -171,16 +172,33 @@
 
     function addNewRows(thisElement)
     {
-      var rowTypes = [
-        "planned",
-        "actual",
-        "difference"
-      ];
+      if (onlyActual)
+      {
+        var rowTypes = ["actual"];
+      }
+      else
+      {
+        var rowTypes = [
+          "planned",
+          "actual",
+          "difference"
+        ];
+      }
+
 
       var category = getCategoryForSave(thisElement);
       var type = getTypeForSave(thisElement);
 
-      var recordId =  "new_" + category + "_" + type + "_" + newInputCount;
+      if (revolvingSavings)
+      {
+        var month = $(thisElement).closest(".month").attr("data-month");
+
+        var recordId =  "new_" + month + "_" + newInputCount;
+      }
+      else
+      {
+        var recordId =  "new_" + category + "_" + type + "_" + newInputCount;
+      }
 
       for (var i = 0; i < rowTypes.length; i++) {
          var inputId = rowTypes[i] + "_" + newInputCount;
@@ -197,7 +215,16 @@
          clone.find(".editLabel").attr("record-id", recordId);
          clone.find(".editLabel").attr("input-id", "value_" + inputId);
          clone.find("input").attr("id", "value_" + inputId);
-         clone.find("input").attr("name", "names[" + recordId + "][" + inputId + "][values]");
+
+         if (!revolvingSavings)
+         {
+           clone.find("input").attr("name", "names[" + recordId + "][" + inputId + "][values]");
+         }
+         else
+         {
+           clone.find("input").attr("name", "names[" + recordId + "][value]");
+         }
+
 
          if (rowTypes[i] == "difference")
          {
@@ -274,30 +301,58 @@
   //if we should calculate totals do it
   if ($(".budget-sums").length)
   {
-    //calculate totals
-    var actualIncomeInputs = $(".ficheck-section-type[data-type='income'] .valueType.actual .valueInput");
-    var actualExpenseInputs = $(".ficheck-section-type[data-type='expense'] .valueType.actual .valueInput");
-    var incomeTotal = 0;
-    var expenseTotal = 0;
+    var revolvingSavings = $(".budget-view").hasClass("revolving-savings") ? true : false;
 
-    $.each(actualIncomeInputs, function(index, input) {
-      console.log($(input).val());
-      incomeTotal += Number($(input).val());
-    });
+    if (revolvingSavings)
+    {
+      $(".ficheck-section-type").on("change", ".valueInput", function() {
+
+          var allInputs = $(".ficheck-section-type .valueType.actual .valueInput");
+          var yearlyTotal = 0;
+
+          $.each(allInputs, function(index, input) {
+            yearlyTotal += Number($(input).val());
+          });
+
+          $("#perYearTotal").val(yearlyTotal.toFixed(2));
+          $("#perMonthTotal").val((yearlyTotal/12).toFixed(2));
+      });
+
+      $(".valueInput").trigger("change");
+
+    }
+    else
+    {
+      $(".ficheck-section-type").on("change", ".valueInput", function() {
+
+        //calculate totals
+        var actualIncomeInputs = $(".ficheck-section-type[data-type='income'] .valueType.actual .valueInput");
+        var actualExpenseInputs = $(".ficheck-section-type[data-type='expense'] .valueType.actual .valueInput");
+        var incomeTotal = 0;
+        var expenseTotal = 0;
+
+        $.each(actualIncomeInputs, function(index, input) {
+          incomeTotal += Number($(input).val());
+        });
 
 
-    $("#incomeTotal").val(incomeTotal.toFixed(2));
+        $("#incomeTotal").val(incomeTotal.toFixed(2));
 
-    $.each(actualExpenseInputs, function(index, input) {
-      expenseTotal += Number($(input).val());
-    });
+        $.each(actualExpenseInputs, function(index, input) {
+          expenseTotal += Number($(input).val());
+        });
 
-    $("#expenseTotal").val(expenseTotal.toFixed(2));
+        $("#expenseTotal").val(expenseTotal.toFixed(2));
 
-    $("#netTotal").val((incomeTotal - expenseTotal).toFixed(2));
+        $("#netTotal").val((incomeTotal - expenseTotal).toFixed(2));
+
+      });
+
+      $(".valueInput").trigger("change");
+
+    }
+
   }
-
-
 
 
 }(jQuery));

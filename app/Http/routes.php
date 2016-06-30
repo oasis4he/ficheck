@@ -41,6 +41,9 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('/life-insurance/{user_id?}', ['uses'=>'LifeInsuranceController@index', 'as'=>'life-insurance']);
     Route::post('/life-insurance', 'LifeInsuranceController@saveRecord');
 
+    Route::get('/revolving-savings/{user_id?}', ['uses'=>'RevolvingSavingsController@index', 'as'=>'revolving-savings']);
+    Route::post('/revolving-savings', 'RevolvingSavingsController@saveRecord');
+
 });
 
 Route::group([
