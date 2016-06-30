@@ -54,7 +54,7 @@
 <div class="row">
   <div class="form-group col-xs-12">
     <label for="entered_total_income_replacement">Total for Income Replacement</label>
-    <input name="entered_total_income_replacement" id="entered_total_income_replacement" value="{{$lifeInsurance->entered_total_income_replacement}}" class="form-control">
+    <input readonly name="entered_total_income_replacement" id="entered_total_income_replacement" value="{{$lifeInsurance->entered_total_income_replacement}}" class="form-control">
   </div>
 </div>
 

@@ -15,6 +15,7 @@
     var activeClass = "planned";
 
     //whether the page only should show actual
+    var revolvingSavings = $(".budget-view").hasClass("revolving-savings") ? true : false;
     var onlyActual = $(".budget-view").hasClass("onlyActual") ? true : false;
 
     if (onlyActual)
@@ -123,13 +124,13 @@
       $(this).toggleClass("glyphicon-pencil");
 
       if (editableContainer.find("input").length) {
-        editableContainer.find(".input-group").toggle();
+        editableContainer.find(".input-group").toggleClass("deleteShow");
         editableContainer.find("label").toggle();
         editableContainer.find("label").text(editableContainer.find("input").val());
       }
       else
       {
-        editableContainer.find(".input-group").show();
+        editableContainer.find(".input-group").toggleClass("deleteShow");
         editableContainer.find(".input-group").prepend("<input type='text' name='names[" + recordId + "][name]' value='" + value + "' class='form-control'>");
         editableContainer.find("label").hide();
       }
@@ -177,16 +178,33 @@
 
     function addNewRows(thisElement)
     {
-      var rowTypes = [
-        "planned",
-        "actual",
-        "difference"
-      ];
+      if (onlyActual)
+      {
+        var rowTypes = ["actual"];
+      }
+      else
+      {
+        var rowTypes = [
+          "planned",
+          "actual",
+          "difference"
+        ];
+      }
+
 
       var category = getCategoryForSave(thisElement);
       var type = getTypeForSave(thisElement);
 
-      var recordId =  "new_" + category + "_" + type + "_" + newInputCount;
+      if (revolvingSavings)
+      {
+        var month = $(thisElement).closest(".month").attr("data-month");
+
+        var recordId =  "new_" + month + "_" + newInputCount;
+      }
+      else
+      {
+        var recordId =  "new_" + category + "_" + type + "_" + newInputCount;
+      }
 
       for (var i = 0; i < rowTypes.length; i++) {
          var inputId = rowTypes[i] + "_" + newInputCount;
@@ -203,7 +221,16 @@
          clone.find(".editLabel").attr("record-id", recordId);
          clone.find(".editLabel").attr("input-id", "value_" + inputId);
          clone.find("input").attr("id", "value_" + inputId);
-         clone.find("input").attr("name", "names[" + recordId + "][" + inputId + "][values]");
+
+         if (!revolvingSavings)
+         {
+           clone.find("input").attr("name", "names[" + recordId + "][" + inputId + "][values]");
+         }
+         else
+         {
+           clone.find("input").attr("name", "names[" + recordId + "][value]");
+         }
+
 
          if (rowTypes[i] == "difference")
          {
@@ -280,30 +307,58 @@
   //if we should calculate totals do it
   if ($(".budget-sums").length)
   {
-    //calculate totals
-    var actualIncomeInputs = $(".ficheck-section-type[data-type='income'] .valueType.actual .valueInput");
-    var actualExpenseInputs = $(".ficheck-section-type[data-type='expense'] .valueType.actual .valueInput");
-    var incomeTotal = 0;
-    var expenseTotal = 0;
+    var revolvingSavings = $(".budget-view").hasClass("revolving-savings") ? true : false;
 
-    $.each(actualIncomeInputs, function(index, input) {
-      console.log($(input).val());
-      incomeTotal += Number($(input).val());
-    });
+    if (revolvingSavings)
+    {
+      $(".ficheck-section-type").on("change", ".valueInput", function() {
+
+          var allInputs = $(".ficheck-section-type .valueType.actual .valueInput");
+          var yearlyTotal = 0;
+
+          $.each(allInputs, function(index, input) {
+            yearlyTotal += Number($(input).val());
+          });
+
+          $("#perYearTotal").val(yearlyTotal.toFixed(2));
+          $("#perMonthTotal").val((yearlyTotal/12).toFixed(2));
+      });
+
+      $(".valueInput").trigger("change");
+
+    }
+    else
+    {
+      $(".ficheck-section-type").on("change", ".valueInput", function() {
+
+        //calculate totals
+        var actualIncomeInputs = $(".ficheck-section-type[data-type='income'] .valueType.actual .valueInput");
+        var actualExpenseInputs = $(".ficheck-section-type[data-type='expense'] .valueType.actual .valueInput");
+        var incomeTotal = 0;
+        var expenseTotal = 0;
+
+        $.each(actualIncomeInputs, function(index, input) {
+          incomeTotal += Number($(input).val());
+        });
 
 
-    $("#incomeTotal").val(incomeTotal.toFixed(2));
+        $("#incomeTotal").val(incomeTotal.toFixed(2));
 
-    $.each(actualExpenseInputs, function(index, input) {
-      expenseTotal += Number($(input).val());
-    });
+        $.each(actualExpenseInputs, function(index, input) {
+          expenseTotal += Number($(input).val());
+        });
 
-    $("#expenseTotal").val(expenseTotal.toFixed(2));
+        $("#expenseTotal").val(expenseTotal.toFixed(2));
 
-    $("#netTotal").val((incomeTotal - expenseTotal).toFixed(2));
+        $("#netTotal").val((incomeTotal - expenseTotal).toFixed(2));
+
+      });
+
+      $(".valueInput").trigger("change");
+
+    }
+
   }
-
-
 
 
 }(jQuery));
@@ -487,6 +542,108 @@
     monthlyTrackingContainer.find('form').removeClass('active');
 
     $(this).closest('form').addClass('active');
+  });
+}(jQuery));
+
+
+(function($){
+  $(function(){
+    var expenses = $('.life-insurance-type-expenses');
+
+    $(expenses).on('change', 'input', function() {
+        var wrapper = $(this).closest('.ficheck-sections');
+
+        var funeralExpense = wrapper.find("[name=funeral_expenses]").val();
+        var debt = wrapper.find("[name=debt]").val();
+        var otherExpenses = wrapper.find("[name=other_expenses]").val();
+
+        var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]').val();
+
+        var totalExpenses = wrapper.find('[name=total_expenses]');
+        totalExpenses.val(Number(funeralExpense) + Number(debt) + Number(otherExpenses) + Number(enteredTotalIncomeForReplacement));
+
+        var enteredTotalExpenses = $('[name=entered_total_expenses]');
+        enteredTotalExpenses.val(totalExpenses.val());
+        enteredTotalExpenses.trigger("change");
+
+    });
+
+  });
+}(jQuery));
+
+
+(function($){
+  $(function(){
+    var fundsFromOtherSources = $('.life-insurance-type-other-sources');
+    $(fundsFromOtherSources).on('change', 'input', function() {
+        var wrapper = $(this).closest('.ficheck-section-type');
+
+        var governmentBenefits = (wrapper.find('[name=government_benefits]').val());
+        var otherFunds = (wrapper.find('[name=other_funds]').val());
+
+        var totalFundsFromOtherSources = (wrapper.find('[name=total_funds_from_other_sources]'));
+        totalFundsFromOtherSources.val(Number(governmentBenefits) + Number(otherFunds));
+
+        var enteredTotalFundsFromOtherSources = $('[name=entered_total_funds_from_other_sources]');
+        enteredTotalFundsFromOtherSources.val(totalFundsFromOtherSources.val());
+        enteredTotalFundsFromOtherSources.trigger("change");
+
+    });
+
+  });
+}(jQuery));
+
+
+(function($){
+  $(function(){
+    var insuranceNeeded = $('.life-insurance-type-insurance-needed');
+
+    $(insuranceNeeded).on('change', 'input', function() {
+        var wrapper = $(this).closest('.ficheck-section-type');
+
+        var enteredTotalExpenses = wrapper.find('[name=entered_total_expenses]').val();
+        var enteredTotalFundsFromOtherSources = wrapper.find('[name=entered_total_funds_from_other_sources]').val();
+
+        wrapper.find("[name=insurance_needed]").val(Number(enteredTotalExpenses) + Number(enteredTotalFundsFromOtherSources));
+    });
+  });
+}(jQuery));
+
+(function($){
+  $(function(){
+    var lifeInsurace = $('.life-insurance-type-income-replacement');
+
+    $(lifeInsurace).on('change', 'input', function() {
+        var wrapper = $(this).closest('.ficheck-section-type');
+
+        var enteredAnnualIncome = (wrapper.find('[name=annual_income]').val() || 0) / 1;
+
+        var insuranceNeeds = $('[name="insurance_needs"]', wrapper);
+        insuranceNeeds.val(enteredAnnualIncome * .75);
+
+        var totalIncomeForReplacement = wrapper.find('[name=total_income_replacement]');
+        var factorElement = $('[name="income_replacement_factor"]', wrapper);
+
+        totalIncomeForReplacement.val(insuranceNeeds.val() * factorElement.val());
+
+        var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]');
+        enteredTotalIncomeForReplacement.val(totalIncomeForReplacement.val());
+        enteredTotalIncomeForReplacement.trigger("change");
+    });
+
+    $(lifeInsurace).on('change', 'select', function() {
+        var wrapper = $(this).closest('.ficheck-section-type');
+
+        var value = $(this).val();
+
+        var factor = $(':selected', this).data('factor') / 1;
+
+        var factorElement = $('[name="income_replacement_factor"]', wrapper);
+
+        factorElement.val(factor).trigger('change');
+
+    });
+
   });
 }(jQuery));
 

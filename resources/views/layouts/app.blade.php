@@ -44,14 +44,15 @@
                 <!-- Left Side Of Navbar -->
                 @if (!Auth::guest())
                   <ul class="nav navbar-nav">
-                      <li><a href="{{ route('monthly-tracking', ['user_id'=>Request::route('user_id')]) }}">Monthly Tracking</a></li>
-                      <li><a href="{{ route('monthly-budget', ['user_id'=>Request::route('user_id')]) }}">Monthly Budget</a></li>
-                      <li><a href="{{ route('income-and-expense-statement', ['user_id'=>Request::route('user_id')]) }}">Income and Expense Statement</a></li>
                       <li><a href="{{ route('financial-goals', ['user_id'=>Request::route('user_id')]) }}">Financial Goals</a></li>
+                      <li><a href="{{ route('monthly-budget', ['user_id'=>Request::route('user_id')]) }}">Monthly Budget</a></li>
+                      <li><a href="{{ route('revolving-savings', ['user_id'=>Request::route('user_id')]) }}">Revolving Savings</a></li>
+                      <li><a href="{{ route('net-worth-statement', ['user_id'=>Request::route('user_id')]) }}">Net Worth Statement</a></li>
+                      <li><a href="{{ route('income-and-expense-statement', ['user_id'=>Request::route('user_id')]) }}">Income and Expense Statement</a></li>
                       <li><a href="{{ route('financial-ratios', ['user_id'=>Request::route('user_id')]) }}">Financial Ratios</a></li>
                       <li><a href="{{ route('retirement-needs', ['user_id'=>Request::route('user_id')]) }}">Retirement Needs</a></li>
                       <li><a href="{{ route('life-insurance', ['user_id'=>Request::route('user_id')]) }}">Life Insurance</a></li>
-                      <li><a href="{{ route('net-worth-statement', ['user_id'=>Request::route('user_id')]) }}">Net Worth</a></li>
+                      <li><a href="{{ route('monthly-tracking', ['user_id'=>Request::route('user_id')]) }}">Monthly Tracking</a></li>
                   </ul>
                 @endif
 
@@ -82,7 +83,7 @@
         </div>
     </nav>
 
-    <div class="container-fluid">
+    <div class="container">
       @yield('content')
     </div>
 
