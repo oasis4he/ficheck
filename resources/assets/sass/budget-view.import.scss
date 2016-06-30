@@ -161,6 +161,13 @@
     margin-bottom:1em
   }
 
+  .deleteGroup {
+    display:none;
+
+    &.deleteShow {
+      display:table;
+    }
+  }
 
 
 }

@@ -295,4 +295,9 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
 .budget-view .btn-primary {
   margin-bottom: 1em; }
 
+.budget-view .deleteGroup {
+  display: none; }
+  .budget-view .deleteGroup.deleteShow {
+    display: table; }
+
 /*# sourceMappingURL=app.css.map */

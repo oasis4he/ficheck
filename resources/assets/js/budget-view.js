@@ -118,13 +118,13 @@
       $(this).toggleClass("glyphicon-pencil");
 
       if (editableContainer.find("input").length) {
-        editableContainer.find(".input-group").toggle();
+        editableContainer.find(".input-group").toggleClass("deleteShow");
         editableContainer.find("label").toggle();
         editableContainer.find("label").text(editableContainer.find("input").val());
       }
       else
       {
-        editableContainer.find(".input-group").show();
+        editableContainer.find(".input-group").toggleClass("deleteShow");
         editableContainer.find(".input-group").prepend("<input type='text' name='names[" + recordId + "][name]' value='" + value + "' class='form-control'>");
         editableContainer.find("label").hide();
       }

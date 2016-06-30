@@ -8,7 +8,7 @@
                   {{$record->description}}
                 </label>
 
-                <div class="input-group" style="display:none">
+                <div class="input-group deleteGroup">
                     <span class="input-group-addon deleteRow" aria-label="Delete row" data-record-id="{{$record->id}}">
                       <i class="glyphicon glyphicon-remove"></i>
                     </span>
@@ -35,7 +35,7 @@
         <label for="">
 
         </label>
-        <div class="input-group" style="display:none">
+        <div class="input-group deleteGroup">
             <span class="input-group-addon deleteRow" aria-label="Delete row"><i class="glyphicon glyphicon-remove"></i></span>
         </div>
     </div>
