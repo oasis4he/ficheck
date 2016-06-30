@@ -23,7 +23,7 @@
 <div class="row">
   <div class="form-group col-xs-12">
     <label for="insurance_needs">We’ll calculate your insurance needs based on 75% of your annual income.</label>
-    <input name="insurance_needs" id="insurance_needs" value="{{$lifeInsurance->insurance_needs}}" class="form-control">
+    <input name="insurance_needs" id="insurance_needs" value="{{$lifeInsurance->insurance_needs}}" class="form-control" readonly>
   </div>
 </div>
 
