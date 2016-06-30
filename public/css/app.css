@@ -136,12 +136,21 @@ body.page-retirement-needs .navbar-nav > li > a[href*=retirement-needs] {
     background-color: #f90; }
 
 .budget-view .valueType.planned, .budget-view .valueType.actual, .budget-view .valueType.difference, .budget-view .valueTypeTotal.planned, .budget-view .valueTypeTotal.actual, .budget-view .valueTypeTotal.difference {
-  display: none; }
+  visibility: hidden;
+  position: absolute;
+  z-index: -100; }
   .budget-view .valueType.planned.active, .budget-view .valueType.actual.active, .budget-view .valueType.difference.active, .budget-view .valueTypeTotal.planned.active, .budget-view .valueTypeTotal.actual.active, .budget-view .valueTypeTotal.difference.active {
-    display: block; }
+    visibility: visible;
+    position: static; }
 
 .budget-view .valueTypeTemplate {
   display: none; }
+
+.budget-view .page-title {
+  border-bottom: 0; }
+
+.budget-view .toggleBudgetSection {
+  background: #767676; }
 
 .budget-view .toggleBudgetInputs {
   background: #000;
@@ -149,7 +158,7 @@ body.page-retirement-needs .navbar-nav > li > a[href*=retirement-needs] {
   border: none;
   width: 40px;
   height: 40px;
-  margin-right: 5px; }
+  margin-left: 3px; }
   .budget-view .toggleBudgetInputs:hover {
     background: #ff9900;
     opacity: .7; }
@@ -157,5 +166,72 @@ body.page-retirement-needs .navbar-nav > li > a[href*=retirement-needs] {
     background: #ff9900; }
     .budget-view .toggleBudgetInputs.active:hover {
       background: #000000; }
+
+.budget-view .btn {
+  border-radius: 0;
+  color: #fff;
+  width: 100%;
+  max-width: 200px;
+  padding: .2em 1.5em;
+  margin-top: 1em; }
+
+.budget-view .btn-black {
+  background: #000; }
+
+.budget-view .btn-grey {
+  background: #666; }
+
+.budget-view .ficheck-sections .ficheck-section-type {
+  padding-bottom: 0; }
+
+.budget-view .ficheck-sections .record-type-income {
+  background: #009900; }
+
+.budget-view .ficheck-sections .record-type-expense {
+  background: #ff0000; }
+
+.budget-view .ficheck-sections h2 {
+  font-size: 1.4em;
+  margin: 0;
+  padding-bottom: 5px; }
+
+.budget-view .ficheck-sections p {
+  color: #fff;
+  padding-left: 15px;
+  font-size: .9em;
+  font-style: italic; }
+
+.budget-view label {
+  padding-left: 10px; }
+
+.budget-view .editable {
+  position: relative; }
+  .budget-view .editable .editLabel {
+    font-size: .8em;
+    color: #68aa68;
+    position: absolute;
+    left: 5px;
+    top: 5px; }
+    .budget-view .editable .editLabel.glyphicon-ok {
+      left: 0;
+      top: 10px; }
+
+.budget-view .budget-sums {
+  background: #767676; }
+  .budget-view .budget-sums .budget-sum {
+    padding: 1em; }
+    .budget-view .budget-sums .budget-sum.budget-sum-income {
+      background: #009900; }
+    .budget-view .budget-sums .budget-sum.budget-sum-expenses {
+      background: #ff0000; }
+    .budget-view .budget-sums .budget-sum.budget-sum-net {
+      background: #000; }
+    .budget-view .budget-sums .budget-sum label {
+      background: #fff;
+      width: 100%;
+      height: 34px;
+      padding-top: .5em; }
+    .budget-view .budget-sums .budget-sum input {
+      border-radius: 0; }
 
 /*# sourceMappingURL=app.css.map */

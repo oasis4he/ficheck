@@ -6,15 +6,17 @@
 
     @include('partials.monthly-budget-records')
 
-    <div class="row newItem">
-        <div class="form-group col-xs-6 text-left">
-            <label for="new_variable_expense">Add a variable expense</label>
-        </div>
+    @if(!isset($statement))
+      <div class="row newItem">
+          <div class="form-group col-xs-6 text-left">
+              <label for="new_variable_expense">Add a variable expense</label>
+          </div>
 
-        <div class="form-group col-xs-6">
-            <input name="new_variable_expense[]" id="new_variable_expense" value="" class="form-control" readonly>
-        </div>
-    </div>
+          <div class="form-group col-xs-6">
+              <input name="new_variable_expense[]" id="new_variable_expense" value="" class="form-control">
+          </div>
+      </div>
+    @endif
 
     <div class="row valueTypeTotal planned active">
         <div class="form-group col-xs-6 text-left">

@@ -16,7 +16,54 @@ class MonthlyBudgetRecord extends Model
         return $this->hasMany('App\MonthlyBudgetRecordValue', 'record_id', 'id');
     }
 
-    static public function setupDefaultRecords($user_id)
+    static public function setupNetWorthRecords($user_id)
+    {
+        $recordValueTypes = [
+            "actual",
+        ];
+
+        $categories = [
+            'liquidAssets' => [
+                'Cash',
+                'Checking',
+                'Saving',
+                'Cert. of Deposit',
+                'Money Market Funds',
+            ],
+
+            'tangibleAssets' => [
+                'Home',
+                'Auto 1',
+                'Auto 2',
+                'Personal Property',
+            ],
+
+            'investments' => [
+                'Stocks',
+                'Bonds',
+                'Mutual Funds',
+                'Retirement Funds',
+            ],
+
+            'shortTermLiability' => [
+                'Credit Card 1',
+                'Credit Card 2',
+                'Credit Card 3',
+                'Credit Card 4',
+            ],
+
+            'longTermLiability' => [
+                'Home',
+                'Auto 1',
+                'Auto 2',
+                'Student Loan',
+            ],
+        ];
+
+        MonthlyBudgetRecord::setupDefaultRecords('net-worth', $recordValueTypes, $categories, $user_id);
+      }
+
+    static public function setupMonthlyRecords($user_id)
     {
         $recordValueTypes = [
             "planned",
@@ -57,6 +104,11 @@ class MonthlyBudgetRecord extends Model
             ],
         ];
 
+        MonthlyBudgetRecord::setupDefaultRecords('monthly-budget', $recordValueTypes, $categories, $user_id);
+      }
+
+      private static function setupDefaultRecords($calculator, $recordValueTypes, $categories, $user_id)
+      {
         $count=0;
 
         foreach ($categories as $category => $records) {
@@ -69,10 +121,11 @@ class MonthlyBudgetRecord extends Model
                 $newRecord->category = $category;
 
                 $type = 'expense';
-                if($category == 'income') {
+                if($category == 'income' || $category == 'liquidAssets' || $category == 'tangibleAssets' || $category == 'investments') {
                     $type = 'income';
                 }
 
+                $newRecord->calculator = $calculator;
                 $newRecord->type = $type;
                 $newRecord->user_id = $user_id;
                 $newRecord->description = $description;

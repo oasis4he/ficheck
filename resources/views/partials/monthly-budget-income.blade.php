@@ -5,15 +5,17 @@
 
     @include('partials.monthly-budget-records')
 
-    <div class="row newItem">
-        <div class="form-group col-xs-6 text-left">
-            <label for="new_income">Add income source.</label>
-        </div>
+    @if(!isset($statement))
+      <div class="row newItem">
+          <div class="form-group col-xs-6 text-left">
+              <label for="new_income">Add income source.</label>
+          </div>
 
-        <div class="form-group col-xs-6">
-            <input name="new_income" id="new_income" value="" class="form-control" readonly>
-        </div>
-    </div>
+          <div class="form-group col-xs-6">
+              <input name="new_income" id="new_income" value="" class="form-control">
+          </div>
+      </div>
+    @endif
 
     <div class="row valueTypeTotal planned active">
         <div class="form-group col-xs-6 text-left">

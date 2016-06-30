@@ -2,10 +2,13 @@
 
   .valueType, .valueTypeTotal {
     &.planned, &.actual, &.difference {
-      display:none;
+      visibility:hidden;
+      position:absolute;
+      z-index:-100;
 
       &.active {
-        display:block;
+        visibility:visible;
+        position:static;
       }
     }
   }
@@ -14,13 +17,21 @@
     display:none;
   }
 
+  .page-title {
+    border-bottom:0;
+  }
+
+  .toggleBudgetSection {
+    background:#767676;
+  }
+
   .toggleBudgetInputs {
     background:#000;
     color:#fff;
     border:none;
     width:40px;
     height:40px;
-    margin-right:5px;
+    margin-left:3px;
 
     &:hover {
       background:#ff9900;
@@ -35,5 +46,104 @@
       }
     }
   }
+
+  .btn {
+    border-radius:0;
+    color:#fff;
+    width:100%;
+    max-width:200px;
+    padding:.2em 1.5em;
+    margin-top:1em;
+  }
+
+  .btn-black {
+    background:#000;
+  }
+
+  .btn-grey {
+    background:#666;
+  }
+
+  .ficheck-sections {
+    .ficheck-section-type {
+      padding-bottom:0;
+    }
+
+    .record-type-income {
+      background:#009900;
+    }
+
+    .record-type-expense {
+      background:#ff0000;
+    }
+
+    h2 {
+      font-size:1.4em;
+      margin:0;
+      padding-bottom:5px;
+    }
+
+    p {
+      color:#fff;
+      padding-left:15px;
+      font-size:.9em;
+      font-style:italic;
+    }
+  }
+
+  label {
+    padding-left:10px;
+  }
+
+  .editable {
+    position:relative;
+
+    .editLabel {
+      font-size:.8em;
+      color:#68aa68;
+      position:absolute;
+      left:5px;
+      top:5px;
+
+      &.glyphicon-ok {
+        left:0;
+        top:10px;
+      }
+    }
+  }
+
+  .budget-sums {
+    background:#767676;
+
+    .budget-sum {
+      padding:1em;
+
+      &.budget-sum-income {
+        background:#009900;
+      }
+
+      &.budget-sum-expenses {
+        background:#ff0000;
+      }
+
+      &.budget-sum-net {
+        background:#000;
+      }
+
+      label {
+        background:#fff;
+        width:100%;
+        height:34px;
+        padding-top:.5em;
+      }
+
+      input {
+        border-radius:0;
+      }
+
+    }
+  }
+
+
 
 }
