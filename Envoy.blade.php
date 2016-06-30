@@ -21,6 +21,14 @@
 @endsetup
 
 @task('deploy', ['on' => $env])
+    cd /var/www/ficheck-laravel/
+    sudo chown -R ubuntu:ubuntu ./
+    git pull
+
+    sudo chown -R www-data:www-data public/ storage/ bootstrap/
+@endtask
+
+@task('full-deploy', ['on' => $env])
 
 	cd /var/www/ficheck-laravel/
   sudo chown -R ubuntu:ubuntu ./
