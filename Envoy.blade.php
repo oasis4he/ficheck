@@ -1,6 +1,5 @@
 @servers(['local' => 'localhost', 'stage' => 'popetech-stage', 'production' => 'popetech-rabbit1', 'vagrant' => 'vagrant'])
 
-
 @setup
     $env = (isset($env)) ? $env : 'stage';
 
@@ -29,22 +28,21 @@
 @endtask
 
 @task('full-deploy', ['on' => $env])
-
-	cd /var/www/ficheck-laravel/
-  sudo chown -R ubuntu:ubuntu ./
-	php artisan down
+    cd /var/www/ficheck-laravel/
+    sudo chown -R ubuntu:ubuntu ./
+    php artisan down
     git pull
     composer install
     php artisan migrate --force
     php artisan optimize
-	php artisan up
-  sudo chown -R www-data:www-data public/ storage/ bootstrap/
+    php artisan up
+    sudo chown -R www-data:www-data public/ storage/ bootstrap/
 @endtask
 
 @task('nginx', ['on' => $env])
-  sudo nginx -t
+    sudo nginx -t
 @endtask
 
 @task('nginx-restart', ['on' => $env])
-  sudo service nginx restart
+    sudo service nginx restart
 @endtask
