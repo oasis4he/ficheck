@@ -20,3 +20,4 @@ Edit from resources/assets not public/js or public/css
 
     php artisan db:seed --class=FinancialGoalTypesSeeder
     php artisan db:seed --class=FinancialRatioTypesSeeder
+    php artisan db:seed --class=RolesTableSeeder
