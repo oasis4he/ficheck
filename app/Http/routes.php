@@ -52,4 +52,5 @@ Route::group([
     'roles' => ['administrator', 'grader']
 ], function() {
     Route::get('/', ['uses'=>'AdminController@index']);
+    Route::post('/grade', ['uses'=>'AdminController@grade']);
 });

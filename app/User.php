@@ -24,6 +24,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function grader()
+    {
+        return $this->hasOne('App\User', 'id', 'graded_by');
+    }
+
     public function role()
 	{
 		return $this->hasOne('App\Role', 'id', 'role_id');
