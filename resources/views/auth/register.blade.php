@@ -90,6 +90,9 @@
                     </form>
                 </div>
             </div>
+            <div class="text-center">
+                <a href="{{ url('/login') }}">Already have an account?</a>
+            </div>
         </div>
     </div>
 </div>
