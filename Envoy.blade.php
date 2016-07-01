@@ -1,4 +1,4 @@
-@servers(['local' => 'localhost', 'stage' => 'popetech-stage', 'production' => 'popetech-rabbit1', 'vagrant' => 'vagrant'])
+@servers(['local' => 'localhost', 'stage' => 'ficheck-stage', 'production' => 'ficheck', 'vagrant' => 'vagrant'])
 
 @setup
     $env = (isset($env)) ? $env : 'stage';
