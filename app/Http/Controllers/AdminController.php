@@ -22,7 +22,7 @@ class AdminController extends Controller
                 $query->where('name', 'LIKE', $search);
             })
             ->orderBy('role_id', 'name', 'email')
-            ->paginate(5);
+            ->paginate();
 
         return view('admin.index', ['users' => $users]);
     }
