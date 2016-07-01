@@ -1,6 +1,7 @@
 <?php namespace App\Http\Middleware;
-// First copy this file into your middleware directoy
+
 use Closure;
+
 class CheckRole{
 	/**
 	 * Handle an incoming request.

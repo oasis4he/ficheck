@@ -15,9 +15,9 @@ use Redirect;
 
 class FinancialGoalsController extends Controller
 {
-    function index()
+    function index(Request $request)
     {
-        $user = Auth::user();
+        $user = $request->viewUser;
         $data = [
             'goalTypes' => FinancialGoalType::with(['goals'=>function($query) use ($user) {
                 $query->where('user_id', $user->id)->orderBy('date');

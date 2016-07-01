@@ -13,9 +13,9 @@ use Redirect;
 
 class RetirementNeedsController extends Controller
 {
-    function index()
+    function index(Request $request)
     {
-        $user = Auth::user();
+        $user = $request->viewUser;
 
         $data = [
             'retirementNeeds' => RetirementNeedsRecord::where('user_id', $user->id)->first()

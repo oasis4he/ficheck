@@ -10,9 +10,9 @@ use Redirect;
 
 class MonthlyBudgetController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
+        $user = $request->viewUser;
         $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->get();
 
         if(!$monthlyBudgetRecords->count()) {
@@ -24,9 +24,9 @@ class MonthlyBudgetController extends Controller
         return view('monthly-budget', ['calculator' => 'monthly-budget', 'monthlyBudgetCategories' => $this->getMonthlyBudgetCategories(), 'monthlyBudgetRecords' => $monthlyBudgetRecords, 'title' => 'Monthly Budget']);
     }
 
-    public function ieStatement()
+    public function ieStatement(Request $request)
     {
-        $user = Auth::user();
+        $user = $request->viewUser;
         $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->get();
 
 
@@ -42,9 +42,9 @@ class MonthlyBudgetController extends Controller
                     "showTotals" => true, 'title' => 'I & E Statement']);
     }
 
-    public function netWorthStatement()
+    public function netWorthStatement(Request $request)
     {
-        $user = Auth::user();
+        $user = $request->viewUser;
         $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'net-worth'])->with(['values'=>function($query){
             $query->where('type', 'actual');
         }])->get();

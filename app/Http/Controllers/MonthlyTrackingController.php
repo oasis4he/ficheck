@@ -14,10 +14,12 @@ use Redirect;
 
 class MonthlyTrackingController extends Controller
 {
-    function index()
+    function index(Request $request)
     {
+      $user = $request->viewUser;
+
       $data = [
-        'monthlyTrackingRecords' => MonthlyTrackingRecord::where('user_id', Auth::user()->id)->get()
+        'monthlyTrackingRecords' => MonthlyTrackingRecord::where('user_id', $user->id)->get()
       ];
 
       return view('monthly-tracking', $data);

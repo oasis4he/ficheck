@@ -12,9 +12,9 @@ use Redirect;
 
 class RevolvingSavingsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
+        $user = $request->viewUser;
 
         $revolvingSavingsRecord = RevolvingSavingsRecord::where(['user_id' => $user->id])->get()->groupBy("month")->toArray();
         // dd($revolvingSavingsRecord);

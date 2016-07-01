@@ -14,9 +14,9 @@ use Redirect;
 
 class FinancialRatiosController extends Controller
 {
-    function index()
+    function index(Request $request)
     {
-      $user = Auth::user();
+      $user = $request->viewUser;
 
       $data = [
         'ratioTypes' => FinancialRatioType::with(['records'=>function($query) use ($user) {

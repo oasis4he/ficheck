@@ -14,9 +14,9 @@ use Redirect;
 
 class LifeInsuranceController extends Controller
 {
-  function index()
+  function index(Request $request)
   {
-      $user = Auth::user();
+      $user = $request->viewUser;
 
       $data = [
           'lifeInsurance' => LifeInsuranceRecord::where('user_id', $user->id)->first()
