@@ -21,7 +21,7 @@ class AdminController extends Controller
             ->orWhereHas('role', function ($query) use ($search) {
                 $query->where('name', 'LIKE', $search);
             })
-            ->orderBy('role_id', 'name', 'email')
+            ->orderBy('role_id', 'desc')->orderBy('name')->orderBy('email')
             ->paginate();
 
         return view('admin.index', ['users' => $users]);
