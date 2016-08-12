@@ -13,16 +13,22 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
-        $search = '%'.$request->get('search').'%';
+        $search = $request->get('search');
 
-        $users = User::orWhere('name', 'LIKE', $search)
-            ->orWhere('email', 'LIKE', $search)
-            ->orWhere('external_id', 'LIKE', $search)
+        $usersQuery = User::orWhere('name', 'LIKE', $search)
+            ->orWhere('email', 'LIKE', $search);
+
+        foreach(explode(",", preg_replace('/\s+/', ',', $search)) as $searchTerm) {
+            $usersQuery = $usersQuery->orWhere('external_id', 'LIKE', '%'.trim($searchTerm).'%');
+        }
+
+        $usersQuery = $usersQuery
             ->orWhereHas('role', function ($query) use ($search) {
                 $query->where('name', 'LIKE', $search);
             })
-            ->orderBy('role_id', 'desc')->orderBy('name')->orderBy('email')
-            ->paginate();
+            ->orderBy('role_id', 'desc')->orderBy('name')->orderBy('email');
+
+        $users = $usersQuery->paginate();
 
         return view('admin.index', ['users' => $users]);
     }
