@@ -29,10 +29,11 @@
 
 <div class="row">
   <div class="col-xs-6">
+    <label for="years_income_replacement_needed">Choose the number of years income replacement will be needed.</label>
     <select name="years_income_replacement_needed" id="years_income_replacement_needed" class="form-control">
       <option></option>
 
-      @foreach(['55'=>21,'60'=>18.9,'65'=>16.4,'70'=>13.6] as $age=>$factor)
+      @foreach(['10'=>8.98,'15'=>12.84,'20'=>16.35,'25'=>19.52,'30'=>22.39, '40'=>31.42] as $age=>$factor)
         <option @if($lifeInsurance->years_income_replacement_needed==$age) selected @endif data-factor="{{$factor}}">{{$age}}</option>
       @endforeach
     </select>

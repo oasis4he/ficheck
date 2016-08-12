@@ -23,12 +23,12 @@
   <div class="row">
     <div class="form-group col-xs-6">
       <label for="cost">Cost</label>
-      <input name="cost" id="cost" value="{{$goal->cost}}" class="form-control">
+      <input name="cost" id="cost" type="number" value="{{$goal->cost}}" class="form-control">
     </div>
 
     <div class="form-group col-xs-6">
       <label for="date">Date</label>
-      <input name="date" id="date" value="{{$goal->date}}" class="form-control">
+      <input name="date" id="date" type="date" value="{{$goal->date}}" class="form-control">
     </div>
   </div>
 

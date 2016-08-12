@@ -1,6 +1,6 @@
 <div class="row">
   <div class="form-group col-xs-12">
-    <label for="funeral_expenses">Funeeral expenses.</label>
+    <label for="funeral_expenses">Funeral expenses.</label>
     <input name="funeral_expenses" id="funeral_expenses" value="{{$lifeInsurance->funeral_expenses}}" class="form-control">
   </div>
 </div>
