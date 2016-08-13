@@ -157,10 +157,11 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
     background: transparent;
     padding: 0;
     box-shadow: none; }
-    .monthly-tracking .body [class^=col-] input.form-control {
-      background-color: #ffcc99; }
-    .monthly-tracking .body [class^=col-] input:focus {
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); }
+/*  .monthly-tracking .body [class^=col-] input.form-control {
+      background-color: #fafafa; }*/
+  .monthly-tracking .body [class^=col-] input:focus, input:active {
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); 
+      border: 3px solid #ff9900; }
   .monthly-tracking .body form .new {
     opacity: .6; }
   .monthly-tracking .body form .control {

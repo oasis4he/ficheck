@@ -18,46 +18,38 @@ class FinancialRatioTypesSeeder extends Seeder
                 'title' => 'Basic Liquidity Ratio',
                 'slug' => 'basic-liquidity',
                 'asset_label' => 'Liquid Assets',
-                'asset_description' => '<-- help text -->',
+                'asset_description' => '<p><em>Liquid assets</em> are items that you can sell in a short amount of time, with little or no loss in value. Your <em>liquid assets</em> amount is the total of the money you would receive.</p>',
                 'asset_link' => '/net-worth-statement',
                 'asset_link_text' => 'view Net Worth Statement',
                 'liability_label' => 'Monthly Expenses',
-                'liability_description' => '<-- help text -->',
+                'liability_description' => '<p>Your <em>monthly expenses</em> amount is the total of all the money that you spend each month. You can base this number on your completed <strong>Monthly Tracking</strong> form.</p>',
                 'liability_link' => '/income-and-expense-statement',
                 'liability_link_text' => 'view I & E Statement',
                 'ratio_label' => 'Basic Liquidity Ratio',
-                'ratio_description' => '<p>The basic liquidity ratio reveals the number
-of months you could meet your current
-expenses using liquid assets without
-additional income.</p>
-<strong>Recommendation: 3.0 or more</strong>',
+                'ratio_description' => '<p>Your <em>basic liquidity ratio</em> is the number of months that you could pay your monthly expenses using only your liquid assets.</p><strong>Recommendation: 3.0 or more</strong>',
                 'order' => '1',
             ],
             [
                 'title' => 'Debt-to-Asset Ratio',
                 'slug' => 'debt-to-asset',
                 'asset_label' => 'Total Assets',
-                'asset_description' => '<-- help text -->',
+                'asset_description' => '<p>Your <em>total assets</em> amount is a single figure that represents the cash value of everything you own.  If you have completed the <strong>Net Worth Statement</strong>, use the <strong>Total Assets</strong> amount here.</p>',
                 'asset_link' => '/net-worth-statement',
                 'asset_link_text' => 'view Net Worth Statement',
                 'liability_label' => 'Total Liabilities',
-                'liability_description' => '<-- help text -->',
+                'liability_description' => '<p>Your <em>total liabilities</em> amount is a single figure that represents the total of all debt balances that you are responsible for paying back.   If you have completed the <strong>Net Worth Statement</strong>, use the <strong>Total Liabilities</strong> amount here.</p>',
                 'liability_link' => '/net-worth-statement',
                 'liability_link_text' => 'view Net Worth Statement',
                 'ratio_label' => 'Debt-to-Asset Ratio',
-                'ratio_description' => '<p>The debt-to-asset ratio measures solvency.
-If a you owe more than you own, you are
-insolvent. You would not be able to pay all
-your debts if you sold your assets.</p>
-<strong>Recommendation: The further below 1.0
-the better. Over 1.0 is insolvent.</strong>',
+                'ratio_description' => '<p>If your asset-to-debt ratio is <strong>above 1.0</strong>, you could pay all of your liabilities by selling all of your assets--your are <em>solvent</em>.</p>
+<p>If your <em>debt-to-asset ratio</em> is <strong>below 1.0</strong> you would not be able to pay all of your liabilities by selling all of your assets--your are <em>insolvent</em>.</p>',
                 'order' => '2',
             ],
             [
                 'title' => 'Debt Payment-to-Income Ratio',
                 'slug' => 'debt-payment-to-income',
                 'liability_label' => 'Annual Debt Payments',
-                'liability_description' => '<-- help text -->',
+                'liability_description' => '<p>Your <em>annual debt payments</em> amount is a single figure that represents all of the money that you are responsible for paying toward debt in one year.</p>',
 
                 'asset_link'=>null,
                 'asset_link_text'=>null,
@@ -65,12 +57,11 @@ the better. Over 1.0 is insolvent.</strong>',
                 'liability_link_text'=>null,
 
                 'asset_label' => 'Gross Income',
-                'asset_description' => '<-- help text -->',
+                'asset_description' => '<p>Your <em>gross income</em> amount is a single figure that represents all of the money that you receive in one year, before you have paid any taxes.</p>',
 
                 'ratio_label' => 'Debt P-to-I Ratio',
-                'ratio_description' => '<p>The debt payment-to-income ratio shows
-your ability to make current debt payments.</p>
-<strong>Recommendation: <ul><li>below .36 is adequate</li><li>.37 to .41 is marginal</li><li>above .41 is risky</li></ul></strong>',
+                'ratio_description' => '<p>Your <em>debt payment-to-income ratio</em> shows your ability to make your debt payments on time.</p>
+                <ul><li><strong>Below .36:</strong> You will probably be able to make all your debt payments.</li><li><strong>.36 to .41:</strong> You may not be able to make all of your debt payments.</li><li><strong>.41 and up:</strong> You will probably not be able to make all your debt payments.</li></ul>',
                 'order' => '3',
             ],
         ];
