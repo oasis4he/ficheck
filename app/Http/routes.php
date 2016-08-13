@@ -15,6 +15,10 @@ Route::get('/', function () {
     return redirect()->route('monthly-tracking');
 });
 
+Route::get('/home', function() {
+    return redirect('/');
+});
+
 Route::auth();
 
 Route::group(['middleware' => ['web', 'auth']], function () {
