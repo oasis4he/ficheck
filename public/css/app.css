@@ -185,6 +185,9 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
   .monthly-tracking .body .changed [class^=col-] {
     background-color: #f90; }
 
+.page-income-and-expense-statement .btn-primary {
+  display: none; }
+
 .budget-view .valueType.planned, .budget-view .valueType.actual, .budget-view .valueType.difference, .budget-view .valueTypeTotal.planned, .budget-view .valueTypeTotal.actual, .budget-view .valueTypeTotal.difference {
   visibility: hidden;
   position: absolute;
