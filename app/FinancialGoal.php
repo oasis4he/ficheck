@@ -11,8 +11,8 @@ class FinancialGoal extends Model
         return $this->belongsTo('App\User');
     }
 
-    function goals()
+    function type()
     {
-        return $this->belongsTo('App\FinancialGoalType');
+        return $this->belongsTo('App\FinancialGoalType', 'financial_goal_type_id');
     }
 }

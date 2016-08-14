@@ -45,7 +45,7 @@ class FinancialGoalsController extends Controller
 
       $record->save();
 
-      return Redirect::back();
+      return redirect('/financial-goals#financial-goal-type-'.$record->type->slug);
     }
 
     function deleteRecord($id)

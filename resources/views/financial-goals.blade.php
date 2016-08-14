@@ -7,7 +7,7 @@
     @include('partials.form-errors')
 
     @foreach($goalTypes as $goalType)
-      <div class="ficheck-section-type financial-goal-type financial-goal-type-{{$goalType->slug}} row">
+      <div class="ficheck-section-type financial-goal-type financial-goal-type-{{$goalType->slug}} row" id="financial-goal-type-{{$goalType->slug}}">
         <h2>{{$goalType->title}}s | {{$goalType->description}}</h2>
 
         @foreach($goalType->goals as $goal)
