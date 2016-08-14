@@ -12,7 +12,7 @@
       @if(isset($showTotals))
         @include('partials.monthly-budget-totals')
       @else
-      <div class="row toggleBudgetSection">
+      <div class="row toggleBudgetSection" data-spy="affix" data-offset-top="70">
         <div class="pull-right">
           <button type="button" class="toggleBudgetInputs planned active">P</button>
           <button type="button" class="toggleBudgetInputs actual">A</button>
