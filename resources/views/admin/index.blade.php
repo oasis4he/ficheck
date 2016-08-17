@@ -7,7 +7,7 @@
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Name, email, A-Number, Role" name="search" value="{{Request::get('search')}}">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button" aria-label="Search"><i class="glyphicon glyphicon-search"></i></button>
+                <button class="btn btn-default" type="submit" aria-label="Search"><i class="glyphicon glyphicon-search"></i></button>
             </span>
         </div>
         @if(Request::get('search'))

@@ -18,7 +18,10 @@ class AdminController extends Controller
         $usersQuery = User::orWhere('name', 'LIKE', $search)
             ->orWhere('email', 'LIKE', $search);
 
-        foreach(explode(",", preg_replace('/\s+/', ',', $search)) as $searchTerm) {
+        // allow space separated, comma or semicolon separated items to be searched on (external_id)
+        $fixedSearch = preg_replace('/[\s,;]+/', ',', $search);
+
+        foreach(explode(",", $fixedSearch) as $searchTerm) {
             $usersQuery = $usersQuery->orWhere('external_id', 'LIKE', '%'.trim($searchTerm).'%');
         }
 
