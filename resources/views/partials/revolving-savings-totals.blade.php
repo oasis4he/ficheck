@@ -1,7 +1,7 @@
 <div class="budget-sums">
   <div class="row budget-sum budget-sum-per-year">
     <div class="col-xs-7">
-      <label for="incomeTotal">
+      <label for="incomeTotal" class="revolve-label">
         Total Irregular Expenses per Year
       </label>
     </div>
@@ -13,7 +13,7 @@
 
   <div class="row budget-sum budget-sum-per-month">
     <div class="col-xs-7">
-      <label for="expenseTotal">
+      <label for="expenseTotal" class="revolve-label">
         Payment Amount to Savings per month
       </label>
     </div>

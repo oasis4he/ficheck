@@ -45,6 +45,7 @@
                 <!-- Left Side Of Navbar -->
                 @if (!Auth::guest())
                   <ul class="nav navbar-nav">
+                      <li><a class="tracking" href="{{ route('monthly-tracking', ['user_id'=>Request::route('user_id')]) }}">Monthly Tracking</a></li>
                       <li><a href="{{ route('financial-goals', ['user_id'=>Request::route('user_id')]) }}">Financial Goals</a></li>
                       <li><a href="{{ route('monthly-budget', ['user_id'=>Request::route('user_id')]) }}">Monthly Budget</a></li>
                       <li><a href="{{ route('revolving-savings', ['user_id'=>Request::route('user_id')]) }}">Revolving Savings</a></li>
@@ -53,7 +54,6 @@
                       <li><a href="{{ route('financial-ratios', ['user_id'=>Request::route('user_id')]) }}">Financial Ratios</a></li>
                       <li><a href="{{ route('retirement-needs', ['user_id'=>Request::route('user_id')]) }}">Retirement Needs</a></li>
                       <li><a href="{{ route('life-insurance', ['user_id'=>Request::route('user_id')]) }}">Life Insurance</a></li>
-                      <li><a href="{{ route('monthly-tracking', ['user_id'=>Request::route('user_id')]) }}">Monthly Tracking</a></li>
                   </ul>
                 @endif
 
