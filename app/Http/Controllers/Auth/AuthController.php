@@ -71,7 +71,7 @@ class AuthController extends Controller
         ]);
 
         // doesn't seem to like the external id being set in the create method?
-        $user->external_id = $data['external_id'];
+        // $user->external_id = $data['external_id'];
         $user->save();
 
         return $user;
