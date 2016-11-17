@@ -97,7 +97,7 @@ class MonthlyBudgetController extends Controller
         "income" => [
           "title" => "Income",
           "definition" => "Money that you earn or receive each month.",
-          "secondaryText" => "fixed expense",
+          "secondaryText" => "income",
         ],
         "variableExpenses" => [
           "title" => "Variable Expenses",

@@ -410,7 +410,7 @@
         if(wrapper.hasClass('financial-ratio-type-basic-liquidity')) {
           result = asset.val() / liability.val();
         } else if(wrapper.hasClass('financial-ratio-type-debt-to-asset')) {
-          result = liability.val() / asset.val();
+          result = asset.val() / liability.val();
         } else if(wrapper.hasClass('financial-ratio-type-debt-payment-to-income')) {
           result = liability.val() / asset.val();
         }
@@ -623,7 +623,7 @@
         var enteredTotalExpenses = wrapper.find('[name=entered_total_expenses]').val();
         var enteredTotalFundsFromOtherSources = wrapper.find('[name=entered_total_funds_from_other_sources]').val();
 
-        wrapper.find("[name=insurance_needed]").val(Number(enteredTotalExpenses) + Number(enteredTotalFundsFromOtherSources));
+        wrapper.find("[name=insurance_needed]").val(Number(enteredTotalExpenses) - Number(enteredTotalFundsFromOtherSources));
     });
   });
 }(jQuery));

@@ -14,7 +14,7 @@
         if(wrapper.hasClass('financial-ratio-type-basic-liquidity')) {
           result = asset.val() / liability.val();
         } else if(wrapper.hasClass('financial-ratio-type-debt-to-asset')) {
-          result = liability.val() / asset.val();
+          result = asset.val() / liability.val();
         } else if(wrapper.hasClass('financial-ratio-type-debt-payment-to-income')) {
           result = liability.val() / asset.val();
         }
