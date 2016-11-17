@@ -52,7 +52,7 @@ class AuthController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'external_id' => 'required|min:8|regex:/A[0-9]{8}/i',
+            // 'external_id' => 'required|min:8|regex:/A[0-9]{8}/i',
         ]);
     }
 
