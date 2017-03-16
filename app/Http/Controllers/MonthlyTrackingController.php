@@ -80,35 +80,7 @@ class MonthlyTrackingController extends Controller
       $category = MonthlyBudgetRecord::where('user_id', Auth::user()->id)->where('description', $request->get('category'))->first();
 
       if(!$category) {
-        $newCategory = new MonthlyBudgetRecord;
-        $newCategory->user_id = Auth::user()->id;
-
-        if($request->has('in')) {
-          $newCategory->type = 'income';
-          $newCategory->category = 'income';
-        } else {
-          $newCategory->type = 'expense';
-          $newCategory->category = 'variableExpenses';
-        }
-
-        $newCategory->description = $request->get('category');
-        $newCategory->calculator = 'monthly-budget';
-
-        $newCategory->save();
-
-        $values = [
-          'planned',
-          'actual',
-          'difference'
-        ];
-
-        foreach ($values as $value) {
-          $recordValue = new MonthlyBudgetRecordValue;
-          $recordValue->record_id = $newCategory->id;
-          $recordValue->type = $value;
-          $recordValue->value = 0;
-          $recordValue->save();
-        }
+        $this->createCategory($request->all());
       }
 
       if(!$trackedMonth) {
@@ -159,10 +131,44 @@ class MonthlyTrackingController extends Controller
       return Redirect::back();
     }
 
+    function createCategory($data)
+    {
+      $values = [
+        'planned',
+        'actual',
+        'difference'
+      ];
+
+      $newCategory = new MonthlyBudgetRecord;
+      $newCategory->user_id = Auth::user()->id;
+
+      if(isset($data['in'])) {
+        $newCategory->type = 'income';
+        $newCategory->category = 'income';
+      } else {
+        $newCategory->type = 'expense';
+        $newCategory->category = 'variableExpenses';
+      }
+
+      $newCategory->description = $data['category'];
+      $newCategory->calculator = 'monthly-budget';
+
+      $newCategory->save();
+
+      foreach ($values as $value) {
+        $recordValue = new MonthlyBudgetRecordValue;
+        $recordValue->record_id = $newCategory->id;
+        $recordValue->type = $value;
+        $recordValue->value = 0;
+        $recordValue->save();
+      }
+    }
+
     function categories(Request $request, $type)
     {
       $user = $request->viewUser;
       $monthlyBudgetCategories = MonthlyBudgetRecord::where('user_id', $user->id)->where('type', $type)->get();
       return $monthlyBudgetCategories->pluck('description')->toJson();
     }
+
 }
