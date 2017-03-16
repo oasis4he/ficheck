@@ -35,8 +35,11 @@ class MonthlyTrackingController extends Controller
         $monthIDs = array($trackedMonth->id);
       }
 
+      $userTrackedMonths = TrackedMonth::where('user_id', $user->id)->get();
+
       $data = [
-        'monthlyTrackingRecords' =>  MonthlyTrackingRecord::whereIn('month_id', $monthIDs)->orderBy('month_id')->get(),
+        'monthlyTrackingRecords' =>  MonthlyTrackingRecord::whereIn('month_id', $monthIDs)->orderBy('month_id')->orderBy('occurred_at')->get(),
+        'trackedMonths' => $userTrackedMonths,
         'months' => [
           '12' => 'December',
           '11' => 'November',
@@ -62,18 +65,19 @@ class MonthlyTrackingController extends Controller
     function saveRecord(MonthlyTrackingRequest $request)
     {
       $record = MonthlyTrackingRecord::findOrNew($request->input('id'));
+      $date = new Carbon($request->get('date'));
 
       if($request->has('month_id')) {
         $trackedMonth = TrackedMonth::where('id', $request->get('month_id'))->first();
       } else {
-        $trackedMonth = TrackedMonth::where('user_id', Auth::user()->id)->where('month', $request->get('month'))->where('year', $request->get('year'))->first();
+        $trackedMonth = TrackedMonth::where('user_id', Auth::user()->id)->where('month', $date->format('n'))->where('year', $date->format('Y'))->first();
       }
 
       if(!$trackedMonth) {
         $trackedMonth = new TrackedMonth;
         $trackedMonth->user_id = Auth::user()->id;
-        $trackedMonth->month = $request->get('month');
-        $trackedMonth->year = $request->get('year');
+        $trackedMonth->month = $date->format('n');
+        $trackedMonth->year = $date->format('Y');
         $trackedMonth->save();
       }
       // if($record->user_id && $record->user_id != Auth::user()->id) {

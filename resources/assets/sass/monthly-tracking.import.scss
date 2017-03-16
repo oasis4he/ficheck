@@ -36,6 +36,8 @@
     padding-left: 15px;
     padding-right: 15px;
 
+    margin-bottom: 30px;
+
     border-bottom: $light-background solid 4px;
 
     [class^=col-] {
@@ -100,6 +102,61 @@
       [class^=col-] {
         background-color: $hilight-color;
       }
+    }
+  }
+  #accordion {
+    .monthly-tracking-section {
+      margin-top: 0px;
+      border-top: 5px solid #333;
+      border-radius: 0px;
+      border-left: none;
+      border-right: none;
+      border-bottom: none;
+
+      .panel-heading {
+        background-color: $light-background;
+        border-radius: 0px;
+        color: #fff;
+        a{
+          font-size: 1.4em;
+        }
+      }
+      .panel-collapse {
+        .panel-body {
+          padding-top: 0px;
+          padding-left: 15px;
+          padding-right: 15px;
+          padding-bottom: 15px;
+          border-top-color: $light-background;
+        }
+      }
+    }
+
+  }
+}
+
+.page-monthly-tracking {
+
+  .dropdown {
+    margin-top: 15px;
+    margin-left: -15px;
+  }
+
+  .dropdown-toggle {
+    font-size: 20px;
+    text-align: left;
+    border-radius: 0px;
+    width: 100%;
+  }
+
+  .dropdown-menu{
+    position: absolute;
+    background-color: #ddd;
+    border-radius: 0px;
+
+    .dropdown-item {
+      display: block;
+      padding: 10px;
     }
   }
 }
