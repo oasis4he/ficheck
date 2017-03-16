@@ -54,7 +54,6 @@ class MonthlyTrackingController extends Controller
           '2' => 'February',
           '1' => 'January'
         ],
-        'years' => array_reverse(range('2012', '2017')),
         'currentMonth' => $currentMonth->format('n'),
         'currentYear' => $currentMonth->format('Y'),
       ];
