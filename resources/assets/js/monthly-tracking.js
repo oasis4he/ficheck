@@ -76,9 +76,37 @@
 
   $('.page-monthly-tracking a[href=#collapse]').click(function(){
     $('.monthly-tracking .panel-collapse').collapse('hide');
-  })
+  });
 
   $('.page-monthly-tracking a[href=#expand]').click(function(){
     $('.monthly-tracking .panel-collapse').collapse('show');
-  })
+  });
+
+  monthlyTrackingContainer.on('change', '[name=in]', function(){
+    $.ajax({
+      url: "/categories/income",
+      method: "get",
+      dataType: 'json',
+      success: function(data) {
+        $( "#newCategory" ).autocomplete({
+          source: data
+        });
+      }
+    });
+  });
+
+  monthlyTrackingContainer.on('change', '[name=out]', function(){
+    $.ajax({
+      url: "/categories/expense",
+      method: "get",
+      dataType: 'json',
+      success: function(data) {
+        $( "#newCategory" ).autocomplete({
+          source: data
+        });
+      }
+    });
+  });
+
+
 }(jQuery));

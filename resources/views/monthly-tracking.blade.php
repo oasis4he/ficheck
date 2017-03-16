@@ -41,14 +41,11 @@
       <form method="post">
         {{ csrf_field() }}
 
-        <input class="form-control" name="month" type="hidden" value="{{$currentMonth}}">
-        <input class="form-control" name="year" type="hidden" value="{{$currentYear}}">
-
         <div class="row new">
           <div class="col-xs-4"><input class="form-control" name="date" type="date" aria-labelledby="dateTrack" value="{{old('date')}}"></div>
           <div class="col-xs-2"><input class="form-control" name="in" type="number" step=".01" aria-labelledby="inTrack" value="{{old('in')}}"></div>
           <div class="col-xs-2"><input class="form-control" name="out" name="out" type="number" step=".01" aria-labelledby="outTrack" value="{{old('out')}}"></div>
-          <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" value="{{old('category')}}"></div>
+          <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" id="newCategory" value="{{old('category')}}"></div>
           <div class="control"><button class="btn btn-success add" class="submit">Add</button></div>
         </div>
       </form>
