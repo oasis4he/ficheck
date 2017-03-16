@@ -5,17 +5,6 @@
 
     @include('partials.monthly-budget-records')
 
-    @if(!isset($statement))
-      <div class="row newItem">
-          <div class="form-group col-xs-6 text-left">
-              <label for="new_{{$category}}">Add {{$monthlyBudgetCategories[$category]['secondaryText']}} source.</label>
-          </div>
-
-          <div class="form-group col-xs-6">
-              <input name="{{$category}}" id="{{$category}}" value="" class="form-control">
-          </div>
-      </div>
-    @endif
 
     <div class="row valueTypeTotal planned {{!isset($onlyActual) ? 'active' : ''}}">
         <div class="form-group col-xs-6 text-left">

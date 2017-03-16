@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\MonthlyBudgetRecord;
 use App\MonthlyBudgetRecordValue;
+use App\MonthlyTrackingRecord;
 use Illuminate\Http\Request;
 use Auth;
 use Redirect;
@@ -20,6 +21,8 @@ class MonthlyBudgetController extends Controller
 
             $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('order')->get();
         }
+
+        $trackedCategories = MonthlyTrackingRecord::whereIn('category', $monthlyBudgetRecords->pluck('description'));
 
         return view('monthly-budget', ['calculator' => 'monthly-budget', 'monthlyBudgetCategories' => $this->getMonthlyBudgetCategories(), 'monthlyBudgetRecords' => $monthlyBudgetRecords, 'title' => 'Monthly Budget']);
     }
