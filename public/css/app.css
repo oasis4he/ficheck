@@ -149,6 +149,7 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
   margin-right: -15px;
   padding-left: 15px;
   padding-right: 15px;
+  margin-bottom: 30px;
   border-bottom: #767676 solid 4px; }
   .monthly-tracking .body [class^=col-]:nth-of-type(even) {
     background-color: #fafafa; }
@@ -184,6 +185,44 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
       display: block; }
   .monthly-tracking .body .changed [class^=col-] {
     background-color: #f90; }
+
+.monthly-tracking #accordion .monthly-tracking-section {
+  margin-top: 0px;
+  border-top: 5px solid #333;
+  border-radius: 0px;
+  border-left: none;
+  border-right: none;
+  border-bottom: none; }
+  .monthly-tracking #accordion .monthly-tracking-section .panel-heading {
+    background-color: #767676;
+    border-radius: 0px;
+    color: #fff; }
+    .monthly-tracking #accordion .monthly-tracking-section .panel-heading a {
+      font-size: 1.4em; }
+  .monthly-tracking #accordion .monthly-tracking-section .panel-collapse .panel-body {
+    padding-top: 0px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+    border-top-color: #767676; }
+
+.page-monthly-tracking .dropdown {
+  margin-top: 15px;
+  margin-left: -15px; }
+
+.page-monthly-tracking .dropdown-toggle {
+  font-size: 20px;
+  text-align: left;
+  border-radius: 0px;
+  width: 100%; }
+
+.page-monthly-tracking .dropdown-menu {
+  position: absolute;
+  background-color: #ddd;
+  border-radius: 0px; }
+  .page-monthly-tracking .dropdown-menu .dropdown-item {
+    display: block;
+    padding: 10px; }
 
 .page-income-and-expense-statement .btn-primary {
   display: none; }

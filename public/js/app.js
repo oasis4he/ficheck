@@ -562,6 +562,18 @@
 
     $(this).closest('form').addClass('active');
   });
+
+  $('.dropdown-menu a').click(function() {
+    $('#trackedMonthDropdown').html($(this).text());
+  });
+
+  $('.page-monthly-tracking a[href=#collapse]').click(function(){
+    $('.monthly-tracking .panel-collapse').collapse('hide');
+  })
+
+  $('.page-monthly-tracking a[href=#expand]').click(function(){
+    $('.monthly-tracking .panel-collapse').collapse('show');
+  })
 }(jQuery));
 
 
