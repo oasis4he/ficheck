@@ -5,16 +5,30 @@ namespace App\Http\Controllers;
 use App\MonthlyBudgetRecord;
 use App\MonthlyBudgetRecordValue;
 use App\MonthlyTrackingRecord;
+use App\TrackedMonth;
+
 use Illuminate\Http\Request;
 use Auth;
 use Redirect;
+
+use Carbon\Carbon;
 
 class MonthlyBudgetController extends Controller
 {
     public function index(Request $request)
     {
         $user = $request->viewUser;
-        $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->get();
+        $trackedMonths = TrackedMonth::where('user_id', $user->id)->where('month', Carbon::now()->format('n'))->with('records')->get();
+
+        foreach($trackedMonths as $month){
+          $trackedCategories = [];
+          $trackedCategories = array_merge($trackedCategories, $month->records->pluck('category')->toArray());
+        }
+        if($trackedCategories) {
+          $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->whereIn('description', $trackedCategories)->with('values')->get();
+        } else {
+          $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->get();
+        }
 
         if(!$monthlyBudgetRecords->count()) {
             MonthlyBudgetRecord::setupMonthlyRecords($user->id);
@@ -22,7 +36,6 @@ class MonthlyBudgetController extends Controller
             $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('order')->get();
         }
 
-        $trackedCategories = MonthlyTrackingRecord::whereIn('category', $monthlyBudgetRecords->pluck('description'));
 
         return view('monthly-budget', ['calculator' => 'monthly-budget', 'monthlyBudgetCategories' => $this->getMonthlyBudgetCategories(), 'monthlyBudgetRecords' => $monthlyBudgetRecords, 'title' => 'Monthly Budget']);
     }

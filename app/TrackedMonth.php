@@ -6,11 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TrackedMonth extends Model
 {
-  /**
-   * Get the records for the tracked month.
-   */
-  public function records()
-  {
-      return $this->hasMany('App\MonthlyTrackingRecord');
-  }
+    function records() {
+      return $this->hasMany('App\MonthlyTrackingRecord', 'month_id', 'id');
+    }
 }
