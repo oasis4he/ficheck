@@ -81,27 +81,9 @@ class MonthlyBudgetRecord extends Model
             'fixedExpenses' => [
                 'Rent or Mortgage',
                 'Revolving Savings',
-                'Loan #1 Fixed Expenses',
                 'Insurance',
-            ],
+            ]
 
-            'variableExpenses' => [
-                'Utilities',
-                'Phone',
-                'Internet',
-                'Food - Groceries',
-                'Eating Out',
-                'Gasoline',
-                'Household',
-                'Pet Care',
-                'Clothing',
-                'Laundry',
-                'Medical - Doctors',
-                'Medical - Prescriptions',
-                'Personal Allowance',
-                'Entertainment',
-                'Contributions',
-            ],
         ];
 
         MonthlyBudgetRecord::setupDefaultRecords('monthly-budget', $recordValueTypes, $categories, $user_id);
