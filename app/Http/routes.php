@@ -52,6 +52,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('/retirement-needs/{user_id?}', ['uses'=>'RetirementNeedsController@index', 'as'=>'retirement-needs']);
         Route::get('/life-insurance/{user_id?}', ['uses'=>'LifeInsuranceController@index', 'as'=>'life-insurance']);
         Route::get('/categories/{type}', ['uses' => 'MonthlyTrackingController@categories', 'as' => 'tracking-categories']);
+        Route::get('/month/{id}', ['uses' => 'MonthlyTrackingController@deleteMonth', 'as' => 'delete-tracked-month']);
     });
 });
 

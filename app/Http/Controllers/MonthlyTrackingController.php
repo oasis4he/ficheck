@@ -92,7 +92,11 @@ class MonthlyTrackingController extends Controller
         $trackedMonth = TrackedMonth::where('user_id', Auth::user()->id)->where('month', $date->format('m'))->where('year', $date->format('Y'))->first();
       }
 
-      $category = MonthlyBudgetRecord::where('user_id', Auth::user()->id)->where('description', $request->get('category'))->first();
+      if($request->has('in')){
+        $category = MonthlyBudgetRecord::where('user_id', Auth::user()->id)->where('type','income')->where('description', $request->get('category'))->first();
+      } else {
+        $category = MonthlyBudgetRecord::where('user_id', Auth::user()->id)->where('type','expense')->where('description', $request->get('category'))->first();
+      }
 
       if(!$category) {
         $this->createCategory($request->all());
@@ -134,15 +138,24 @@ class MonthlyTrackingController extends Controller
       return Redirect::back();
     }
 
-    function deleteRecord($id)
+    function deleteRecord(Request $request, $id)
     {
       $record = MonthlyTrackingRecord::findOrFail($id);
+      $trackedMonth = $record->month_id;
 
       if($record->user_id && $record->user_id != Auth::user()->id) {
         abort(403, 'Unauthorized action.');
       }
 
       $record->delete();
+
+      //check if there are any remaining records for the tracked month, if not delete it.
+      $monthRecords = MonthlyTrackingRecord::where('month_id', $trackedMonth)->get();
+      if($monthRecords->isEmpty()){
+        $this->deleteMonth($trackedMonth);
+        $request->session()->forget('selectedMonth');
+        $request->session()->forget('selectedYear');
+      }
 
       return Redirect::back();
     }
@@ -178,6 +191,19 @@ class MonthlyTrackingController extends Controller
         $recordValue->value = 0;
         $recordValue->save();
       }
+    }
+
+    function deleteMonth($id)
+    {
+      $record = TrackedMonth::findOrFail($id);
+
+      if($record->user_id && $record->user_id != Auth::user()->id) {
+        abort(403, 'Unauthorized action.');
+      }
+
+      $record->delete();
+
+      return;
     }
 
     function categories(Request $request, $type)
