@@ -71,7 +71,14 @@
   });
 
   $('.dropdown-menu a').click(function() {
+    var collapse = $(this).attr('href');
+    $(collapse).collapse('show');
+    $('.panel-collapse:not('+collapse+')').collapse('hide');
     $('#trackedMonthDropdown').html($(this).text());
+
+    $('html, body').animate({
+        scrollTop: $(collapse).offset().top
+    }, 1000);
   });
 
   $('.page-monthly-tracking a[href=#collapse]').click(function(){

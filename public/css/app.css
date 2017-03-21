@@ -224,6 +224,10 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
     display: block;
     padding: 10px; }
 
+.page-monthly-tracking .dropdown-caret {
+  margin-top: 5px;
+  float: right; }
+
 .page-income-and-expense-statement .btn-primary {
   display: none; }
 

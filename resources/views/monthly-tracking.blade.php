@@ -6,11 +6,12 @@
     <div class="col-xs-3">
       <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="trackedMonthDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{$months[$currentMonth]}} {{$currentYear}}
+            {{$months[$currentMonth]}} {{$currentYear}}
+          <i class="fa fa-chevron-down dropdown-caret" aria-hidden="true"></i>
         </button>
         <div class="dropdown-menu" aria-labelledby="trackedMonthDropdown">
           @foreach($trackedMonths as $trackedMonth)
-            <a  class="dropdown-item" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$trackedMonth->id}}"> {{$months[$trackedMonth->month]}} {{$trackedMonth->year}}</a>
+            <a  class="dropdown-item" data-parent="#accordion" href="#collapse{{$trackedMonth->id}}"> {{$months[$trackedMonth->month]}} {{$trackedMonth->year}}</a>
           @endforeach
         </div>
       </div>
