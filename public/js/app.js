@@ -567,7 +567,7 @@
     var collapse = $(this).attr('href');
     $(collapse).collapse('show');
     $('.panel-collapse:not('+collapse+')').collapse('hide');
-    $('#trackedMonthDropdown').html($(this).text());
+    $('#trackedMonthDropdown').html($(this).text() + "<i class='fa fa-chevron-down dropdown-caret' aria-hidden='true'></i>");
 
     $('html, body').animate({
         scrollTop: $(collapse).offset().top
