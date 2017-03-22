@@ -68,7 +68,10 @@ class MonthlyTrackingController extends Controller
         ],
         'currentMonth' => $selectedMonth,
         'currentYear' => $selectedYear,
+        'saved' => $request->session()->has('saved') ? $request->session()->get('saved') : false
       ];
+
+      $request->session()->forget('saved');
 
       return view('monthly-tracking', $data);
     }
@@ -134,6 +137,7 @@ class MonthlyTrackingController extends Controller
       $record->save();
       $request->session()->put('selectedMonth', $trackedMonth->month);
       $request->session()->put('selectedYear', $trackedMonth->year);
+      $request->session()->put('saved', $record->occurred_at);
 
       return Redirect::back();
     }
@@ -155,6 +159,7 @@ class MonthlyTrackingController extends Controller
         $this->deleteMonth($trackedMonth);
         $request->session()->forget('selectedMonth');
         $request->session()->forget('selectedYear');
+        $request->session()->forget('saved');
       }
 
       return Redirect::back();

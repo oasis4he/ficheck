@@ -73,7 +73,7 @@
         display: none;
         position: absolute;
         bottom: -64px;
-        z-index: 999;
+        z-index: 9;
         right: -15px;
         background: $primary-color;
         padding: 15px;
@@ -163,5 +163,28 @@
   .dropdown-caret {
     margin-top: 5px;
     float: right;
+  }
+
+  .modal-body {
+    margin-bottom: 20px;
+
+    .row {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .body {
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0;
+      padding-right: 0;
+
+      form {
+
+        .control {
+          right: 0;
+        }
+    
+      }
+    }
   }
 }
