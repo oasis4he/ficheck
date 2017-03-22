@@ -18,13 +18,28 @@ class MonthlyBudgetController extends Controller
     public function index(Request $request)
     {
         $user = $request->viewUser;
-        $trackedMonths = TrackedMonth::where('user_id', $user->id)->where('month', Carbon::now()->format('n'))->with('records')->get();
+        $trackedMonths = TrackedMonth::where('user_id', $user->id)->orderBy('year', 'desc')->orderBy('month', 'desc')->with('records')->get();
+        $trackedMonthRecords = false;
 
-        foreach($trackedMonths as $month){
-          $trackedCategories = [];
-          $trackedCategories = array_merge($trackedCategories, $month->records->pluck('category')->toArray());
-        }
+        $months = [
+          '12' => 'December',
+          '11' => 'November',
+          '10' => 'October',
+          '09' => 'September',
+          '08' => 'August',
+          '07' => 'July',
+          '06' => 'June',
+          '05' => 'May',
+          '04' => 'April',
+          '03' => 'March',
+          '02' => 'February',
+          '01' => 'January'
+        ];
+
+        $trackedCategories = $trackedMonths[0]->records->pluck('category')->toArray();
+
         if($trackedCategories) {
+          $trackedMonthRecords = true;
           $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->whereIn('description', $trackedCategories)->with('values')->get();
         } else {
           $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->get();
@@ -36,8 +51,7 @@ class MonthlyBudgetController extends Controller
             $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('order')->get();
         }
 
-
-        return view('monthly-budget', ['calculator' => 'monthly-budget', 'monthlyBudgetCategories' => $this->getMonthlyBudgetCategories(), 'monthlyBudgetRecords' => $monthlyBudgetRecords, 'title' => 'Monthly Budget']);
+        return view('monthly-budget', ['calculator' => 'monthly-budget', 'monthlyBudgetCategories' => $this->getMonthlyBudgetCategories(), 'monthlyBudgetRecords' => $monthlyBudgetRecords, 'title' => 'Monthly Budget', 'trackedMonthRecords' => $trackedMonthRecords, 'trackedMonth' => $months[$trackedMonths[0]->month], 'trackedYear' => $trackedMonths[0]->year]);
     }
 
     public function ieStatement(Request $request)
