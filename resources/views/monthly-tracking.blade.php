@@ -43,7 +43,7 @@
         {{ csrf_field() }}
 
         <div class="row new">
-          <div class="col-xs-4"><input class="form-control" name="date" type="date" aria-labelledby="dateTrack" value="{{old('date')}}"></div>
+          <div class="col-xs-4"><input class="form-control" name="date" type="date" aria-labelledby="dateTrack" value="{{old('date')}}" @if($saved) autofocus @endif></div>
           <div class="col-xs-2"><input class="form-control" name="in" type="number" step=".01" aria-labelledby="inTrack" value="{{old('in')}}"></div>
           <div class="col-xs-2"><input class="form-control" name="out" name="out" type="number" step=".01" aria-labelledby="outTrack" value="{{old('out')}}"></div>
           <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" id="newCategory" value="{{old('category')}}"></div>
@@ -62,6 +62,8 @@
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$month->id}}">
                   {{$months[$month->month]}} {{$month->year}}</a>
+                  <!-- Trigger the modal with a button -->
+                  <a type="button" class="pull-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                 </h4>
               </div>
               <div id="collapse{{$month->id}}" class="panel-collapse collapse @if($currentMonth == $month->month && $currentYear == $month->year) in @endif">
@@ -78,7 +80,7 @@
                       @if($record->month_id != $month->id)
                         @continue
                       @endif
-                      <form method="post">
+                      <form method="post" class="edit">
                         {{ csrf_field() }}
 
                         <input class="form-control" name="id" type="hidden" value="{{$record->id}}">
@@ -102,6 +104,46 @@
             </div>
           @endforeach
         </div> {{-- closing accordian --}}
+
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Entry</h4>
+              </div>
+              <div class="modal-body">
+                <div class="row header">
+                  <div class="col-xs-4" id="dateTrack">Date</div>
+                  <div class="col-xs-2" id="inTrack">In</div>
+                  <div class="col-xs-2" id="outTrack">Out</div>
+                  <div class="col-xs-4" id="categoryTrack">Category</div>
+                </div>
+
+                <div class="body">
+                  <form method="post" class="ui-front">
+                    {{ csrf_field() }}
+
+                    <div class="row new">
+                      <div class="col-xs-4"><input class="form-control" name="date" type="date" aria-labelledby="dateTrack" value="{{old('date')}}"></div>
+                      <div class="col-xs-2"><input class="form-control" name="in" type="number" step=".01" aria-labelledby="inTrack" value="{{old('in')}}"></div>
+                      <div class="col-xs-2"><input class="form-control" name="out" name="out" type="number" step=".01" aria-labelledby="outTrack" value="{{old('out')}}"></div>
+                      <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" id="newCategory" value="{{old('category')}}"></div>
+                      <div class="control"><button class="btn btn-success add" class="submit">Add</button></div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
 
     </div>
   </div>

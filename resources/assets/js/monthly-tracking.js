@@ -30,9 +30,8 @@
   }).find('[name=in],[name=out]').trigger('change');
 
   // if an input changes and the form is valid, submit it via ajax
-  monthlyTrackingContainer.on('change', '.row:not(.new) input', function(){
+  monthlyTrackingContainer.on('change', '.edit input', function(){
     var form = $(this).closest('form');
-
     var changed = false;
     $('input', form).each(function(){
         changed = this.value != this.defaultValue;
@@ -45,7 +44,7 @@
     }
 
     if(form.hasClass('changed') && form.find('[name=date]').val() && (form.find('[name=in]').val() || form.find('[name=out]').val())) {
-      var form = $(this).closest('form');
+      // var form = $(this).closest('form');
       var data = form.serialize();
 
       $.ajax({
@@ -74,7 +73,7 @@
     var collapse = $(this).attr('href');
     $(collapse).collapse('show');
     $('.panel-collapse:not('+collapse+')').collapse('hide');
-    $('#trackedMonthDropdown').html($(this).text());
+    $('#trackedMonthDropdown').html($(this).text() + "<i class='fa fa-chevron-down dropdown-caret' aria-hidden='true'></i>");
 
     $('html, body').animate({
         scrollTop: $(collapse).offset().top
@@ -95,7 +94,7 @@
       method: "get",
       dataType: 'json',
       success: function(data) {
-        $( "#newCategory" ).autocomplete({
+        $( "[name=category]" ).autocomplete({
           source: data
         });
       }
@@ -108,12 +107,17 @@
       method: "get",
       dataType: 'json',
       success: function(data) {
-        $( "#newCategory" ).autocomplete({
+        $( "[name=category]" ).autocomplete({
           source: data
         });
       }
     });
   });
+
+  $('.delete-category').click(function(){
+    console.log('delete');
+  })
+
 
 
 }(jQuery));

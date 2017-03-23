@@ -7,7 +7,7 @@
     <div class="ficheck-sections budget-view-record">
 
       @if($trackedMonthRecords)
-        @include('layouts.title', ['title'=>$title])
+        @include('layouts.title', ['title'=>$title, 'month'=>$trackedMonth, 'year'=>$trackedYear])
 
         @include('partials.form-errors')
         @if(isset($showTotals))

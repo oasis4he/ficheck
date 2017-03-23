@@ -168,7 +168,7 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
     display: none;
     position: absolute;
     bottom: -64px;
-    z-index: 999;
+    z-index: 9;
     right: -15px;
     background: #036;
     padding: 15px;
@@ -227,6 +227,19 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
 .page-monthly-tracking .dropdown-caret {
   margin-top: 5px;
   float: right; }
+
+.page-monthly-tracking .modal-body {
+  margin-bottom: 20px; }
+  .page-monthly-tracking .modal-body .row {
+    margin-left: 0;
+    margin-right: 0; }
+  .page-monthly-tracking .modal-body .body {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0; }
+    .page-monthly-tracking .modal-body .body form .control {
+      right: 0; }
 
 .page-income-and-expense-statement .btn-primary {
   display: none; }

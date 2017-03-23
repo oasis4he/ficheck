@@ -68,7 +68,10 @@ class MonthlyTrackingController extends Controller
         ],
         'currentMonth' => $selectedMonth,
         'currentYear' => $selectedYear,
+        'saved' => $request->session()->has('saved') ? $request->session()->get('saved') : false
       ];
+
+      $request->session()->forget('saved');
 
       return view('monthly-tracking', $data);
     }
@@ -77,6 +80,7 @@ class MonthlyTrackingController extends Controller
     {
       $record = MonthlyTrackingRecord::findOrNew($request->input('id'));
       $date = new Carbon($request->get('date'));
+      $oldCategory = $record->category;
 
 
       if($request->has('month_id')) {
@@ -134,6 +138,11 @@ class MonthlyTrackingController extends Controller
       $record->save();
       $request->session()->put('selectedMonth', $trackedMonth->month);
       $request->session()->put('selectedYear', $trackedMonth->year);
+      $request->session()->put('saved', $record->occurred_at);
+
+      if($oldCategory && $oldCategory != $record->category){
+        $this->checkCategory(Auth::user()->id, $oldCategory);
+      }
 
       return Redirect::back();
     }
@@ -155,6 +164,7 @@ class MonthlyTrackingController extends Controller
         $this->deleteMonth($trackedMonth);
         $request->session()->forget('selectedMonth');
         $request->session()->forget('selectedYear');
+        $request->session()->forget('saved');
       }
 
       return Redirect::back();
@@ -206,11 +216,36 @@ class MonthlyTrackingController extends Controller
       return;
     }
 
-    function categories(Request $request, $type)
+    function categories(Request $request, $type=null)
     {
       $user = $request->viewUser;
-      $monthlyBudgetCategories = MonthlyBudgetRecord::where('user_id', $user->id)->where('type', $type)->get();
+      if($type){
+        $monthlyBudgetCategories = MonthlyBudgetRecord::where('user_id', $user->id)->where('type', $type)->get();
+      } else {
+        $monthlyBudgetCategories = MonthlyBudgetRecord::where('user_id', $user->id)->get();
+      }
       return $monthlyBudgetCategories->pluck('description')->toJson();
+    }
+
+    function checkCategory($user, $name)
+    {
+      $categoryRecords = MonthlyTrackingRecord::whereHas('trackedMonth', function($query) use($user) {
+                                                  $query->where('user_id', $user);
+                                                })->where('category', $name)->get();
+      if($categoryRecords->isEmpty()){
+        //the category is no longer being used. Delete it.
+        $budgetCategory = MonthlyBudgetRecord::where('user_id', $user)->where('description', $name)->first();
+
+
+        if($budgetCategory){
+          $categoryValues =  MonthlyBudgetRecordValue::where('record_id', $budgetCategory->id)->get();
+
+          foreach ($categoryValues as $value) {
+            $value->delete();
+          }
+          $budgetCategory->delete();
+         }
+      }
     }
 
 }
