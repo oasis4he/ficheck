@@ -92,8 +92,7 @@
                           <div class="col-xs-2"><input class="form-control" name="out" type="number" step=".01" aria-labelledby="outTrack" value="{{$record->value<0?-1*$record->value:''}}"></div>
                           <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" value="{{$record->category}}"></div>
                           <div class="control">
-                            <button class="btn btn-primary save" class="submit">Save</button>
-                            <a href="/monthly-tracking/delete/{{$record->id}}" class="btn btn-danger delete" class="submit">Delete</a>
+                            <a href="#delete" class="btn btn-danger delete" class="submit">Delete</a>
                           </div>
                         </div>
                       </form>

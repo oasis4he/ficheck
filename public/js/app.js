@@ -537,7 +537,6 @@
     }
 
     if(form.hasClass('changed') && form.find('[name=date]').val() && (form.find('[name=in]').val() || form.find('[name=out]').val())) {
-      // var form = $(this).closest('form');
       var data = form.serialize();
 
       $.ajax({
@@ -554,6 +553,19 @@
       });
     }
   });
+
+  monthlyTrackingContainer.on('click', '[href=#delete]', function(){
+    var form = $(this).closest('form');
+    var id = form.find('[name=id]').val();
+
+    $.ajax({
+      url: '/monthly-tracking/delete/' + id,
+      method: "get",
+      success: function() {
+        form.remove();
+      }
+    });
+  })
 
   // track the active form (show controls via css)
   monthlyTrackingContainer.on('focus', 'form input', function() {
