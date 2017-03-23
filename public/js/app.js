@@ -566,7 +566,13 @@
       url: '/monthly-tracking/delete/' + id,
       method: "get",
       success: function() {
+
+        if(!form.siblings('form').length) {
+          form.closest('.monthly-tracking-section').remove();
+        }
+
         form.remove();
+
       },
       error: function(e) {
         $('#errorModal .modal-title').text('Error Deleting Entry');
