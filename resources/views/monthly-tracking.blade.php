@@ -63,7 +63,7 @@
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$month->id}}">
                   {{$months[$month->month]}} {{$month->year}}</a>
                   <!-- Trigger the modal with a button -->
-                  <a type="button" class="pull-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                  <a type="button" class="pull-right" data-toggle="modal" data-target="#newEntryModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                 </h4>
               </div>
               <div id="collapse{{$month->id}}" class="panel-collapse collapse @if($currentMonth == $month->month && $currentYear == $month->year) in @endif">
@@ -92,8 +92,7 @@
                           <div class="col-xs-2"><input class="form-control" name="out" type="number" step=".01" aria-labelledby="outTrack" value="{{$record->value<0?-1*$record->value:''}}"></div>
                           <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" value="{{$record->category}}"></div>
                           <div class="control">
-                            <button class="btn btn-primary save" class="submit">Save</button>
-                            <a href="/monthly-tracking/delete/{{$record->id}}" class="btn btn-danger delete" class="submit">Delete</a>
+                            <a href="#delete" class="btn btn-danger delete" class="submit">Delete</a>
                           </div>
                         </div>
                       </form>
@@ -106,7 +105,7 @@
         </div> {{-- closing accordian --}}
 
         <!-- Modal -->
-        <div id="myModal" class="modal fade" role="dialog">
+        <div id="newEntryModal" class="modal fade" role="dialog">
           <div class="modal-dialog modal-lg">
 
             <!-- Modal content-->
@@ -144,6 +143,28 @@
 
           </div>
         </div>
+
+          <!-- Modal -->
+          <div id="errorModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content panel-danger">
+                <div class="modal-header panel-heading">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                  <p></p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
 
     </div>
   </div>

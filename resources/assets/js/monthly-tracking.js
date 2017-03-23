@@ -30,7 +30,7 @@
   }).find('[name=in],[name=out]').trigger('change');
 
   // if an input changes and the form is valid, submit it via ajax
-  monthlyTrackingContainer.on('change', '.edit input', function(){
+  monthlyTrackingContainer.on('blur', '.edit input', function(){
     var form = $(this).closest('form');
     var changed = false;
     $('input', form).each(function(){
@@ -44,7 +44,6 @@
     }
 
     if(form.hasClass('changed') && form.find('[name=date]').val() && (form.find('[name=in]').val() || form.find('[name=out]').val())) {
-      // var form = $(this).closest('form');
       var data = form.serialize();
 
       $.ajax({
@@ -57,14 +56,52 @@
           if(form.hasClass('new')) {
             form.removeClass('new');
           }
+        },
+        error: function(e) {
+          $('#errorModal .modal-title').text('Error Updating Entry');
+          $('#errorModal .modal-body p').text(e.message);
+          $('#errorModal').modal('show');
         }
       });
     }
   });
 
+  monthlyTrackingContainer.on('click', '[href=#delete]', function(){
+    var form = $(this).closest('form');
+    var id = form.find('[name=id]').val();
+
+    $.ajax({
+      url: '/monthly-tracking/delete/' + id,
+      method: "get",
+      success: function() {
+        form.remove();
+      },
+      error: function(e) {
+        $('#errorModal .modal-title').text('Error Deleting Entry');
+        $('#errorModal .modal-body p').text(e.message);
+        $('#errorModal').modal('show');
+      }
+    });
+  })
+
   // track the active form (show controls via css)
   monthlyTrackingContainer.on('focus', 'form input', function() {
     monthlyTrackingContainer.find('form').removeClass('active');
+
+    $(this).closest('form').addClass('active');
+  });
+
+  // track the active form (show controls via css)
+  monthlyTrackingContainer.on('focus', 'form [name=category]', function() {
+    var form = $(this).closest('form');
+
+    if(form.find('[name=in]').val()) {
+      getIncomeCategories();
+    }
+
+    if(form.find('[name=out]').val()) {
+      getExpenseCategories();
+    }
 
     $(this).closest('form').addClass('active');
   });
@@ -88,20 +125,11 @@
     $('.monthly-tracking .panel-collapse').collapse('show');
   });
 
-  monthlyTrackingContainer.on('change', '[name=in]', function(){
-    $.ajax({
-      url: "/categories/income",
-      method: "get",
-      dataType: 'json',
-      success: function(data) {
-        $( "[name=category]" ).autocomplete({
-          source: data
-        });
-      }
-    });
-  });
+  monthlyTrackingContainer.on('change', '[name=in]', getIncomeCategories);
 
-  monthlyTrackingContainer.on('change', '[name=out]', function(){
+  monthlyTrackingContainer.on('change', '[name=out]', getExpenseCategories);
+
+  function getExpenseCategories() {
     $.ajax({
       url: "/categories/expense",
       method: "get",
@@ -112,11 +140,21 @@
         });
       }
     });
-  });
+  }
 
-  $('.delete-category').click(function(){
-    console.log('delete');
-  })
+  function getIncomeCategories() {
+    $.ajax({
+      url: "/categories/income",
+      method: "get",
+      dataType: 'json',
+      success: function(data) {
+        $( "[name=category]" ).autocomplete({
+          source: data
+        });
+      }
+    });
+  }
+
 
 
 
