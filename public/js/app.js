@@ -549,6 +549,11 @@
           if(form.hasClass('new')) {
             form.removeClass('new');
           }
+        },
+        error: function(e) {
+          $('#errorModal .modal-title').text('Error Updating Entry');
+          $('#errorModal .modal-body p').text(e.message);
+          $('#errorModal').modal('show');
         }
       });
     }
@@ -563,6 +568,11 @@
       method: "get",
       success: function() {
         form.remove();
+      },
+      error: function(e) {
+        $('#errorModal .modal-title').text('Error Deleting Entry');
+        $('#errorModal .modal-body p').text(e.message);
+        $('#errorModal').modal('show');
       }
     });
   })
@@ -638,9 +648,6 @@
     });
   }
 
-  $('.delete-category').click(function(){
-    console.log('delete');
-  })
 
 
 
