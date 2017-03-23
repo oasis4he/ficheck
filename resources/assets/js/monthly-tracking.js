@@ -110,10 +110,14 @@
         $( "[name=category]" ).autocomplete({
           source: data
         });
-        $("#modalForm [name=category]").autocomplete("option", "appendTo", "#modalForm");
       }
     });
   });
+
+  $('.delete-category').click(function(){
+    console.log('delete');
+  })
+
 
 
 }(jQuery));
