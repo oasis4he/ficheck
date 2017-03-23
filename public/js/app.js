@@ -523,7 +523,7 @@
   }).find('[name=in],[name=out]').trigger('change');
 
   // if an input changes and the form is valid, submit it via ajax
-  monthlyTrackingContainer.on('change', '.edit input', function(){
+  monthlyTrackingContainer.on('blur', '.edit input', function(){
     var form = $(this).closest('form');
     var changed = false;
     $('input', form).each(function(){
@@ -562,6 +562,21 @@
     $(this).closest('form').addClass('active');
   });
 
+  // track the active form (show controls via css)
+  monthlyTrackingContainer.on('focus', 'form [name=category]', function() {
+    var form = $(this).closest('form');
+
+    if(form.find('[name=in]').val()) {
+      getIncomeCategories();
+    }
+
+    if(form.find('[name=out]').val()) {
+      getExpenseCategories();
+    }
+
+    $(this).closest('form').addClass('active');
+  });
+
   $('.dropdown-menu a').click(function() {
     var collapse = $(this).attr('href');
     $(collapse).collapse('show');
@@ -581,20 +596,11 @@
     $('.monthly-tracking .panel-collapse').collapse('show');
   });
 
-  monthlyTrackingContainer.on('change', '[name=in]', function(){
-    $.ajax({
-      url: "/categories/income",
-      method: "get",
-      dataType: 'json',
-      success: function(data) {
-        $( "[name=category]" ).autocomplete({
-          source: data
-        });
-      }
-    });
-  });
+  monthlyTrackingContainer.on('change', '[name=in]', getIncomeCategories);
 
-  monthlyTrackingContainer.on('change', '[name=out]', function(){
+  monthlyTrackingContainer.on('change', '[name=out]', getExpenseCategories);
+
+  function getExpenseCategories() {
     $.ajax({
       url: "/categories/expense",
       method: "get",
@@ -605,7 +611,20 @@
         });
       }
     });
-  });
+  }
+
+  function getIncomeCategories() {
+    $.ajax({
+      url: "/categories/income",
+      method: "get",
+      dataType: 'json',
+      success: function(data) {
+        $( "[name=category]" ).autocomplete({
+          source: data
+        });
+      }
+    });
+  }
 
   $('.delete-category').click(function(){
     console.log('delete');
