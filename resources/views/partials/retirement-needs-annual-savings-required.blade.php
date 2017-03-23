@@ -1,7 +1,7 @@
 <div class="row">
   <div class="form-group col-xs-12">
-    <label for="entered_retirement_goal">Enter your Retirement Goal.</label>
-    <input name="entered_retirement_goal" id="entered_retirement_goal" value="{{$retirementNeeds->entered_retirement_goal}}" class="form-control">
+    <label for="entered_retirement_goal">Your Retirement Goal.</label>
+    <input name="entered_retirement_goal" id="entered_retirement_goal" value="{{$retirementNeeds->entered_retirement_goal}}" class="form-control" readonly>
   </div>
 </div>
 
@@ -23,8 +23,8 @@
 
 <div class="row">
   <div class="form-group col-xs-12">
-    <label for="entered_future_value_of_savings_and_investments">Enter your Savings/Investments Future Value</label>
-    <input name="entered_future_value_of_savings_and_investments" id="entered_future_value_of_savings_and_investments" value="{{$retirementNeeds->entered_future_value_of_savings_and_investments}}" class="form-control">
+    <label for="entered_future_value_of_savings_and_investments">Your Savings/Investments Future Value</label>
+    <input name="entered_future_value_of_savings_and_investments" id="entered_future_value_of_savings_and_investments" value="{{$retirementNeeds->entered_future_value_of_savings_and_investments}}" class="form-control" readonly>
   </div>
 </div>
 

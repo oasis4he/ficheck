@@ -806,6 +806,9 @@
 
         var futureValueSavingsAndInvestmentsElement = $('[name="future_value_of_savings_and_investments"]', wrapper);
         futureValueSavingsAndInvestmentsElement.val(goal);
+
+        var annualSavingsFutureSavings = $('[name="entered_future_value_of_savings_and_investments"]');
+        annualSavingsFutureSavings.val(goal);
     });
 
     $(futureSavingsInvestments).on('change', 'select', function() {
@@ -841,6 +844,9 @@
 
         var retirementGoal = $('[name="retirement_goal"]', wrapper);
         retirementGoal.val(goal);
+
+        var annualSavingsRetirementGoal = $('[name="entered_retirement_goal"]');
+        annualSavingsRetirementGoal.val(goal);
     });
 
     $(retirementGoals).on('change', 'select', function() {
