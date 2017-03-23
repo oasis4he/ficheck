@@ -1,10 +1,10 @@
 @foreach($records as $record)
 
   <div class="row valueType" data-record-id="{{$record->id}}">
-    <div class="form-group col-xs-3 text-left editable" aria-label="Edit Label">
-      <label for="">
+    <div class="form-group col-xs-3 text-left editable">
+      <span class="section-header">
         {{$record->description}}
-      </label>
+      </span>
 
       <div class="input-group deleteGroup">
         <span class="input-group-addon deleteRow" aria-label="Delete row" data-record-id="{{$record->id}}">
@@ -17,7 +17,7 @@
               <input name="values[{{$value['type']}}][{{$value['id']}}]"
                       {{$value['type'] == 'difference' ? 'readonly' : ''}}
                       id="value_{{$value->id}}" type="number" step=".01"
-                      value="{{$value['value']}}" class="form-control valueInput">
+                      value="{{$value['value']}}" class="form-control valueInput" aria-label="{{$record->description}} {{$value['type']}}">
 
             </div>
     @endforeach
