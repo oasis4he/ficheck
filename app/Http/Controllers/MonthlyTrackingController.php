@@ -151,12 +151,15 @@ class MonthlyTrackingController extends Controller
     {
       $record = MonthlyTrackingRecord::findOrFail($id);
       $trackedMonth = $record->month_id;
+      $oldCategory = $record->category;
 
       if($record->user_id && $record->user_id != Auth::user()->id) {
         abort(403, 'Unauthorized action.');
       }
 
       $record->delete();
+
+      $this->checkCategory(Auth::user()->id, $record->category);
 
       //check if there are any remaining records for the tracked month, if not delete it.
       $monthRecords = MonthlyTrackingRecord::where('month_id', $trackedMonth)->get();
