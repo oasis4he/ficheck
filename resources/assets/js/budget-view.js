@@ -24,7 +24,7 @@
     {
       var sections = $(".monthly-budget-type");
       $.each(sections, function(index, section){
-        $.each($(section).find(".valueType"), function(index, element){
+        $.each($(section).find(".valueType .valueContainer"), function(index, element){
           sumTotal($(element));
         })
       });
@@ -68,9 +68,9 @@
       var row = $(this).parents(".valueType");
       var recordId = $(row).attr("data-record-id");
       //get planned, actual and difference rows
-      var plannedRow = $(".budget-view ." + planned + ".valueType[data-record-id='" + recordId + "']");
-      var actualRow = $(".budget-view ." + actual + ".valueType[data-record-id='" + recordId + "']");
-      var differenceRow = $(".budget-view ." + difference + ".valueType[data-record-id='" + recordId + "']");
+      var plannedRow = $(".budget-view .valueType[data-record-id='" + recordId + "'] ." + planned );
+      var actualRow = $(".budget-view .valueType[data-record-id='" + recordId + "'] ." + actual);
+      var differenceRow = $(".budget-view .valueType[data-record-id='" + recordId + "'] ." + difference );
 
       //get planned and actual values
       var plannedValue = plannedRow.find(".valueInput").val();
@@ -79,8 +79,7 @@
       //update difference value based on planned and actual values
       differenceRow.find(".valueInput").val(plannedValue - actualValue);
 
-      sumTotal(row);
-      sumTotal(differenceRow);
+      sumSections();
     });
 
     //function to sum total for a type
@@ -91,7 +90,7 @@
       {
         var monthlyBudgetType = element.closest(".monthly-budget-type");
 
-        var inputsToUpdate = monthlyBudgetType.find(".valueType." + type);
+        var inputsToUpdate = monthlyBudgetType.find(".valueType ." + type);
 
         var total = 0;
 
