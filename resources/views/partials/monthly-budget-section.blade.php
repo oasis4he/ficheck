@@ -2,6 +2,17 @@
 <p>{{$monthlyBudgetCategories[$category]['definition']}}</p>
 <div class="body {{$category}}">
   <div class="ficheck-section-body">
+    <div class="row">
+      <div class="col-xs-3 col-xs-offset-3 section-header">
+        Planned
+      </div>
+      <div class="col-xs-3 section-header">
+        Actual
+      </div>
+      <div class="col-xs-3 section-header">
+        Difference
+      </div>
+    </div>
 
     @include('partials.monthly-budget-records')
 

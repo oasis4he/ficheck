@@ -13,7 +13,7 @@
       </div>
     </div>
     @foreach($record['values'] as $index => $value)
-            <div class="form-group col-xs-3">
+            <div class="form-group col-xs-3 valueContainer {{$value['type']}}">
               <input name="values[{{$value['type']}}][{{$value['id']}}]"
                       {{$value['type'] == 'difference' ? 'readonly' : ''}}
                       id="value_{{$value->id}}" type="number" step=".01"

@@ -365,4 +365,22 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
   .budget-view .deleteGroup.deleteShow {
     display: table; }
 
+.budget-view .section-header {
+  font-weight: 700;
+  margin-bottom: 5px; }
+
+@media (max-width: 430px) {
+  .budget-view .valueContainer, .budget-view .valueTypeTotal {
+    padding-left: 5px;
+    padding-right: 5px; }
+  .budget-view .section-header {
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px; }
+  .budget-view .valueInput, .budget-view .totalInput {
+    font-size: 11px;
+    padding: 5px 3px; }
+  .budget-view label {
+    font-size: 12px; } }
+
 /*# sourceMappingURL=app.css.map */
