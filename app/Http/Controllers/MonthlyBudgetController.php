@@ -52,7 +52,8 @@ class MonthlyBudgetController extends Controller
                   'trackedMonth' => $data['month'], 'trackedYear' => $data['year']]
                   );
 
-
+    }
+    
     public function netWorthStatement(Request $request)
     {
         $user = $request->viewUser;
