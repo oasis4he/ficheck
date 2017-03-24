@@ -63,7 +63,7 @@
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$month->id}}">
                   {{$months[$month->month]}} {{$month->year}}</a>
                   <!-- Trigger the modal with a button -->
-                  <a type="button" class="pull-right" data-toggle="modal" data-target="#newEntryModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                  <a type="button" class="pull-right" data-toggle="modal" data-target="#newEntryModal" aria-label="Add new entry"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                 </h4>
               </div>
               <div id="collapse{{$month->id}}" class="panel-collapse collapse @if($currentMonth == $month->month && $currentYear == $month->year) in @endif">

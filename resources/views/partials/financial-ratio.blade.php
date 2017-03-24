@@ -5,8 +5,8 @@
 
   <div class="row">
     <div class="form-group col-xs-12">
-      <label for="asset">{{$ratioType->asset_label}}</label>
-      <input name="asset" id="asset" value="{{$ratio->asset}}" class="form-control">
+      <label for="asset_{{$ratioType->id}}">{{$ratioType->asset_label}}</label>
+      <input name="asset" id="asset_{{$ratioType->id}}" value="{{$ratio->asset}}" class="form-control">
     </div>
   </div>
 
@@ -31,8 +31,8 @@
 
   <div class="row">
     <div class="form-group col-xs-12">
-      <label for="liability">{{$ratioType->liability_label}}</label>
-      <input name="liability" id="liability" value="{{$ratio->liability}}" class="form-control">
+      <label for="liability_{{$ratioType->id}}">{{$ratioType->liability_label}}</label>
+      <input name="liability" id="liability_{{$ratioType->id}}" value="{{$ratio->liability}}" class="form-control">
     </div>
   </div>
 
@@ -57,8 +57,8 @@
 
   <div class="row">
     <div class="form-group col-xs-12">
-      <label for="ratio">{{$ratioType->ratio_label}}</label>
-      <input name="ratio" id="ratio" value="{{$ratio->ratio}}" class="form-control ratio-output" readonly>
+      <label for="ratio_{{$ratioType->id}}">{{$ratioType->ratio_label}}</label>
+      <input name="ratio" id="ratio_{{$ratioType->id}}" value="{{$ratio->ratio}}" class="form-control ratio-output" readonly>
     </div>
   </div>
 
