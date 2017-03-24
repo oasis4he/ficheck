@@ -1,13 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-  <form method="post" action="/monthly-budget" class="budget-view readonly onlyActual">
+  <form method="post" action="/monthly-budget" class="budget-view {{isset($statement) ? 'readonly' : ''}} onlyActual">
     {{ csrf_field() }}
     <input type="hidden" name="calculator" value="{{$calculator}}">
     <div class="ficheck-sections budget-view-record">
 
     @if($trackedMonthRecords)
-      @include('layouts.title', ['title'=>$title, 'month'=>$trackedMonth, 'year'=>$trackedYear])
+      @if($trackedMonth && $trackedYear)
+        @include('layouts.title', ['title'=>$title, 'month'=>$trackedMonth, 'year'=>$trackedYear])
+      @else
+        @include('layouts.title', ['title'=>$title])
+      @endif
 
       @include('partials.form-errors')
 

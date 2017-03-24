@@ -99,7 +99,7 @@ class MonthlyBudgetController extends Controller
           ],
         ];
 
-        return view('monthly-budget', ['calculator' => 'net-worth', 'monthlyBudgetRecords' => $monthlyBudgetRecords, "monthlyBudgetCategories" => $monthlyBudgetCategories,
+        return view('ie-statement', ['calculator' => 'net-worth', 'monthlyBudgetRecords' => $monthlyBudgetRecords, 'trackedMonthRecords' => true, 'trackedMonth' => false, "monthlyBudgetCategories" => $monthlyBudgetCategories,
                     "showTotals" => true, "onlyActual" => true, 'title' => 'Net Worth Statement']);
     }
 
