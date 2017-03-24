@@ -195,6 +195,8 @@ class MonthlyBudgetController extends Controller
 
     function getTrackedCategoryRecords($user, $statement=false){
       $trackedMonthRecords = false;
+      $trackedRecords = false;
+
       $trackedMonth = TrackedMonth::where('user_id', $user->id)->orderBy('year', 'desc')->orderBy('month', 'desc')->with('records')->first();
 
       $months = [
