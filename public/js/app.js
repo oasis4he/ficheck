@@ -24,6 +24,7 @@
     }
 
     sumSections();
+    sumStatementSections();
 
     //loop through all sections and sum
     function sumSections()
@@ -32,6 +33,15 @@
       $.each(sections, function(index, section){
         $.each($(section).find(".valueType .valueContainer"), function(index, element){
           sumTotal($(element));
+        })
+      });
+    }
+
+    function sumStatementSections() {
+      var sections = $(".monthly-budget-type");
+      $.each(sections, function(index, section){
+        $.each($(section).find(".valueType"), function(index, element){
+          sumStatmentTotal($(element));
         })
       });
     }
@@ -355,6 +365,30 @@
 
       $(".valueInput").trigger("change");
 
+    }
+
+  }
+
+  //function to sum total for a type
+  function sumStatmentTotal(element)
+  {
+    var type = 'actual';
+    if(type)
+    {
+      var monthlyBudgetType = element.closest(".monthly-budget-type");
+
+      var inputsToUpdate = monthlyBudgetType.find(".valueType." + type);
+
+      var total = 0;
+
+      $.each(inputsToUpdate, function(index, input){
+        var inputTotal = Number($(input).find(".valueInput").val());
+        total += inputTotal;
+      });
+
+      var totalInput = monthlyBudgetType.find("." + type + " .totalInput");
+
+      totalInput.val(total.toFixed(2));
     }
 
   }
