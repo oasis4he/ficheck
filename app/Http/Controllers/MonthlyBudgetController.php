@@ -35,7 +35,7 @@ class MonthlyBudgetController extends Controller
     public function ieStatement(Request $request)
     {
         $user = $request->viewUser;
-        $data = $this->getTrackedCategoryRecords($user);
+        $data = $this->getTrackedCategoryRecords($user, true);
 
         $monthlyBudgetRecords = $data['budgetRecords'];
 
@@ -45,15 +45,16 @@ class MonthlyBudgetController extends Controller
             $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('order')->get();
         }
 
-        return view('monthly-budget', ['calculator' => 'monthly-budget', "onlyActual" => true,
+        return view('ie-statement', ['calculator' => 'monthly-budget', "onlyActual" => true,
                     'monthlyBudgetCategories' => $this->getMonthlyBudgetCategories(),
-                    'monthlyBudgetRecords' => $monthlyBudgetRecords, 'statement' => true,
+                    'monthlyBudgetRecords' => $monthlyBudgetRecords,
+                    'trackedRecords' => $data['trackedRecords'], 'statement' => true,
                     "showTotals" => true, 'title' => 'I & E Statement', 'trackedMonthRecords' => true,
                   'trackedMonth' => $data['month'], 'trackedYear' => $data['year']]
                   );
 
     }
-    
+
     public function netWorthStatement(Request $request)
     {
         $user = $request->viewUser;
@@ -192,7 +193,7 @@ class MonthlyBudgetController extends Controller
 
     }
 
-    function getTrackedCategoryRecords($user){
+    function getTrackedCategoryRecords($user, $statement=false){
       $trackedMonthRecords = false;
       $trackedMonth = TrackedMonth::where('user_id', $user->id)->orderBy('year', 'desc')->orderBy('month', 'desc')->with('records')->first();
 
@@ -212,14 +213,29 @@ class MonthlyBudgetController extends Controller
       ];
 
       $trackedCategories = $trackedMonth->records->pluck('category')->toArray();
+        if($statement){
+          if($trackedCategories) {
+            $trackedMonthRecords = true;
+            $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->whereIn('description', $trackedCategories)->with(['values' => function($query){
+                $query->where('type', 'actual');
+              }])->orderBy('category', 'desc')->get();
+          } else {
+            $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with(['values' => function($query){
+                $query->where('type', 'actual');
+              }])->orderBy('category', 'desc')->get();
+          }
+          $trackedRecords = MonthlyTrackingRecord::where('month_id', $trackedMonth->id)->groupBy('category')->selectRaw('sum(value) as sum, category, id')->get();
+        } else {
+          if($trackedCategories) {
+            $trackedMonthRecords = true;
+            $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->whereIn('description', $trackedCategories)->with('values')->orderBy('category', 'desc')->get();
+          } else {
+            $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('category', 'desc')->get();
+          }
+        }
 
-      if($trackedCategories) {
-        $trackedMonthRecords = true;
-        $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->whereIn('description', $trackedCategories)->with('values')->get();
-      } else {
-        $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->get();
-      }
 
-      return ['trackedMonthRecords' => $trackedMonthRecords, 'budgetRecords' => $monthlyBudgetRecords, 'month' => $months[$trackedMonth->month], 'year' => $trackedMonth->year];
+
+      return ['trackedMonthRecords' => $trackedMonthRecords, 'budgetRecords' => $records, 'trackedRecords' => $trackedRecords ? $trackedRecords : false, 'month' => $months[$trackedMonth->month], 'year' => $trackedMonth->year];
     }
 }
