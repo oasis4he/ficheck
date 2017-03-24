@@ -11,7 +11,7 @@
       @include('partials.form-errors')
 
       <div class="ficheck-section-type life-insurance-type life-insurance-type-income-replacement row">
-        <h2>Life Insurance</h2>
+        <h2>Annual Amount Needed for Dependents</h2>
 
         <div class="body">
           <div class="ficheck-section-body">
