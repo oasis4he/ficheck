@@ -19,6 +19,9 @@
 
         var retirementGoal = $('[name="retirement_goal"]', wrapper);
         retirementGoal.val(goal);
+
+        var annualSavingsRetirementGoal = $('[name="entered_retirement_goal"]');
+        annualSavingsRetirementGoal.val(goal);
     });
 
     $(retirementGoals).on('change', 'select', function() {
