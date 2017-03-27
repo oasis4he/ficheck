@@ -542,11 +542,18 @@
         url: form.action,
         data: data,
         method: "post",
-        success: function() {
+        dataType: "json",
+        success: function(data) {
           form.removeClass('changed');
 
           if(form.hasClass('new')) {
             form.removeClass('new');
+          }
+
+          var month = form.find('[name=month_id]').val();
+
+          if(data.month_id != month) {
+            location.reload();
           }
         },
         error: function(e) {
