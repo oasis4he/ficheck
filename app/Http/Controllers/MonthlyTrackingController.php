@@ -144,7 +144,7 @@ class MonthlyTrackingController extends Controller
         $this->checkCategory(Auth::user()->id, $oldCategory);
       }
 
-      return Redirect::back();
+      return json_encode($record);
     }
 
     function deleteRecord(Request $request, $id)
