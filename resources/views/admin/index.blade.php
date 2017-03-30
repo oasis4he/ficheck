@@ -23,7 +23,8 @@
             <thead>
                 <tr>
                     <th>Role</th>
-                    <th>Name</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Email</th>
                     <th>A-Number</th>
                     <th>Graded</th>
@@ -36,7 +37,8 @@
                             {{$user->role->name}}
                         @endif
                     </td>
-                    <td><a href="/monthly-tracking/{{$user->id}}">{{$user->name}}</a></td>
+                    <td><a href="/monthly-tracking/{{$user->id}}">{{$user->first_name}}</a></td>
+                    <td>{{$user->last_name}}</td>
                     <td>{{$user->email}}</td>
                     <td>{{$user->external_id}}</td>
                     <td>

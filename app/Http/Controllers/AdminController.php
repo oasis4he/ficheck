@@ -14,9 +14,9 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-
-        $usersQuery = User::orWhere('name', 'LIKE', $search)
-            ->orWhere('email', 'LIKE', $search);
+        $usersQuery = User::orWhere('first_name', 'LIKE', '%'.trim($search).'%')
+            ->orWhere('last_name', 'LIKE', '%'.trim($search).'%')
+            ->orWhere('email', 'LIKE', '%'.trim($search).'%');
 
         // allow space separated, comma or semicolon separated items to be searched on (external_id)
         $fixedSearch = preg_replace('/[\s,;]+/', ',', $search);
@@ -29,7 +29,7 @@ class AdminController extends Controller
             ->orWhereHas('role', function ($query) use ($search) {
                 $query->where('name', 'LIKE', $search);
             })
-            ->orderBy('role_id', 'desc')->orderBy('name')->orderBy('email');
+            ->orderBy('role_id', 'desc')->orderBy('first_name')->orderBy('email');
 
         $users = $usersQuery->paginate();
 
