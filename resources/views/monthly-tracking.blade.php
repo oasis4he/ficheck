@@ -23,7 +23,6 @@
           <div class="col-xs-2"><input class="form-control" name="in" type="number" step=".01" aria-labelledby="inTrack" value="{{old('in')}}"></div>
           <div class="col-xs-2"><input class="form-control" name="out" name="out" type="number" step=".01" aria-labelledby="outTrack" value="{{old('out')}}"></div>
           <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" id="newCategory" value="{{old('category')}}"></div>
-          <div class="control"><button class="btn btn-success add" class="submit">Add</button></div>
         </div>
       </form>
     </div>
@@ -36,7 +35,11 @@
           </button>
           <div class="dropdown-menu" aria-labelledby="trackedMonthDropdown">
             @foreach($trackedMonths as $trackedMonth)
-              <a  class="dropdown-item" data-parent="#accordion" href="#{{$months[$trackedMonth->month]}}{{$trackedMonth->year}}"> {{$months[$trackedMonth->month]}} {{$trackedMonth->year}}</a>
+              <a  class="dropdown-item" data-parent="#accordion" href="#{{$months[$trackedMonth->month]}}{{$trackedMonth->year}}">
+                <span class="dropdown-month hide">{{$trackedMonth->month}}</span>
+                <span class="dropdown-year hide">{{$trackedMonth->year}}</span>
+                {{$months[$trackedMonth->month]}} {{$trackedMonth->year}}
+              </a>
             @endforeach
           </div>
         </div>
@@ -47,7 +50,10 @@
     <div class="row">
       <div class="panel-group" id="accordion">
         @foreach($trackedMonths as $trackedMonth)
-          <div class="panel panel-default monthly-tracking-section">
+          <div class="panel panel-default monthly-tracking-section" id="{{$trackedMonth->id}}">
+            <span class="panel-month hide">{{$trackedMonth->month}}</span>
+            <span class="panel-year hide">{{$trackedMonth->year}}</span>
+
             <div class="panel-heading">
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#{{$months[$trackedMonth->month]}}{{$trackedMonth->year}}">

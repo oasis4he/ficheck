@@ -145,7 +145,25 @@ class MonthlyTrackingController extends Controller
         $this->checkCategory(Auth::user()->id, $oldCategory);
       }
 
-      return json_encode($record);
+      $data = [
+        'records' => $record->load('trackedMonth'),
+        'months'=> [
+          '12' => 'December',
+          '11' => 'November',
+          '10' => 'October',
+          '09' => 'September',
+          '08' => 'August',
+          '07' => 'July',
+          '06' => 'June',
+          '05' => 'May',
+          '04' => 'April',
+          '03' => 'March',
+          '02' => 'February',
+          '01' => 'January'
+        ]
+      ];
+      
+      return json_encode($data);
     }
 
     function deleteRecord(Request $request, $id)
