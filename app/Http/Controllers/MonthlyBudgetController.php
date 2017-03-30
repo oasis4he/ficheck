@@ -19,7 +19,7 @@ class MonthlyBudgetController extends Controller
     {
         $user = $request->viewUser;
 
-        $data = $this->getTrackedCategoryRecords($user);
+        $data = $this->getTrackedCategoryRecords($user, []);
 
         $monthlyBudgetRecords = $data['budgetRecords'];
 
@@ -35,7 +35,9 @@ class MonthlyBudgetController extends Controller
     public function ieStatement(Request $request)
     {
         $user = $request->viewUser;
-        $data = $this->getTrackedCategoryRecords($user, true);
+        $params['month'] = $request->get('month');
+        $params['year'] = $request->get('year');
+        $data = $this->getTrackedCategoryRecords($user, $params, true);
 
         $monthlyBudgetRecords = $data['budgetRecords'];
 
@@ -45,12 +47,16 @@ class MonthlyBudgetController extends Controller
             $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('order')->get();
         }
 
+        $userTrackedMonths = TrackedMonth::where('user_id', $user->id)->orderBy('year', 'desc')->orderBy('month', 'desc')->get();
+
         return view('ie-statement', ['calculator' => 'monthly-budget', "onlyActual" => true,
                     'monthlyBudgetCategories' => $this->getMonthlyBudgetCategories(),
                     'monthlyBudgetRecords' => $monthlyBudgetRecords,
                     'trackedRecords' => $data['trackedRecords'], 'statement' => true,
-                    "showTotals" => true, 'title' => 'I & E Statement', 'trackedMonthRecords' => true,
-                  'trackedMonth' => $data['month'], 'trackedYear' => $data['year']]
+                    "showTotals" => true, 'title' => 'I & E Statement', 'trackedMonthRecords' => $data['trackedRecords'],
+                    'trackedMonth' => $data['month'], 'trackedYear' => $data['year'],
+                    'trackedMonths' => $userTrackedMonths,
+                    'months' => $data['months']]
                   );
 
     }
@@ -193,11 +199,15 @@ class MonthlyBudgetController extends Controller
 
     }
 
-    function getTrackedCategoryRecords($user, $statement=false){
+    function getTrackedCategoryRecords($user, $data, $statement=false){
       $trackedMonthRecords = false;
       $trackedRecords = false;
 
-      $trackedMonth = TrackedMonth::where('user_id', $user->id)->orderBy('year', 'desc')->orderBy('month', 'desc')->with('records')->first();
+      if(isset($data['month']) && isset($data['year'])) {
+        $trackedMonth = TrackedMonth::where('user_id', $user->id)->where('month', $data['month'])->where('year', $data['year'])->with('records')->first();
+      } else {
+        $trackedMonth = TrackedMonth::where('user_id', $user->id)->orderBy('year', 'desc')->orderBy('month', 'desc')->with('records')->first();
+      }
 
       $months = [
         '12' => 'December',
@@ -234,10 +244,10 @@ class MonthlyBudgetController extends Controller
           } else {
             $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('category', 'desc')->get();
           }
+
+          $trackedRecords = MonthlyTrackingRecord::where('month_id', $trackedMonth->id)->get();
         }
 
-
-
-      return ['trackedMonthRecords' => $trackedMonthRecords, 'budgetRecords' => $records, 'trackedRecords' => $trackedRecords ? $trackedRecords : false, 'month' => $months[$trackedMonth->month], 'year' => $trackedMonth->year];
+      return ['trackedMonthRecords' => $trackedMonthRecords, 'budgetRecords' => $records, 'trackedRecords' => $trackedRecords->isEmpty() ? $trackedRecords : false, 'month' => $months[$trackedMonth->month], 'year' => $trackedMonth->year, 'months' => $months];
     }
 }

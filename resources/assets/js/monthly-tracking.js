@@ -138,7 +138,16 @@
     $('.monthly-tracking .panel-collapse').collapse('show');
   });
 
-  monthlyTrackingContainer.on('change', '[name=in]', getIncomeCategories);
+  monthlyTrackingContainer.on('change', '[name=in]', function() {
+
+    var value = roundTo($(this).val(), 2);
+    if((value.toString().split('.')[1] || []).length == 1){
+      value = value + "0";
+    }
+    $(this).val(value);
+
+    getIncomeCategories();
+  });
 
   monthlyTrackingContainer.on('change', '[name=out]', getExpenseCategories);
 
@@ -167,6 +176,18 @@
       }
     });
   }
+
+//http://stackoverflow.com/questions/15762768/javascript-math-round-to-two-decimal-places
+  function roundTo(n, digits) {
+     if (digits === undefined) {
+       digits = 0;
+     }
+
+     var multiplicator = Math.pow(10, digits);
+     n = parseFloat((n * multiplicator).toFixed(11));
+     var test =(Math.round(n) / multiplicator);
+     return +(test.toFixed(2));
+   }
 
 
 
