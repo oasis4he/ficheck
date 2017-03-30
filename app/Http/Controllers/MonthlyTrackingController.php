@@ -68,7 +68,8 @@ class MonthlyTrackingController extends Controller
         ],
         'currentMonth' => $selectedMonth,
         'currentYear' => $selectedYear,
-        'saved' => $request->session()->has('saved') ? $request->session()->get('saved') : false
+        'saved' => $request->session()->has('saved') ? $request->session()->get('saved') : false,
+        'title' => 'Monthly Tracking'
       ];
 
       $request->session()->forget('saved');

@@ -28,9 +28,9 @@
         @endforeach
       @else
           <div class="well">
-              The Monthly Budget relys on data from entries tracked in the Monthly Tracker.
-              You currently don't have any tracked records for your most recent tracked month of {{$trackedMonth}} {{$trackedYear}}.
-              You will need to update the Montly Tracker for the month of {{$trackedMonth}} {{$trackedYear}} in order to access your Monthly Budget.
+              This page relys on data from entries tracked in the Monthly Tracker.
+              You currently don't have any tracked records in your Monthly Tracker.
+              Once you start using the Monthly Tracker, you will be able to access your Monthly Budget.
           </div>
       @endif
 
