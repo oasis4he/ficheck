@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Semester;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,8 +33,9 @@ class AdminController extends Controller
             ->orderBy('role_id', 'desc')->orderBy('first_name')->orderBy('email');
 
         $users = $usersQuery->paginate();
+        $semesters = Semester::all();
 
-        return view('admin.index', ['users' => $users]);
+        return view('admin.index', ['users' => $users, 'semesters' => $semesters]);
     }
 
     public function grade(Request $request)
@@ -57,5 +59,30 @@ class AdminController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function addGroupUser(Request $request, $id)
+    {
+      $user = User::findOrFail($id);
+      $semesterID = $request->get('semester');
+      $hasSemester = $user->semesters()->where('semester_id', $semesterID)->exists();
+
+      if(!$hasSemester) {
+        $user->semesters()->attach($semesterID);
+      }
+
+      return redirect()->back();
+    }
+
+    public function deleteGroupUser($userID, $semesterID)
+    {
+      $user = User::findOrFail($userID);
+      $hasSemester = $user->semesters()->where('semester_id', $semesterID)->exists();
+
+      if($hasSemester) {
+        $user->semesters()->detach($semesterID);
+      }
+
+      return redirect()->back();
     }
 }
