@@ -14,23 +14,34 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
+        $user = Auth::user();
+        $groups = $user->semesters()->pluck('semester_id')->toArray();
+
         $search = $request->get('search');
-        $usersQuery = User::orWhere('first_name', 'LIKE', '%'.trim($search).'%')
-            ->orWhere('last_name', 'LIKE', '%'.trim($search).'%')
-            ->orWhere('email', 'LIKE', '%'.trim($search).'%');
+        $usersQuery = User::where(function($query) use ($search){
+          $query->where('first_name', 'LIKE', '%'.trim($search).'%');
+          $query->orWhere('last_name', 'LIKE', '%'.trim($search).'%');
+          $query->orWhere('email', 'LIKE', '%'.trim($search).'%');
 
-        // allow space separated, comma or semicolon separated items to be searched on (external_id)
-        $fixedSearch = preg_replace('/[\s,;]+/', ',', $search);
+          // allow space separated, comma or semicolon separated items to be searched on (external_id)
+          $fixedSearch = preg_replace('/[\s,;]+/', ',', $search);
 
-        foreach(explode(",", $fixedSearch) as $searchTerm) {
-            $usersQuery = $usersQuery->orWhere('external_id', 'LIKE', '%'.trim($searchTerm).'%');
+          foreach(explode(",", $fixedSearch) as $searchTerm) {
+            $query->orWhere('external_id', 'LIKE', '%'.trim($searchTerm).'%');
+          }
+
+          $query->orWhereHas('role', function ($query) use ($search) {
+              $query->where('name', 'LIKE', $search);
+          });
+        });
+
+        if($groups){
+          $usersQuery = $usersQuery->whereHas('semesters', function($query) use ($groups){
+            $query->whereIn('semester_id', $groups);
+          });
         }
 
-        $usersQuery = $usersQuery
-            ->orWhereHas('role', function ($query) use ($search) {
-                $query->where('name', 'LIKE', $search);
-            })
-            ->orderBy('role_id', 'desc')->orderBy('first_name')->orderBy('email');
+        $usersQuery= $usersQuery->orderBy('role_id', 'desc')->orderBy('first_name')->orderBy('email');
 
         $users = $usersQuery->paginate();
         $semesters = Semester::all();

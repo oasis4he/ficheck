@@ -29,14 +29,17 @@
                     <th>Last Name</th>
                     <th>Email</th>
                     <th>A-Number</th>
-                    <th>Graded</th>
+                    {{-- <th>Graded</th> --}}
             </thead>
             <tbody>
                 @foreach($users as $user)
                 <tr>
                     <td>
-                      <!-- Trigger group add modal -->
-                      <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#addGroup{{$user->id}}">Add Group</button>
+                      {{-- only let admins add people they are over to groups, they can't add themselves --}}
+                      @if($user->id != Auth::user()->id)
+                        <!-- Trigger group add modal -->
+                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#addGroup{{$user->id}}">Add Group</button>
+                      @endif
                     </td>
                     <td>
                         @if($user->role)
@@ -57,7 +60,7 @@
                     <td>{{$user->last_name}}</td>
                     <td>{{$user->email}}</td>
                     <td>{{$user->external_id}}</td>
-                    <td>
+                    {{-- <td>
                         <div class="form-group" @if($user->graded_at) title="Grader: {{$user->grader->name}} ({{$user->graded_at}})" @endif>
                             <label>
                                 <input type="radio" name="graded[{{$user->id}}]" value="1" @if($user->graded_at) checked @endif>
@@ -68,7 +71,7 @@
                                 no grade
                             </label>
                         </div>
-                    </td>
+                    </td> --}}
                 </tr>
                 @endforeach
             </tbody>
