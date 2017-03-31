@@ -41,10 +41,25 @@
       @endforeach
 
     @else
+        @if($trackedMonth && $trackedYear)
+          <div class="row">
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="trackedMonthDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{$trackedMonth}} {{$trackedYear}}
+                  <i class="fa fa-chevron-down dropdown-caret" aria-hidden="true"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="trackedMonthDropdown">
+                  @foreach($trackedMonths as $trackedMonth)
+                    <a  class="dropdown-item" data-parent="#accordion" href="?month={{$trackedMonth->month}}&year={{$trackedMonth->year}}"> {{$months[$trackedMonth->month]}} {{$trackedMonth->year}}</a>
+                  @endforeach
+                </div>
+              </div>
+          </div>
+        @endif
         <div class="well">
             This page relys on data from entries tracked in the Monthly Tracker.
-            You currently don't have any tracked records in your Monthly Tracker.
-            Once you start using the Monthly Tracker, you will be able to access your {{$title}}.
+            You currently don't have any tracked records in your Monthly Tracker for the selected month.
+            Once you update the Monthly Tracker for the selected month, you will be able to access your {{$title}}.
         </div>
     @endif
 

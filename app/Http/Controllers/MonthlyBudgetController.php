@@ -248,6 +248,6 @@ class MonthlyBudgetController extends Controller
           $trackedRecords = MonthlyTrackingRecord::where('month_id', $trackedMonth->id)->get();
         }
 
-      return ['trackedMonthRecords' => $trackedMonthRecords, 'budgetRecords' => $records, 'trackedRecords' => $trackedRecords->isEmpty() ? $trackedRecords : false, 'month' => $months[$trackedMonth->month], 'year' => $trackedMonth->year, 'months' => $months];
+      return ['trackedMonthRecords' => $trackedMonthRecords, 'budgetRecords' => $records, 'trackedRecords' => !$trackedRecords->isEmpty() ? $trackedRecords : false, 'month' => $months[$trackedMonth->month], 'year' => $trackedMonth->year, 'months' => $months];
     }
 }
