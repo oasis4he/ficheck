@@ -158,10 +158,10 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
     background: transparent;
     padding: 0;
     box-shadow: none; }
-    .monthly-tracking .body [class^=col-] input.form-control {
-      background-color: #ffcc99; }
     .monthly-tracking .body [class^=col-] input:focus {
       box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); }
+  .monthly-tracking .body [class^=col-] input[type=date]::-webkit-inner-spin-button {
+    margin-top: 7px; }
   .monthly-tracking .body form .new {
     opacity: .6; }
   .monthly-tracking .body form .control {
@@ -207,19 +207,19 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
     border-top-color: #767676; }
 
 .page-monthly-tracking .dropdown {
-  margin-top: 15px;
-  margin-left: -15px; }
+  margin-top: 15px; }
 
 .page-monthly-tracking .dropdown-toggle {
   font-size: 20px;
   text-align: left;
   border-radius: 0px;
-  width: 100%; }
+  width: 230px; }
 
 .page-monthly-tracking .dropdown-menu {
   position: absolute;
   background-color: #ddd;
-  border-radius: 0px; }
+  border-radius: 0px;
+  width: 200px; }
   .page-monthly-tracking .dropdown-menu .dropdown-item {
     display: block;
     padding: 10px; }
@@ -243,6 +243,32 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
 
 .page-income-and-expense-statement .btn-primary {
   display: none; }
+
+.page-income-and-expense-statement .dropdown {
+  margin-top: 15px; }
+  .page-income-and-expense-statement .dropdown button {
+    color: #000;
+    padding: 5px 10px;
+    max-width: 230px; }
+
+.page-income-and-expense-statement .dropdown-toggle {
+  font-size: 20px;
+  text-align: left;
+  border-radius: 0px;
+  width: 230px; }
+
+.page-income-and-expense-statement .dropdown-menu {
+  position: absolute;
+  background-color: #ddd;
+  border-radius: 0px;
+  width: 230px; }
+  .page-income-and-expense-statement .dropdown-menu .dropdown-item {
+    display: block;
+    padding: 10px; }
+
+.page-income-and-expense-statement .dropdown-caret {
+  margin-top: 5px;
+  float: right; }
 
 .budget-view .valueType.planned, .budget-view .valueType.actual, .budget-view .valueType.difference, .budget-view .valueTypeTotal.planned, .budget-view .valueTypeTotal.actual, .budget-view .valueTypeTotal.difference {
   visibility: hidden;

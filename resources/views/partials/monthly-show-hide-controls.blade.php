@@ -1,4 +1,4 @@
-<div class="row text-center">
+<div class="text-center">
     <div class="form-group col-sm-4 col-xs-6">
         <button type="button" class="btn btn-black hide-empty-fields">hide empty fields</button>
     </div>
