@@ -2,6 +2,7 @@
 (function($){
   $(function(){
     var retirementGoals = $('.retirement-needs-type-annual-savings-required');
+    var retirementNeedsContainer = $('.retirement-needs');
 
     $(retirementGoals).on('change', 'input', function() {
         var wrapper = $(this).closest('.ficheck-section-type');
@@ -31,6 +32,12 @@
         var factorElement = $('[name="entered_retirement_age_factor"]', wrapper);
 
         factorElement.val(factor).trigger('change');
+    });
+
+    retirementNeedsContainer.on('change', 'input', function() {
+
+      $(this).val(roundedValue($(this).val()));
+
     });
 
   });

@@ -132,7 +132,16 @@
     getIncomeCategories();
   });
 
-  monthlyTrackingContainer.on('change', '[name=out]', getExpenseCategories);
+  monthlyTrackingContainer.on('change', '[name=out]', function() {
+
+    var value = roundTo($(this).val(), 2);
+    if((value.toString().split('.')[1] || []).length == 1){
+      value = value + "0";
+    }
+    $(this).val(value);
+
+    getIncomeCategories();
+  });
 
   function getExpenseCategories() {
     $.ajax({

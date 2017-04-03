@@ -4,6 +4,33 @@
 // reset button on monthly tracker, with are you sure dialog
 // stage for george
 
+
+//http://stackoverflow.com/questions/15762768/javascript-math-round-to-two-decimal-places
+  function roundTo(n, digits) {
+     if (digits === undefined) {
+       digits = 0;
+     }
+
+     var multiplicator = Math.pow(10, digits);
+     n = parseFloat((n * multiplicator).toFixed(11));
+     var test =(Math.round(n) / multiplicator);
+     return +(test.toFixed(2));
+   }
+
+   function roundedValue(number) {
+     var value = roundTo(number, 2);
+     if((value.toString().split('.')[1] || []).length == 1){
+       value = value + "0";
+     }
+     return value;
+   }
+
+   $('body').on('change', '[type=number]', function() {
+
+     $(this).val(roundedValue($(this).val()));
+
+   });
+
 (function($){
   $(function(){
 
@@ -93,7 +120,9 @@
       var actualValue = actualRow.find(".valueInput").val();
 
       //update difference value based on planned and actual values
-      differenceRow.find(".valueInput").val(plannedValue - actualValue);
+      var differenceValue = roundedValue(plannedValue - actualValue);
+
+      differenceRow.find(".valueInput").val(differenceValue);
 
       sumSections();
     });
@@ -424,6 +453,7 @@
 
       return false;
     });
+
   });
 }(jQuery));
 
@@ -453,6 +483,12 @@
         result = Math.round(result * 100) / 100;
         ratio.val(result);
       }
+    });
+
+    financialRatiosContainer.on('change', 'input', function() {
+
+      $(this).val(roundedValue($(this).val()));
+
     });
 
   });
@@ -658,7 +694,16 @@
     getIncomeCategories();
   });
 
-  monthlyTrackingContainer.on('change', '[name=out]', getExpenseCategories);
+  monthlyTrackingContainer.on('change', '[name=out]', function() {
+
+    var value = roundTo($(this).val(), 2);
+    if((value.toString().split('.')[1] || []).length == 1){
+      value = value + "0";
+    }
+    $(this).val(value);
+
+    getIncomeCategories();
+  });
 
   function getExpenseCategories() {
     $.ajax({
@@ -881,7 +926,8 @@
         var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]').val();
 
         var totalExpenses = wrapper.find('[name=total_expenses]');
-        totalExpenses.val(Number(funeralExpense) + Number(debt) + Number(otherExpenses) + Number(enteredTotalIncomeForReplacement));
+        var totalExpensesValue = roundedValue(Number(funeralExpense) + Number(debt) + Number(otherExpenses) + Number(enteredTotalIncomeForReplacement));
+        totalExpenses.val(totalExpensesValue);
 
         var enteredTotalExpenses = $('[name=entered_total_expenses]');
         enteredTotalExpenses.val(totalExpenses.val());
@@ -903,7 +949,8 @@
         var otherFunds = (wrapper.find('[name=other_funds]').val());
 
         var totalFundsFromOtherSources = (wrapper.find('[name=total_funds_from_other_sources]'));
-        totalFundsFromOtherSources.val(Number(governmentBenefits) + Number(otherFunds));
+        var totalFundsValue = roundedValue(Number(governmentBenefits) + Number(otherFunds))
+        totalFundsFromOtherSources.val(totalFundsValue);
 
         var enteredTotalFundsFromOtherSources = $('[name=entered_total_funds_from_other_sources]');
         enteredTotalFundsFromOtherSources.val(totalFundsFromOtherSources.val());
@@ -933,6 +980,7 @@
 (function($){
   $(function(){
     var lifeInsurace = $('.life-insurance-type-income-replacement');
+    var lifeInsuranceContainer = $('.life-insurance');
 
     $(lifeInsurace).on('change', 'input', function() {
         var wrapper = $(this).closest('.ficheck-section-type');
@@ -940,14 +988,20 @@
         var enteredAnnualIncome = (wrapper.find('[name=annual_income]').val() || 0) / 1;
 
         var insuranceNeeds = $('[name="insurance_needs"]', wrapper);
-        insuranceNeeds.val(enteredAnnualIncome * .75);
+
+        var insureanceNeedValue = roundedValue(enteredAnnualIncome * .75);
+
+        insuranceNeeds.val(insureanceNeedValue);
 
         var totalIncomeForReplacement = wrapper.find('[name=total_income_replacement]');
         var factorElement = $('[name="income_replacement_factor"]', wrapper);
 
-        totalIncomeForReplacement.val(insuranceNeeds.val() * factorElement.val());
+        var totalIncomeReplacementValue = roundedValue(insuranceNeeds.val() * factorElement.val());
+
+        totalIncomeForReplacement.val(totalIncomeReplacementValue);
 
         var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]');
+
         enteredTotalIncomeForReplacement.val(totalIncomeForReplacement.val());
         enteredTotalIncomeForReplacement.trigger("change");
     });
@@ -965,6 +1019,12 @@
 
     });
 
+    lifeInsuranceContainer.on('change', 'input', function() {
+
+      $(this).val(roundedValue($(this).val()));
+
+    });
+
   });
 }(jQuery));
 
@@ -972,6 +1032,7 @@
 (function($){
   $(function(){
     var retirementGoals = $('.retirement-needs-type-annual-savings-required');
+    var retirementNeedsContainer = $('.retirement-needs');
 
     $(retirementGoals).on('change', 'input', function() {
         var wrapper = $(this).closest('.ficheck-section-type');
@@ -1001,6 +1062,12 @@
         var factorElement = $('[name="entered_retirement_age_factor"]', wrapper);
 
         factorElement.val(factor).trigger('change');
+    });
+
+    retirementNeedsContainer.on('change', 'input', function() {
+
+      $(this).val(roundedValue($(this).val()));
+
     });
 
   });
