@@ -230,24 +230,24 @@ class MonthlyBudgetController extends Controller
             $trackedMonthRecords = true;
             $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->whereIn('description', $trackedCategories)->with(['values' => function($query){
                 $query->where('type', 'actual');
-              }])->orderBy('category', 'desc')->get();
+              }])->orderBy('type', 'desc')->orderBy('category', 'asc')->get();
           } else {
             $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with(['values' => function($query){
                 $query->where('type', 'actual');
-              }])->orderBy('category', 'desc')->get();
+              }])->orderBy('type', 'desc')->orderBy('category', 'asc')->get();
           }
-          $trackedRecords = MonthlyTrackingRecord::where('month_id', $trackedMonth->id)->groupBy('category')->selectRaw('sum(value) as sum, category, id')->get();
+          $trackedRecords = MonthlyTrackingRecord::where('month_id', $trackedMonth->id)->groupBy('category')->selectRaw('sum(value) as sum, category, id')->orderBy('category', 'desc')->get();
         } else {
           if($trackedCategories) {
             $trackedMonthRecords = true;
-            $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->whereIn('description', $trackedCategories)->with('values')->orderBy('category', 'desc')->get();
+            $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->whereIn('description', $trackedCategories)->with('values')->orderBy('type', 'desc')->orderBy('category', 'asc')->get();
           } else {
-            $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('category', 'desc')->get();
+            $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('type', 'desc')->orderBy('category', 'asc')->get();
           }
 
           $trackedRecords = MonthlyTrackingRecord::where('month_id', $trackedMonth->id)->get();
         }
 
-      return ['trackedMonthRecords' => $trackedMonthRecords, 'budgetRecords' => $records, 'trackedRecords' => $trackedRecords->isEmpty() ? $trackedRecords : false, 'month' => $months[$trackedMonth->month], 'year' => $trackedMonth->year, 'months' => $months];
+      return ['trackedMonthRecords' => $trackedMonthRecords, 'budgetRecords' => $records, 'trackedRecords' => !$trackedRecords->isEmpty() ? $trackedRecords : false, 'month' => $months[$trackedMonth->month], 'year' => $trackedMonth->year, 'months' => $months];
     }
 }
