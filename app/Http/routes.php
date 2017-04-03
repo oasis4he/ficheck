@@ -63,4 +63,6 @@ Route::group([
 ], function() {
     Route::get('/', ['uses'=>'AdminController@index']);
     Route::post('/grade', ['uses'=>'AdminController@grade']);
+    Route::post('/group/add/user/{id}', ['uses'=>'AdminController@addGroupUser']);
+    Route::get('/group/delete/{userID}/{semesterID}', ['uses'=>'AdminController@deleteGroupUser']);
 });

@@ -2,6 +2,9 @@ body {
   margin-top: 60px;
   font-family: 'Lato'; }
 
+.badge a {
+  color: #fff; }
+
 body.page-monthly-tracking .navbar-nav > li > a[href*=monthly-tracking] {
   background-color: #fff;
   color: #080808; }
