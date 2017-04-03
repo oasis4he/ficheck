@@ -125,6 +125,7 @@
       differenceRow.find(".valueInput").val(differenceValue);
 
       sumSections();
+      sumStatementSections();
     });
 
     //function to sum total for a type
