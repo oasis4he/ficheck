@@ -232,7 +232,8 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
   float: right; }
 
 .page-monthly-tracking .modal-body {
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  padding: 0; }
   .page-monthly-tracking .modal-body .row {
     margin-left: 0;
     margin-right: 0; }
@@ -243,6 +244,13 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
     padding-right: 0; }
     .page-monthly-tracking .modal-body .body form .control {
       right: 0; }
+
+@media (max-width: 425px) {
+  .page-monthly-tracking [class^=col-] {
+    padding-left: 0;
+    padding-right: 0; }
+  .page-monthly-tracking .form-control {
+    font-size: 12px; } }
 
 .page-income-and-expense-statement .btn-primary {
   display: none; }
