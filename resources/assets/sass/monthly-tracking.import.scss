@@ -167,6 +167,7 @@
 
   .modal-body {
     margin-bottom: 20px;
+    padding:0;
 
     .row {
       margin-left: 0;
@@ -185,6 +186,17 @@
         }
 
       }
+    }
+  }
+
+  @media (max-width: 425px){
+    [class^=col-] {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    
+    .form-control {
+      font-size: 12px;
     }
   }
 }
