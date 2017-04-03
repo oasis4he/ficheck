@@ -26,5 +26,11 @@
       }
     });
 
+    financialRatiosContainer.on('change', 'input', function() {
+
+      $(this).val(roundedValue($(this).val()));
+
+    });
+
   });
 }(jQuery));

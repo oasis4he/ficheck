@@ -87,7 +87,9 @@
       var actualValue = actualRow.find(".valueInput").val();
 
       //update difference value based on planned and actual values
-      differenceRow.find(".valueInput").val(plannedValue - actualValue);
+      var differenceValue = roundedValue(plannedValue - actualValue);
+
+      differenceRow.find(".valueInput").val(differenceValue);
 
       sumSections();
     });
