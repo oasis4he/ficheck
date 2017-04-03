@@ -762,6 +762,7 @@
          var month = form.find('[name=month_id]').val();
          var monthName = '';
 
+
          if(data.records.tracked_month.id != month) {
            var panel = $('#' + data.records.tracked_month.id)
 
@@ -829,6 +830,7 @@
 
                  if(!inserted){
                    panel.find('.panel-collapse .panel-body .body').append(entry);
+                   form.remove();
                  }
                }
            } else {
