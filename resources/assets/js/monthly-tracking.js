@@ -278,8 +278,13 @@
 
                  if(!inserted){
                    panel.find('.panel-collapse .panel-body .body').append(entry);
-                   form.next().find('[name=date]').focus();
-                   form.remove();
+                   if(form.hasClass('edit')){
+                     form.next().find('[name=date]').focus();
+                     form.remove();
+                   } else {
+                     form[0].reset();
+                     form.find('input:disabled').removeAttr('disabled');
+                   }
                  }
                }
            } else {
