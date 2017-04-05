@@ -726,6 +726,10 @@
     getIncomeCategories();
   });
 
+  $('#newEntryModal').on('shown.bs.modal', function () {
+    $('[name=date]').focus();
+})
+
   function getExpenseCategories() {
     $.ajax({
       url: "/categories/expense",
