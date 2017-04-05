@@ -1,11 +1,7 @@
-<div class="row">
-  <div class="form-group col-xs-12">
-    <label for="desired_years_until_retirement">Choose the number closest to number of years until you plan to retire.</label>
-  </div>
-</div>
 
 <div class="row">
   <div class="col-xs-6">
+    <label for="desired_years_until_retirement">Choose the number closest to number of years until you plan to retire.</label>
     <select name="desired_years_until_retirement" id="desired_years_until_retirement" class="form-control">
       <option></option>
 
@@ -15,6 +11,7 @@
     </select>
   </div>
   <div class="col-xs-6">
+    <label for="retirement_years_factor">Retirement Years Index</label>
     <input name="retirement_years_factor" id="retirement_years_factor" type="number" value="{{$retirementNeeds->retirement_years_factor}}" class="form-control" readonly>
   </div>
 </div>

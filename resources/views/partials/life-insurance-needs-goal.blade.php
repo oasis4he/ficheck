@@ -55,6 +55,7 @@
     </select>
   </div>
   <div class="col-xs-6">
+    <label for="income_replacement_factor">Income Replacement Index</label>
     <input name="income_replacement_factor" id="income_replacement_factor"  type="number" value="{{$lifeInsurance->income_replacement_factor}}" class="form-control" readonly>
   </div>
 </div>

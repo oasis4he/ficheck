@@ -67,15 +67,9 @@
   </div>
 </div><!-- .row:has(:input) -->
 
-
-<div class="row">
-  <div class="form-group col-xs-12">
-    <label for="entered_desired_retirement_age">Choose the number closest to number of years until you plan to retire.</label>
-  </div>
-</div>
-
 <div class="row">
   <div class="col-xs-6">
+    <label for="entered_desired_retirement_age">Choose the number closest to number of years until you plan to retire.</label>
     <select name="entered_desired_retirement_age" id="entered_desired_retirement_age" class="form-control">
       <option></option>
 
@@ -85,6 +79,7 @@
     </select>
   </div>
   <div class="col-xs-6">
+    <label for="entered_retirement_age_factor">Annual Savings Needed Index</label>
     <input name="entered_retirement_age_factor" id="entered_retirement_age_factor" type="number" value="{{$retirementNeeds->entered_retirement_age_factor}}" class="form-control" readonly>
   </div>
 </div>

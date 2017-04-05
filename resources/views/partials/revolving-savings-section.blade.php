@@ -1,6 +1,6 @@
 <h2>{{$month}}</h2>
 
-<div class="body month" data-month="{{$key}}">
+<div class="body month" data-month="{{$key}}" data-month-name="{{$month}}">
   <div class="ficheck-section-body">
 
     @include('partials.revolving-savings-records')
