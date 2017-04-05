@@ -51,7 +51,10 @@
     }
 
     sumSections();
-    sumStatementSections();
+
+    if(onlyActual){
+      sumStatementSections();
+    }
 
     //loop through all sections and sum
     function sumSections()
@@ -125,7 +128,10 @@
       differenceRow.find(".valueInput").val(differenceValue);
 
       sumSections();
-      sumStatementSections();
+      
+      if(onlyActual){
+        sumStatementSections();
+      }
     });
 
     //function to sum total for a type
