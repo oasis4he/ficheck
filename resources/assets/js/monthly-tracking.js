@@ -296,7 +296,9 @@
              var inserted = false;
              var dropdownItem = false;
               $('.panel-month').each(function(index) {
-                if(data.records.tracked_month.month > $(this).text() && data.records.tracked_month.year >= $(this).siblings('.panel-year').text()) {
+
+                if(data.records.tracked_month.year > $(this).find('.dropdown-year').text() || (data.records.tracked_month.month > $(this).text() &&data.records.tracked_month.year == $(this).find('.dropdown-year').text())) {
+                  newPanel.find('.panel-body .body').append(entry);
                   newPanel.find('.panel-body .body').append(entry);
                   $(this).closest('.panel').before(newPanel);
 
@@ -333,11 +335,17 @@
               </a>`);
 
               $('.dropdown-item').each(function(index){
-                if(data.records.tracked_month.month > $(this).find('.dropdown-month').text() && data.records.tracked_month.year >= $(this).find('.dropdown-year').text()) {
+                if(data.records.tracked_month.year >= $(this).find('.dropdown-year').text()){
                   $(this).before(link);
-
                   dropdownItem = true;
                   return false;
+                } else {
+                  if(data.records.tracked_month.month > $(this).find('.dropdown-month').text() && data.records.tracked_month.year == $(this).find('.dropdown-year').text()) {
+
+                    dropdownItem = true;
+                    return false;
+                }
+
                 }
               });
 
