@@ -54,7 +54,14 @@
 
     saveEntry(form, true, true);
 
-  })
+  });
+
+  monthlyTrackingContainer.on('click', '[href=#newEntryModal]', function(){
+
+    $('.clicked').removeClass('clicked');
+    $(this).addClass('clicked');
+
+  });
 
   monthlyTrackingContainer.on('click', '[href=#delete]', function(){
     var form = $(this).closest('form');
@@ -69,6 +76,7 @@
           form.closest('.monthly-tracking-section').remove();
         }
 
+        form.next().find('[name=date]').focus();
         form.remove();
 
       },
@@ -106,7 +114,7 @@
     var collapse = $(this).attr('href');
     $(collapse).collapse('show');
     $('.panel-collapse:not('+collapse+')').collapse('hide');
-    $('#trackedMonthDropdown').html($(this).text() + "<i class='fa fa-chevron-down dropdown-caret' aria-hidden='true'></i>");
+    $('#trackedMonthDropdown').html($(this).find('span:not(.hide)').text() + "<i class='fa fa-chevron-down dropdown-caret' aria-hidden='true'></i>");
 
     $('html, body').animate({
         scrollTop: $(collapse).offset().top
@@ -182,7 +190,7 @@
    }
 
 
-   function saveEntry(form, openPanel, closeModal) {
+   function saveEntry(form, addForm, closeModal) {
      var data = form.serialize();
 
      $.ajax({
@@ -257,9 +265,11 @@
                      inserted = true;
 
                      if(form.hasClass('edit')){
+                       form.next().find('[name=date]').focus();
                        form.remove();
                      } else {
                        form[0].reset();
+                       form.find('input:disabled').removeAttr('disabled');
                      }
 
                      return false;
@@ -268,7 +278,13 @@
 
                  if(!inserted){
                    panel.find('.panel-collapse .panel-body .body').append(entry);
-                   form.remove();
+                   if(form.hasClass('edit')){
+                     form.next().find('[name=date]').focus();
+                     form.remove();
+                   } else {
+                     form[0].reset();
+                     form.find('input:disabled').removeAttr('disabled');
+                   }
                  }
                }
            } else {
@@ -280,9 +296,11 @@
                   $(this).closest('.panel').before(newPanel);
 
                   if(form.hasClass('edit')){
+                    form.next().find('[name=date]').focus();
                     form.remove();
                   } else {
                     form[0].reset();
+                    form.find('input:disabled').removeAttr('disabled');
                   }
 
                   inserted = true;
@@ -295,9 +313,11 @@
                 $('.panel-group').append(newPanel);
 
                 if(form.hasClass('edit')){
+                  form.next().find('[name=date]').focus();
                   form.remove();
                 } else {
                   form[0].reset();
+                  form.find('input:disabled').removeAttr('disabled');
                 }
               }
 
@@ -323,20 +343,15 @@
           }
          }
 
-         if(openPanel) {
-           var collapse = "#" + data.months[data.records.tracked_month.month] + "" + data.records.tracked_month.year;
-           $(collapse).collapse('show');
-           $('.panel-collapse:not('+collapse+')').collapse('hide');
-           $('#trackedMonthDropdown').html(data.months[data.records.tracked_month.month] + " " + data.records.tracked_month.year + "<i class='fa fa-chevron-down dropdown-caret' aria-hidden='true'></i>");
-
-           $('html, body').animate({
-             scrollTop: $(collapse).offset().top
-           }, 1000);
+         if(addForm) {
+           form.find('[name=date]').focus();
 
          }
 
          if(closeModal) {
            $('#newEntryModal').modal('hide');
+           $('.clicked').focus();
+           $('.clicked').removeClass('clicked');
          }
        },
        error: function(e) {

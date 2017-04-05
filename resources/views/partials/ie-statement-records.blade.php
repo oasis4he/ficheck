@@ -11,7 +11,7 @@
 
             <div class="form-group col-xs-6">
               <input name="values[{{$value->category}}][{{$value->id}}]"
-                      id="value_{{$value->id}}" type="number" step=".01"
+                      id="value_{{$value->id}}" type="number" step="1"
                       value="{{$value->sum}}" class="form-control valueInput">
 
             </div>
@@ -37,7 +37,7 @@
            <div class="form-group col-xs-6">
              <input name="values[{{$value['type']}}][{{$value['id']}}]"
                      {{$value['type'] == 'difference' ? 'readonly' : ''}}
-                     id="value_{{$value->id}}" type="number" step=".01"
+                     id="value_{{$value->id}}" type="number" step="1"
                      value="{{$value['value']}}" class="form-control valueInput">
 
            </div>
@@ -61,7 +61,7 @@
     </div>
 
     <div class="form-group col-xs-6">
-        <input name="" id="" type="number" step=".01"
+        <input name="" id="" type="number" step="1"
                 class="form-control valueInput">
     </div>
 </div>

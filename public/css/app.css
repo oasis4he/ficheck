@@ -187,7 +187,7 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
     .monthly-tracking .body form.active .control {
       display: block; }
   .monthly-tracking .body .changed [class^=col-] {
-    background-color: #f90; }
+    background-color: #fffeda; }
 
 .monthly-tracking #accordion .monthly-tracking-section {
   margin-top: 0px;
@@ -232,7 +232,7 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
   float: right; }
 
 .page-monthly-tracking .modal-body {
-  margin-bottom: 20px;
+  margin-bottom: 70px;
   padding: 0; }
   .page-monthly-tracking .modal-body .row {
     margin-left: 0;
@@ -393,7 +393,6 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
     .budget-view .budget-sums .budget-sum label {
       background: #fff;
       width: 100%;
-      height: 34px;
       padding-top: .5em; }
     .budget-view .budget-sums .budget-sum input {
       border-radius: 0; }

@@ -126,6 +126,10 @@
       var editableContainer = $(this).closest(".editable");
       var value = editableContainer.find("label[for='" + inputId + "']").text().trim();
 
+      if(revolvingSavings) {
+        var month = $(this).closest(".month").attr("data-month-name");
+      }
+
       $(this).toggleClass("glyphicon-ok");
       $(this).toggleClass("glyphicon-pencil");
 
@@ -137,7 +141,13 @@
       else
       {
         editableContainer.find(".input-group").toggleClass("deleteShow");
-        editableContainer.find(".input-group").prepend("<input type='text' name='names[" + recordId + "][name]' value='" + value + "' class='form-control'>");
+
+        if(revolvingSavings){
+          editableContainer.find(".input-group").prepend("<input type='text' name='names[" + recordId + "][name]' value='" + value + "' aria-label='" + month + " Item Description" + value +"' class='form-control'>");
+        } else {
+          editableContainer.find(".input-group").prepend("<input type='text' name='names[" + recordId + "][name]' value='" + value + "' id='" + recordId + "_name' class='form-control'>");
+        }
+
         editableContainer.find("label").hide();
       }
 
@@ -204,6 +214,7 @@
       if (revolvingSavings)
       {
         var month = $(thisElement).closest(".month").attr("data-month");
+        var monthName = $(thisElement).closest(".month").attr("data-month-name");
 
         var recordId =  "new_" + month + "_" + newInputCount;
       }
@@ -235,6 +246,7 @@
          else
          {
            clone.find("input").attr("name", "names[" + recordId + "][value]");
+           clone.find("input").attr("aria-label", monthName + " Item Amount ");
          }
 
 

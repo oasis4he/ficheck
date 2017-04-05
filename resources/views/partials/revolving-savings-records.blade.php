@@ -16,7 +16,7 @@
 
             <div class="form-group col-xs-6">
               <input name="names[{{$record['id']}}][value]"
-                      id="value_{{$record['id']}}" type="number" step=".01"
+                      id="value_{{$record['id']}}" type="number" step="1"
                       value="{{$record['value']}}" class="form-control valueInput">
 
             </div>
@@ -40,7 +40,7 @@
     </div>
 
     <div class="form-group col-xs-6">
-        <input name="" id="" type="number" step=".01"
+        <input name="" id="" type="number" step="1"
                 class="form-control valueInput">
     </div>
 </div>

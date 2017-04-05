@@ -20,8 +20,8 @@
 
         <div class="row new">
           <div class="col-xs-4"><input class="form-control" name="date" type="date" aria-labelledby="dateTrack" value="{{old('date')}}" @if($saved) autofocus @endif></div>
-          <div class="col-xs-2"><input class="form-control" name="in" type="number" step=".01" aria-labelledby="inTrack" value="{{old('in')}}"></div>
-          <div class="col-xs-2"><input class="form-control" name="out" name="out" type="number" step=".01" aria-labelledby="outTrack" value="{{old('out')}}"></div>
+          <div class="col-xs-2"><input class="form-control" name="in" type="number" step="1" aria-labelledby="inTrack" value="{{old('in')}}"></div>
+          <div class="col-xs-2"><input class="form-control" name="out" name="out" type="number" step="1" aria-labelledby="outTrack" value="{{old('out')}}"></div>
           <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" id="newCategory" value="{{old('category')}}"></div>
           <div class="control">
             <a href="#add" class="btn btn-success add" class="submit">Add</a>
@@ -41,7 +41,9 @@
               <a  class="dropdown-item" data-parent="#accordion" href="#{{$months[$trackedMonth->month]}}{{$trackedMonth->year}}">
                 <span class="dropdown-month hide">{{$trackedMonth->month}}</span>
                 <span class="dropdown-year hide">{{$trackedMonth->year}}</span>
-                {{$months[$trackedMonth->month]}} {{$trackedMonth->year}}
+                <span>
+                  {{$months[$trackedMonth->month]}} {{$trackedMonth->year}}
+                </span>
               </a>
             @endforeach
           </div>
@@ -62,7 +64,7 @@
                 <a data-toggle="collapse" data-parent="#accordion" href="#{{$months[$trackedMonth->month]}}{{$trackedMonth->year}}">
                   {{$months[$trackedMonth->month]}} {{$trackedMonth->year}}</a>
                   <!-- Trigger the modal with a button -->
-                  <a type="button" class="pull-right" data-toggle="modal" data-target="#newEntryModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                  <a type="button" class="pull-right" data-toggle="modal" data-target="#newEntryModal" href="#newEntryModal" aria-label="{{$trackedMonth}} add new Entry"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                 </h4>
               </div>
               <div id="{{$months[$trackedMonth->month]}}{{$trackedMonth->year}}" class="panel-collapse collapse @if($currentMonth == $trackedMonth->month && $currentYear == $trackedMonth->year) in @endif">
@@ -87,8 +89,8 @@
 
                         <div class="row">
                           <div class="col-xs-4"><input class="form-control" name="date" type="date" aria-labelledby="dateTrack" value="{{$record->occurred_at}}"></div>
-                          <div class="col-xs-2"><input class="form-control" name="in" type="text" aria-labelledby="inTrack" value="{{$record->value>0?$record->value:''}}"></div>
-                          <div class="col-xs-2"><input class="form-control" name="out" type="text" aria-labelledby="outTrack" value="{{$record->value<0?-1*$record->value:''}}"></div>
+                          <div class="col-xs-2"><input class="form-control" name="in" type="number"  step="1" aria-labelledby="inTrack" value="{{$record->value>0?$record->value:''}}"></div>
+                          <div class="col-xs-2"><input class="form-control" name="out" type="number" step="1" aria-labelledby="outTrack" value="{{$record->value<0?-1*$record->value:''}}"></div>
                           <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" value="{{$record->category}}"></div>
                           <div class="control">
                             <a href="#delete" class="btn btn-danger delete" class="submit">Delete</a>
@@ -127,8 +129,8 @@
 
                     <div class="row new">
                       <div class="col-xs-4"><input class="form-control" name="date" type="date" aria-labelledby="dateTrack" value="{{old('date')}}"></div>
-                      <div class="col-xs-2"><input class="form-control" name="in" type="number" step=".01" aria-labelledby="inTrack" value="{{old('in')}}"></div>
-                      <div class="col-xs-2"><input class="form-control" name="out" name="out" type="number" step=".01" aria-labelledby="outTrack" value="{{old('out')}}"></div>
+                      <div class="col-xs-2"><input class="form-control" name="in" type="number" step="1" aria-labelledby="inTrack" value="{{old('in')}}"></div>
+                      <div class="col-xs-2"><input class="form-control" name="out" name="out" type="number" step="1" aria-labelledby="outTrack" value="{{old('out')}}"></div>
                       <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" id="newCategory" value="{{old('category')}}"></div>
                       <div class="control">
                         <a href="#add" class="btn btn-success add" class="submit">Add</a>
