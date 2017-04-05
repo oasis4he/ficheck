@@ -15,7 +15,7 @@
     </select>
   </div>
   <div class="col-xs-6">
-    <input name="retirement_years_factor" id="retirement_years_factor" value="{{$retirementNeeds->retirement_years_factor}}" class="form-control" readonly>
+    <input name="retirement_years_factor" id="retirement_years_factor" type="number" value="{{$retirementNeeds->retirement_years_factor}}" class="form-control" readonly>
   </div>
 </div>
 
@@ -40,6 +40,6 @@
   <div class="form-group col-xs-12">
     <label for="future_value_of_savings_and_investments">Future Value of Savings/Investments</label>
     <br>
-    <input name="future_value_of_savings_and_investments" id="future_value_of_savings_and_investments" value="{{$retirementNeeds->future_value_of_savings_and_investments}}" class="form-control" readonly>
+    <input name="future_value_of_savings_and_investments" id="future_value_of_savings_and_investments"  type="number" value="{{$retirementNeeds->future_value_of_savings_and_investments}}" class="form-control" readonly>
   </div>
 </div>

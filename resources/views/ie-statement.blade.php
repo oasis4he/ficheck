@@ -56,11 +56,7 @@
               </div>
           </div>
         @endif
-        <div class="well">
-            This page relys on data from entries tracked in the Monthly Tracker.
-            You currently don't have any tracked records in your Monthly Tracker for the selected month.
-            Once you update the Monthly Tracker for the selected month, you will be able to access your {{$title}}.
-        </div>
+        @include('partials.monthly-tracker-message')
     @endif
 
     </div><!-- .ficheck-sections -->

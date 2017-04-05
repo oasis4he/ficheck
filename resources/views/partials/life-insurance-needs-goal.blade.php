@@ -1,7 +1,7 @@
 <div class="row">
   <div class="form-group col-xs-12">
     <label for="annual_income">What is your annual income?</label>
-    <input name="annual_income" id="annual_income" value="{{$lifeInsurance->annual_income}}" class="form-control">
+    <input name="annual_income" id="annual_income" type="number" value="{{$lifeInsurance->annual_income}}" class="form-control">
   </div>
 </div>
 
@@ -23,7 +23,7 @@
 <div class="row">
   <div class="form-group col-xs-12">
     <label for="insurance_needs">Insurance Needs</label>
-    <input name="insurance_needs" id="insurance_needs" value="{{$lifeInsurance->insurance_needs}}" class="form-control" readonly>
+    <input name="insurance_needs" id="insurance_needs" type="number" value="{{$lifeInsurance->insurance_needs}}" class="form-control" readonly>
   </div>
 </div>
 
@@ -55,7 +55,7 @@
     </select>
   </div>
   <div class="col-xs-6">
-    <input name="income_replacement_factor" id="income_replacement_factor" value="{{$lifeInsurance->income_replacement_factor}}" class="form-control" readonly>
+    <input name="income_replacement_factor" id="income_replacement_factor"  type="number" value="{{$lifeInsurance->income_replacement_factor}}" class="form-control" readonly>
   </div>
 </div>
 
@@ -79,6 +79,6 @@
   <div class="form-group col-xs-12">
     <label for="total_income_replacement">Total for Income Replacement</label>
     <br>
-    <input name="total_income_replacement" id="total_income_replacement" value="{{$lifeInsurance->total_income_replacement}}" step=".01" class="form-control" readonly>
+    <input name="total_income_replacement" id="total_income_replacement" type="number" value="{{$lifeInsurance->total_income_replacement}}" step="1" class="form-control" readonly>
   </div>
 </div>

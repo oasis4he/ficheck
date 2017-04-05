@@ -27,11 +27,7 @@
           </div><!-- .ficheck-section-type -->
         @endforeach
       @else
-          <div class="well">
-              This page relys on data from entries tracked in the Monthly Tracker.
-              You currently don't have any tracked records in your Monthly Tracker.
-              Once you start using the Monthly Tracker, you will be able to access your Monthly Budget.
-          </div>
+          @include('partials.monthly-tracker-message')
       @endif
 
     </div><!-- .ficheck-sections -->
