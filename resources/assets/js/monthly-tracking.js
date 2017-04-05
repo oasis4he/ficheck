@@ -220,8 +220,8 @@
 
              <div class="row">
                <div class="col-xs-4"><input class="form-control" name="date" type="date" aria-labelledby="dateTrack" value="`+ data.records.occurred_at+`"></div>
-               <div class="col-xs-2"><input class="form-control" name="in" type="text" aria-labelledby="inTrack" value="`+ (parseFloat(data.records.value) > 0 ? parseFloat(data.records.value) : "") +`"></div>
-               <div class="col-xs-2"><input class="form-control" name="out" type="text" aria-labelledby="inTrack" value="`+ (parseFloat(data.records.value) < 0 ? parseFloat(data.records.value) : "") +`"></div>
+               <div class="col-xs-2"><input class="form-control" name="in" type="number" step="1" aria-labelledby="inTrack" value="`+ (parseFloat(data.records.value) > 0 ? parseFloat(data.records.value) : "") +`"></div>
+               <div class="col-xs-2"><input class="form-control" name="out" type="number" step="1" aria-labelledby="inTrack" value="`+ (parseFloat(data.records.value) < 0 ? parseFloat(data.records.value) : "") +`"></div>
                <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" value="`+ data.records.category +`"></div>
                <div class="control">
                  <a href="#delete" class="btn btn-danger delete" class="submit">Delete</a>
