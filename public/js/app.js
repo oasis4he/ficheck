@@ -685,7 +685,8 @@
     $(this).closest('form').addClass('active');
   });
 
-  $('.dropdown-menu a').click(function() {
+  monthlyTrackingContainer.on('click', '.dropdown-item', function() {
+    console.log('here');
     var collapse = $(this).attr('href');
     $(collapse).collapse('show');
     $('.panel-collapse:not('+collapse+')').collapse('hide');
@@ -870,7 +871,7 @@
              var inserted = false;
              var dropdownItem = false;
               $('.panel-month').each(function(index) {
-                if(data.records.tracked_month.month > $(this).text() && data.records.tracked_month.year == $(this).siblings('.panel-year').text()) {
+                if(data.records.tracked_month.month > $(this).text() && data.records.tracked_month.year >= $(this).siblings('.panel-year').text()) {
                   newPanel.find('.panel-body .body').append(entry);
                   $(this).closest('.panel').before(newPanel);
 
@@ -900,24 +901,23 @@
                 }
               }
 
-              $('.dropdown-item').each(function(index){
-                if(data.records.tracked_month.month > $(this).find('.dropdown-month').text() && data.records.tracked_month.year == $(this).find('.dropdown-year').text()) {
-                  $(this).before(`<a  class="dropdown-item" data-parent="#accordion" href="`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year +`{{$trackedMonth->year}}">
-                    <span class="dropdown-month hide">`+data.records.tracked_month.month+`</span>
-                    <span class="dropdown-year hide">`+data.records.tracked_month.year+`</span>
-                      `+ data.months[data.records.tracked_month.month] +` `+ data.records.tracked_month.year+`
-                  </a>`);
+              var link = $(`<a  class="dropdown-item" data-parent="#accordion" href="#`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year +`">
+              <span class="dropdown-month hide">`+data.records.tracked_month.month+`</span>
+              <span class="dropdown-year hide">`+data.records.tracked_month.year+`</span>
+              <span>`+ data.months[data.records.tracked_month.month] +` `+ data.records.tracked_month.year+`</span>
+              </a>`);
 
-                  dropdowmItem = true;
+              $('.dropdown-item').each(function(index){
+                if(data.records.tracked_month.month > $(this).find('.dropdown-month').text() && data.records.tracked_month.year >= $(this).find('.dropdown-year').text()) {
+                  $(this).before(link);
+
+                  dropdownItem = true;
+                  return false;
                 }
               });
 
               if(!dropdownItem) {
-                $('.dropdown-menu').append(`<a  class="dropdown-item" data-parent="#accordion" href="`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year +`{{$trackedMonth->year}}">
-                  <span class="dropdown-month hide">`+data.records.tracked_month.month+`</span>
-                  <span class="dropdown-year hide">`+data.records.tracked_month.year+`</span>
-                    `+ data.months[data.records.tracked_month.month] +` `+ data.records.tracked_month.year+`
-                </a>`)
+                $('.dropdown-menu').append(link)
               }
           }
          }
