@@ -242,10 +242,10 @@
                <a data-toggle="collapse" data-parent="#accordion" href="#`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year+`" aria-expanded="false" class="collapsed">
                  `+ data.months[data.records.tracked_month.month] +` `+data.records.tracked_month.year+`</a>
                  <!-- Trigger the modal with a button -->
-                 <a type="button" class="pull-right" data-toggle="modal" data-target="#newEntryModal" href="#newEntryModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                 <a type="button" class="pull-right" data-toggle="modal" data-target="#newEntryModal" href="#newEntryModal" aria-label="` + data.months[data.records.tracked_month.month] +` add new Entry"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                </h4>
              </div>
-             <div id="`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year+`" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+             <div id="`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year+`" class="panel-collapse collapse" aria-expanded="false">
                <div class="panel-body">
                  <div class="row header">
                    <div class="col-xs-4" id="dateTrack">Date</div>
