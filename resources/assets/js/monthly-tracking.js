@@ -242,10 +242,10 @@
                <a data-toggle="collapse" data-parent="#accordion" href="#`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year+`" aria-expanded="false" class="collapsed">
                  `+ data.months[data.records.tracked_month.month] +` `+data.records.tracked_month.year+`</a>
                  <!-- Trigger the modal with a button -->
-                 <a type="button" class="pull-right" data-toggle="modal" data-target="#newEntryModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                 <a type="button" class="pull-right" data-toggle="modal" data-target="#newEntryModal" href="#newEntryModal" aria-label="` + data.months[data.records.tracked_month.month] +` add new Entry"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                </h4>
              </div>
-             <div id="`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year+`" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+             <div id="`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year+`" class="panel-collapse collapse" aria-expanded="false">
                <div class="panel-body">
                  <div class="row header">
                    <div class="col-xs-4" id="dateTrack">Date</div>
@@ -297,8 +297,7 @@
              var dropdownItem = false;
               $('.panel-month').each(function(index) {
 
-                if(data.records.tracked_month.year > $(this).find('.dropdown-year').text() || (data.records.tracked_month.month > $(this).text() &&data.records.tracked_month.year == $(this).find('.dropdown-year').text())) {
-                  newPanel.find('.panel-body .body').append(entry);
+                if(data.records.tracked_month.year > $(this).siblings('.panel-year').text() || (data.records.tracked_month.month > $(this).text() && data.records.tracked_month.year == $(this).siblings('.panel-year').text())) {
                   newPanel.find('.panel-body .body').append(entry);
                   $(this).closest('.panel').before(newPanel);
 
@@ -335,18 +334,16 @@
               </a>`);
 
               $('.dropdown-item').each(function(index){
-                if(data.records.tracked_month.year >= $(this).find('.dropdown-year').text()){
+                if(data.records.tracked_month.year > $(this).find('.dropdown-year').text()){
                   $(this).before(link);
                   dropdownItem = true;
                   return false;
-                } else {
-                  if(data.records.tracked_month.month > $(this).find('.dropdown-month').text() && data.records.tracked_month.year == $(this).find('.dropdown-year').text()) {
-
+                } else if(data.records.tracked_month.month > $(this).find('.dropdown-month').text() && data.records.tracked_month.year == $(this).find('.dropdown-year').text()) {
+                    $(this).before(link);
                     dropdownItem = true;
                     return false;
                 }
 
-                }
               });
 
               if(!dropdownItem) {
