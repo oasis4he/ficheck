@@ -663,7 +663,7 @@
       },
       error: function(e) {
         $('#errorModal .modal-title').text('Error Deleting Entry');
-        $('#errorModal .modal-body p').text(e.message);
+        $('#errorModal .modal-body p').text('There was an issue deleting this entry. Please try again.');
         $('#errorModal').modal('show');
       }
     });
@@ -692,7 +692,6 @@
   });
 
   monthlyTrackingContainer.on('click', '.dropdown-item', function() {
-    console.log('here');
     var collapse = $(this).attr('href');
     $(collapse).collapse('show');
     $('.panel-collapse:not('+collapse+')').collapse('hide');
@@ -796,6 +795,7 @@
 
 
          if(data.records.tracked_month.id != month) {
+           var oldPanel = $('#' + month);
            var panel = $('#' + data.records.tracked_month.id)
 
            var entry = `<form method="post" class="edit active">
@@ -853,6 +853,9 @@
                      if(form.hasClass('edit')){
                        form.next().find('[name=date]').focus();
                        form.remove();
+                       if(!oldPanel.find('form').length) {
+                         oldPanel.remove();
+                       }
                      } else {
                        form[0].reset();
                        form.find('input:disabled').removeAttr('disabled');
@@ -867,6 +870,9 @@
                    if(form.hasClass('edit')){
                      form.next().find('[name=date]').focus();
                      form.remove();
+                     if(!oldPanel.find('form').length) {
+                       oldPanel.remove();
+                     }
                    } else {
                      form[0].reset();
                      form.find('input:disabled').removeAttr('disabled');
@@ -885,6 +891,9 @@
                   if(form.hasClass('edit')){
                     form.next().find('[name=date]').focus();
                     form.remove();
+                    if(!oldPanel.find('form').length) {
+                      oldPanel.remove();
+                    }
                   } else {
                     form[0].reset();
                     form.find('input:disabled').removeAttr('disabled');
@@ -902,6 +911,9 @@
                 if(form.hasClass('edit')){
                   form.next().find('[name=date]').focus();
                   form.remove();
+                  if(!oldPanel.find('form').length) {
+                    oldPanel.remove();
+                  }
                 } else {
                   form[0].reset();
                   form.find('input:disabled').removeAttr('disabled');
@@ -954,125 +966,6 @@
    }
 
 
-}(jQuery));
-
-
-(function($){
-  $(function(){
-    var expenses = $('.life-insurance-type-expenses');
-
-    $(expenses).on('change', 'input', function() {
-        var wrapper = $(this).closest('.ficheck-sections');
-
-        var funeralExpense = wrapper.find("[name=funeral_expenses]").val();
-        var debt = wrapper.find("[name=debt]").val();
-        var otherExpenses = wrapper.find("[name=other_expenses]").val();
-
-        var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]').val();
-
-        var totalExpenses = wrapper.find('[name=total_expenses]');
-        var totalExpensesValue = roundedValue(Number(funeralExpense) + Number(debt) + Number(otherExpenses) + Number(enteredTotalIncomeForReplacement));
-        totalExpenses.val(totalExpensesValue);
-
-        var enteredTotalExpenses = $('[name=entered_total_expenses]');
-        enteredTotalExpenses.val(totalExpenses.val());
-        enteredTotalExpenses.trigger("change");
-
-    });
-
-  });
-}(jQuery));
-
-
-(function($){
-  $(function(){
-    var fundsFromOtherSources = $('.life-insurance-type-other-sources');
-    $(fundsFromOtherSources).on('change', 'input', function() {
-        var wrapper = $(this).closest('.ficheck-section-type');
-
-        var governmentBenefits = (wrapper.find('[name=government_benefits]').val());
-        var otherFunds = (wrapper.find('[name=other_funds]').val());
-
-        var totalFundsFromOtherSources = (wrapper.find('[name=total_funds_from_other_sources]'));
-        var totalFundsValue = roundedValue(Number(governmentBenefits) + Number(otherFunds))
-        totalFundsFromOtherSources.val(totalFundsValue);
-
-        var enteredTotalFundsFromOtherSources = $('[name=entered_total_funds_from_other_sources]');
-        enteredTotalFundsFromOtherSources.val(totalFundsFromOtherSources.val());
-        enteredTotalFundsFromOtherSources.trigger("change");
-
-    });
-
-  });
-}(jQuery));
-
-
-(function($){
-  $(function(){
-    var insuranceNeeded = $('.life-insurance-type-insurance-needed');
-
-    $(insuranceNeeded).on('change', 'input', function() {
-        var wrapper = $(this).closest('.ficheck-section-type');
-
-        var enteredTotalExpenses = wrapper.find('[name=entered_total_expenses]').val();
-        var enteredTotalFundsFromOtherSources = wrapper.find('[name=entered_total_funds_from_other_sources]').val();
-
-        var insuranceNeededValue = roundedValue(Number(enteredTotalExpenses) - Number(enteredTotalFundsFromOtherSources));
-
-        wrapper.find("[name=insurance_needed]").val(insuranceNeededValue);
-    });
-  });
-}(jQuery));
-
-(function($){
-  $(function(){
-    var lifeInsurace = $('.life-insurance-type-income-replacement');
-    var lifeInsuranceContainer = $('.life-insurance');
-
-    $(lifeInsurace).on('change', 'input', function() {
-        var wrapper = $(this).closest('.ficheck-section-type');
-
-        var enteredAnnualIncome = (wrapper.find('[name=annual_income]').val() || 0) / 1;
-
-        var insuranceNeeds = $('[name="insurance_needs"]', wrapper);
-
-        var insureanceNeedValue = roundedValue(enteredAnnualIncome * .75);
-
-        insuranceNeeds.val(insureanceNeedValue);
-
-        var totalIncomeForReplacement = wrapper.find('[name=total_income_replacement]');
-        var factorElement = $('[name="income_replacement_factor"]', wrapper);
-
-        var totalIncomeReplacementValue = roundedValue(insuranceNeeds.val() * factorElement.val());
-
-        totalIncomeForReplacement.val(totalIncomeReplacementValue);
-
-        var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]');
-
-        enteredTotalIncomeForReplacement.val(totalIncomeForReplacement.val());
-        enteredTotalIncomeForReplacement.trigger("change");
-    });
-
-    $(lifeInsurace).on('change', 'select', function() {
-        var wrapper = $(this).closest('.ficheck-section-type');
-
-        var value = $(this).val();
-
-        var factor = $(':selected', this).data('factor') / 1;
-
-        var factorElement = $('[name="income_replacement_factor"]', wrapper);
-
-        factorElement.val(factor).trigger('change');
-
-    });
-
-    lifeInsuranceContainer.on('change', 'input', function() {
-
-      $(this).val(roundedValue($(this).val()));
-
-    });
-
-  });
 }(jQuery));
 
 
@@ -1209,6 +1102,125 @@
 
         wrapper.next('.ficheck-section-type').find('[name="retirement_years_factor"]').trigger('change');
     });
+  });
+}(jQuery));
+
+
+(function($){
+  $(function(){
+    var expenses = $('.life-insurance-type-expenses');
+
+    $(expenses).on('change', 'input', function() {
+        var wrapper = $(this).closest('.ficheck-sections');
+
+        var funeralExpense = wrapper.find("[name=funeral_expenses]").val();
+        var debt = wrapper.find("[name=debt]").val();
+        var otherExpenses = wrapper.find("[name=other_expenses]").val();
+
+        var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]').val();
+
+        var totalExpenses = wrapper.find('[name=total_expenses]');
+        var totalExpensesValue = roundedValue(Number(funeralExpense) + Number(debt) + Number(otherExpenses) + Number(enteredTotalIncomeForReplacement));
+        totalExpenses.val(totalExpensesValue);
+
+        var enteredTotalExpenses = $('[name=entered_total_expenses]');
+        enteredTotalExpenses.val(totalExpenses.val());
+        enteredTotalExpenses.trigger("change");
+
+    });
+
+  });
+}(jQuery));
+
+
+(function($){
+  $(function(){
+    var fundsFromOtherSources = $('.life-insurance-type-other-sources');
+    $(fundsFromOtherSources).on('change', 'input', function() {
+        var wrapper = $(this).closest('.ficheck-section-type');
+
+        var governmentBenefits = (wrapper.find('[name=government_benefits]').val());
+        var otherFunds = (wrapper.find('[name=other_funds]').val());
+
+        var totalFundsFromOtherSources = (wrapper.find('[name=total_funds_from_other_sources]'));
+        var totalFundsValue = roundedValue(Number(governmentBenefits) + Number(otherFunds))
+        totalFundsFromOtherSources.val(totalFundsValue);
+
+        var enteredTotalFundsFromOtherSources = $('[name=entered_total_funds_from_other_sources]');
+        enteredTotalFundsFromOtherSources.val(totalFundsFromOtherSources.val());
+        enteredTotalFundsFromOtherSources.trigger("change");
+
+    });
+
+  });
+}(jQuery));
+
+
+(function($){
+  $(function(){
+    var insuranceNeeded = $('.life-insurance-type-insurance-needed');
+
+    $(insuranceNeeded).on('change', 'input', function() {
+        var wrapper = $(this).closest('.ficheck-section-type');
+
+        var enteredTotalExpenses = wrapper.find('[name=entered_total_expenses]').val();
+        var enteredTotalFundsFromOtherSources = wrapper.find('[name=entered_total_funds_from_other_sources]').val();
+
+        var insuranceNeededValue = roundedValue(Number(enteredTotalExpenses) - Number(enteredTotalFundsFromOtherSources));
+
+        wrapper.find("[name=insurance_needed]").val(insuranceNeededValue);
+    });
+  });
+}(jQuery));
+
+(function($){
+  $(function(){
+    var lifeInsurace = $('.life-insurance-type-income-replacement');
+    var lifeInsuranceContainer = $('.life-insurance');
+
+    $(lifeInsurace).on('change', 'input', function() {
+        var wrapper = $(this).closest('.ficheck-section-type');
+
+        var enteredAnnualIncome = (wrapper.find('[name=annual_income]').val() || 0) / 1;
+
+        var insuranceNeeds = $('[name="insurance_needs"]', wrapper);
+
+        var insureanceNeedValue = roundedValue(enteredAnnualIncome * .75);
+
+        insuranceNeeds.val(insureanceNeedValue);
+
+        var totalIncomeForReplacement = wrapper.find('[name=total_income_replacement]');
+        var factorElement = $('[name="income_replacement_factor"]', wrapper);
+
+        var totalIncomeReplacementValue = roundedValue(insuranceNeeds.val() * factorElement.val());
+
+        totalIncomeForReplacement.val(totalIncomeReplacementValue);
+
+        var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]');
+
+        enteredTotalIncomeForReplacement.val(totalIncomeForReplacement.val());
+        enteredTotalIncomeForReplacement.trigger("change");
+    });
+
+    $(lifeInsurace).on('change', 'select', function() {
+        var wrapper = $(this).closest('.ficheck-section-type');
+
+        var value = $(this).val();
+
+        var factor = $(':selected', this).data('factor') / 1;
+
+        var factorElement = $('[name="income_replacement_factor"]', wrapper);
+
+        factorElement.val(factor).trigger('change');
+
+    });
+
+    lifeInsuranceContainer.on('change', 'input', function() {
+
+      $(this).val(roundedValue($(this).val()));
+
+    });
+
   });
 }(jQuery));
 
