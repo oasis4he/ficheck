@@ -82,7 +82,7 @@
       },
       error: function(e) {
         $('#errorModal .modal-title').text('Error Deleting Entry');
-        $('#errorModal .modal-body p').text(e.message);
+        $('#errorModal .modal-body p').text('There was an issue deleting this entry. Please try again.');
         $('#errorModal').modal('show');
       }
     });
@@ -111,7 +111,6 @@
   });
 
   monthlyTrackingContainer.on('click', '.dropdown-item', function() {
-    console.log('here');
     var collapse = $(this).attr('href');
     $(collapse).collapse('show');
     $('.panel-collapse:not('+collapse+')').collapse('hide');
@@ -215,6 +214,7 @@
 
 
          if(data.records.tracked_month.id != month) {
+           var oldPanel = $('#' + month);
            var panel = $('#' + data.records.tracked_month.id)
 
            var entry = `<form method="post" class="edit active">
@@ -272,6 +272,9 @@
                      if(form.hasClass('edit')){
                        form.next().find('[name=date]').focus();
                        form.remove();
+                       if(!oldPanel.find('form').length) {
+                         oldPanel.remove();
+                       }
                      } else {
                        form[0].reset();
                        form.find('input:disabled').removeAttr('disabled');
@@ -286,6 +289,9 @@
                    if(form.hasClass('edit')){
                      form.next().find('[name=date]').focus();
                      form.remove();
+                     if(!oldPanel.find('form').length) {
+                       oldPanel.remove();
+                     }
                    } else {
                      form[0].reset();
                      form.find('input:disabled').removeAttr('disabled');
@@ -304,6 +310,9 @@
                   if(form.hasClass('edit')){
                     form.next().find('[name=date]').focus();
                     form.remove();
+                    if(!oldPanel.find('form').length) {
+                      oldPanel.remove();
+                    }
                   } else {
                     form[0].reset();
                     form.find('input:disabled').removeAttr('disabled');
@@ -321,6 +330,9 @@
                 if(form.hasClass('edit')){
                   form.next().find('[name=date]').focus();
                   form.remove();
+                  if(!oldPanel.find('form').length) {
+                    oldPanel.remove();
+                  }
                 } else {
                   form[0].reset();
                   form.find('input:disabled').removeAttr('disabled');
