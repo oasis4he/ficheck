@@ -95,7 +95,7 @@
       differenceRow.find(".valueInput").val(differenceValue);
 
       sumSections();
-      
+
       if(onlyActual){
         sumStatementSections();
       }
@@ -213,6 +213,8 @@
         ];
       }
 
+      var calculator = $('[name=calculator').val();
+
 
       var category = getCategoryForSave(thisElement);
       var type = getTypeForSave(thisElement);
@@ -229,8 +231,7 @@
         var recordId =  "new_" + category + "_" + type + "_" + newInputCount;
       }
 
-      for (var i = 0; i < rowTypes.length; i++) {
-         var inputId = rowTypes[i] + "_" + newInputCount;
+         var inputId = newInputCount;
 
          var template = $(thisElement).closest(".monthly-budget-type").find(".valueTypeTemplate");
          template.find("input").attr("value", $(thisElement).find("input").val());
@@ -245,30 +246,26 @@
          clone.find(".editLabel").attr("input-id", "value_" + inputId);
          clone.find("input").attr("id", "value_" + inputId);
 
-         if (!revolvingSavings)
+         if(calculator == 'net-worth'){
+           clone.find("input").attr("name", "names[" + recordId + "][actual_" + inputId + "][values]");
+         } else if (!revolvingSavings)
          {
-           clone.find("input").attr("name", "names[" + recordId + "][" + inputId + "][values]");
+           clone.find(".planned input").attr("name", "names[" + recordId + "][planned_" + inputId + "][values]");
+           clone.find(".actual input").attr("name", "names[" + recordId + "][actual_" + inputId + "][values]");
+           clone.find(".difference input").attr("name", "names[" + recordId + "][difference_" + inputId + "][values]");
          }
          else
          {
-           clone.find("input").attr("name", "names[" + recordId + "][value]");
+           clone.find(".input").attr("name", "names[" + recordId + "][value]");
            clone.find("input").attr("aria-label", monthName + " Item Amount ");
-         }
-
-
-         if (rowTypes[i] == "difference")
-         {
-           clone.find("input").attr("readonly", "readonly");
          }
 
          //Set up  row to clone
          clone.removeClass("valueTypeTemplate");
-         clone.addClass(rowTypes[i]);
          $(thisElement).before(clone);
 
          template.find("input").removeAttr("readonly");
 
-      }
 
       //add active to active class
       $(".valueType." + activeClass).addClass(active);
@@ -374,7 +371,7 @@
 
         $("#expenseTotal").val(expenseTotal.toFixed(2));
 
-        $("#netTotal").val((incomeTotal - expenseTotal).toFixed(2));
+        $("#netTotal").val((incomeTotal + expenseTotal).toFixed(2));
 
       });
 

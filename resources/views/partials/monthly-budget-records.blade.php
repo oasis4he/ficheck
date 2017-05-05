@@ -27,8 +27,8 @@
 
 <!-- Template for new fields -->
 <div class="row valueType valueTypeTemplate" data-record-id="">
-    <div class="form-group col-xs-6 text-left editable">
-
+    <div class="form-group col-xs-3 text-left editable">
+      <span class="editLabel glyphicon glyphicon-pencil" record-id="" input-id="" aria-label="Edit Label"></span>
         <label for="">
 
         </label>
@@ -37,8 +37,17 @@
         </div>
     </div>
 
-    <div class="form-group col-xs-6">
-        <input name="" id="" type="number" step="1"
+    <div class="form-group col-xs-3 valueContainer planned">
+        <input name="new_planned" id="new_planned" type="number" step="1"
                 class="form-control valueInput">
     </div>
+    <div class="form-group col-xs-3 valueContainer actual">
+        <input name="new_planned" id="new_planned" type="number" step="1"
+                class="form-control valueInput">
+    </div>
+    <div class="form-group col-xs-3 valueContainer difference">
+        <input name="new_planned" id="new_planned" type="number" step="1" readonly=""
+                class="form-control valueInput">
+    </div>
+
 </div>

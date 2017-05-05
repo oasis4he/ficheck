@@ -18,10 +18,14 @@
         var goal = Math.round(additionalAnnualIncomeRequired * factor * 100) / 100;
 
         var retirementGoal = $('[name="retirement_goal"]', wrapper);
-        retirementGoal.val(goal);
+        var oldGoal = parseFloat(retirementGoal.val());
+        if(oldGoal != goal) {
+          retirementGoal.val(goal);
+          var annualSavingsRetirementGoal = $('[name="entered_retirement_goal"]');
+          annualSavingsRetirementGoal.val(goal).trigger('change');
 
-        var annualSavingsRetirementGoal = $('[name="entered_retirement_goal"]');
-        annualSavingsRetirementGoal.val(goal);
+        }
+
     });
 
     $(retirementGoals).on('change', 'select', function() {

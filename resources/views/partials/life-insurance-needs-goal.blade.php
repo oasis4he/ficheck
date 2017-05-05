@@ -1,6 +1,6 @@
 <div class="row">
   <div class="form-group col-xs-12">
-    <label for="annual_income">What is your annual income?</label>
+    <label for="annual_income">How much do your dependents need for annual income if you were gone?</label>
     <input name="annual_income" id="annual_income" type="number" value="{{$lifeInsurance->annual_income}}" class="form-control">
   </div>
 </div>
@@ -19,29 +19,6 @@
     </div>
   </div>
 </div><!-- .row:has(:input) -->
-
-<div class="row">
-  <div class="form-group col-xs-12">
-    <label for="insurance_needs">Insurance Needs</label>
-    <input name="insurance_needs" id="insurance_needs" type="number" value="{{$lifeInsurance->insurance_needs}}" class="form-control" readonly>
-  </div>
-</div>
-
-<div class="row">
-  <div class="form-group col-xs-12">
-    <div class="help-controls">
-      <a href="#show-help">show help</a>
-      <a href="#hide-help" class="hide">hide help</a>
-    </div>
-
-  </div>
-  <div class="description">
-    <div class="description-content">
-      Insurance needs are calculated based on 75% of your annual income.
-    </div>
-  </div>
-</div><!-- .row:has(:input) -->
-
 
 <div class="row">
   <div class="col-xs-6">
