@@ -4,6 +4,33 @@
 // reset button on monthly tracker, with are you sure dialog
 // stage for george
 
+
+//http://stackoverflow.com/questions/15762768/javascript-math-round-to-two-decimal-places
+  function roundTo(n, digits) {
+     if (digits === undefined) {
+       digits = 0;
+     }
+
+     var multiplicator = Math.pow(10, digits);
+     n = parseFloat((n * multiplicator).toFixed(11));
+     var test =(Math.round(n) / multiplicator);
+     return +(test.toFixed(2));
+   }
+
+   function roundedValue(number) {
+     var value = roundTo(number, 2);
+     if((value.toString().split('.')[1] || []).length == 1){
+       value = value + "0";
+     }
+     return value;
+   }
+
+   $('body').on('change', '[type=number]', function() {
+
+     $(this).val(roundedValue($(this).val()));
+
+   });
+
 (function($){
   $(function(){
 
@@ -25,13 +52,26 @@
 
     sumSections();
 
+    if(onlyActual){
+      sumStatementSections();
+    }
+
     //loop through all sections and sum
     function sumSections()
     {
       var sections = $(".monthly-budget-type");
       $.each(sections, function(index, section){
-        $.each($(section).find(".valueType"), function(index, element){
+        $.each($(section).find(".valueType .valueContainer"), function(index, element){
           sumTotal($(element));
+        })
+      });
+    }
+
+    function sumStatementSections() {
+      var sections = $(".monthly-budget-type");
+      $.each(sections, function(index, section){
+        $.each($(section).find(".valueType"), function(index, element){
+          sumStatmentTotal($(element));
         })
       });
     }
@@ -74,19 +114,24 @@
       var row = $(this).parents(".valueType");
       var recordId = $(row).attr("data-record-id");
       //get planned, actual and difference rows
-      var plannedRow = $(".budget-view ." + planned + ".valueType[data-record-id='" + recordId + "']");
-      var actualRow = $(".budget-view ." + actual + ".valueType[data-record-id='" + recordId + "']");
-      var differenceRow = $(".budget-view ." + difference + ".valueType[data-record-id='" + recordId + "']");
+      var plannedRow = $(".budget-view .valueType[data-record-id='" + recordId + "'] ." + planned );
+      var actualRow = $(".budget-view .valueType[data-record-id='" + recordId + "'] ." + actual);
+      var differenceRow = $(".budget-view .valueType[data-record-id='" + recordId + "'] ." + difference );
 
       //get planned and actual values
       var plannedValue = plannedRow.find(".valueInput").val();
       var actualValue = actualRow.find(".valueInput").val();
 
       //update difference value based on planned and actual values
-      differenceRow.find(".valueInput").val(plannedValue - actualValue);
+      var differenceValue = roundedValue(plannedValue - actualValue);
 
-      sumTotal(row);
-      sumTotal(differenceRow);
+      differenceRow.find(".valueInput").val(differenceValue);
+
+      sumSections();
+
+      if(onlyActual){
+        sumStatementSections();
+      }
     });
 
     //function to sum total for a type
@@ -97,7 +142,7 @@
       {
         var monthlyBudgetType = element.closest(".monthly-budget-type");
 
-        var inputsToUpdate = monthlyBudgetType.find(".valueType." + type);
+        var inputsToUpdate = monthlyBudgetType.find(".valueType ." + type);
 
         var total = 0;
 
@@ -120,6 +165,10 @@
       var editableContainer = $(this).closest(".editable");
       var value = editableContainer.find("label[for='" + inputId + "']").text().trim();
 
+      if(revolvingSavings) {
+        var month = $(this).closest(".month").attr("data-month-name");
+      }
+
       $(this).toggleClass("glyphicon-ok");
       $(this).toggleClass("glyphicon-pencil");
 
@@ -131,7 +180,13 @@
       else
       {
         editableContainer.find(".input-group").toggleClass("deleteShow");
-        editableContainer.find(".input-group").prepend("<input type='text' name='names[" + recordId + "][name]' value='" + value + "' class='form-control'>");
+
+        if(revolvingSavings){
+          editableContainer.find(".input-group").prepend("<input type='text' name='names[" + recordId + "][name]' value='" + value + "' aria-label='" + month + " Item Description" + value +"' class='form-control'>");
+        } else {
+          editableContainer.find(".input-group").prepend("<input type='text' name='names[" + recordId + "][name]' value='" + value + "' id='" + recordId + "_name' class='form-control'>");
+        }
+
         editableContainer.find("label").hide();
       }
 
@@ -191,6 +246,8 @@
         ];
       }
 
+      var calculator = $('[name=calculator').val();
+
 
       var category = getCategoryForSave(thisElement);
       var type = getTypeForSave(thisElement);
@@ -198,6 +255,7 @@
       if (revolvingSavings)
       {
         var month = $(thisElement).closest(".month").attr("data-month");
+        var monthName = $(thisElement).closest(".month").attr("data-month-name");
 
         var recordId =  "new_" + month + "_" + newInputCount;
       }
@@ -206,8 +264,7 @@
         var recordId =  "new_" + category + "_" + type + "_" + newInputCount;
       }
 
-      for (var i = 0; i < rowTypes.length; i++) {
-         var inputId = rowTypes[i] + "_" + newInputCount;
+         var inputId = newInputCount;
 
          var template = $(thisElement).closest(".monthly-budget-type").find(".valueTypeTemplate");
          template.find("input").attr("value", $(thisElement).find("input").val());
@@ -222,29 +279,26 @@
          clone.find(".editLabel").attr("input-id", "value_" + inputId);
          clone.find("input").attr("id", "value_" + inputId);
 
-         if (!revolvingSavings)
+         if(calculator == 'net-worth'){
+           clone.find("input").attr("name", "names[" + recordId + "][actual_" + inputId + "][values]");
+         } else if (!revolvingSavings)
          {
-           clone.find("input").attr("name", "names[" + recordId + "][" + inputId + "][values]");
+           clone.find(".planned input").attr("name", "names[" + recordId + "][planned_" + inputId + "][values]");
+           clone.find(".actual input").attr("name", "names[" + recordId + "][actual_" + inputId + "][values]");
+           clone.find(".difference input").attr("name", "names[" + recordId + "][difference_" + inputId + "][values]");
          }
          else
          {
-           clone.find("input").attr("name", "names[" + recordId + "][value]");
-         }
-
-
-         if (rowTypes[i] == "difference")
-         {
-           clone.find("input").attr("readonly", "readonly");
+           clone.find(".input").attr("name", "names[" + recordId + "][value]");
+           clone.find("input").attr("aria-label", monthName + " Item Amount ");
          }
 
          //Set up  row to clone
          clone.removeClass("valueTypeTemplate");
-         clone.addClass(rowTypes[i]);
          $(thisElement).before(clone);
 
          template.find("input").removeAttr("readonly");
 
-      }
 
       //add active to active class
       $(".valueType." + activeClass).addClass(active);
@@ -350,12 +404,36 @@
 
         $("#expenseTotal").val(expenseTotal.toFixed(2));
 
-        $("#netTotal").val((incomeTotal - expenseTotal).toFixed(2));
+        $("#netTotal").val((incomeTotal + expenseTotal).toFixed(2));
 
       });
 
       $(".valueInput").trigger("change");
 
+    }
+
+  }
+
+  //function to sum total for a type
+  function sumStatmentTotal(element)
+  {
+    var type = 'actual';
+    if(type)
+    {
+      var monthlyBudgetType = element.closest(".monthly-budget-type");
+
+      var inputsToUpdate = monthlyBudgetType.find(".valueType." + type);
+
+      var total = 0;
+
+      $.each(inputsToUpdate, function(index, input){
+        var inputTotal = Number($(input).find(".valueInput").val());
+        total += inputTotal;
+      });
+
+      var totalInput = monthlyBudgetType.find("." + type + " .totalInput");
+
+      totalInput.val(total.toFixed(2));
     }
 
   }
@@ -391,6 +469,7 @@
 
       return false;
     });
+
   });
 }(jQuery));
 
@@ -400,26 +479,33 @@
     var financialRatiosContainer = $('.financial-ratios');
 
     $('.ficheck-section-type', financialRatiosContainer).on('change', 'input', function() {
+
       var wrapper = $(this).closest('.ficheck-section-type');
       var asset = wrapper.find('[name=asset]');
       var liability = wrapper.find('[name=liability]');
       var ratio = wrapper.find('[name=ratio]');
-      var result;
+      var result = 0;
 
       if(asset.val() && liability.val()) {
         if(wrapper.hasClass('financial-ratio-type-basic-liquidity')) {
-          result = asset.val() / liability.val();
+          if(liability.val() != 0) {
+            result = asset.val() / liability.val();
+          }
         } else if(wrapper.hasClass('financial-ratio-type-debt-to-asset')) {
-          result = asset.val() / liability.val();
+          if(liability.val() != 0) {
+            result = asset.val() / liability.val();
+          }
         } else if(wrapper.hasClass('financial-ratio-type-debt-payment-to-income')) {
-          result = liability.val() / asset.val();
+          if(liability.val() != 0) {
+            result = liability.val() / asset.val();
+          }
         }
       }
 
-      if(result) {
-        result = Math.round(result * 100) / 100;
-        ratio.val(result);
-      }
+      result = Math.round(result * 100) / 100;
+      ratio.val(result);
+
+      $(this).val(roundedValue($(this).val()));
     });
 
   });
@@ -523,9 +609,8 @@
   }).find('[name=in],[name=out]').trigger('change');
 
   // if an input changes and the form is valid, submit it via ajax
-  monthlyTrackingContainer.on('change', '.row:not(.new) input', function(){
+  monthlyTrackingContainer.on('blur', '.edit', function(){
     var form = $(this).closest('form');
-
     var changed = false;
     $('input', form).each(function(){
         changed = this.value != this.defaultValue;
@@ -537,24 +622,50 @@
       form.addClass('changed');
     }
 
-    if(form.hasClass('changed') && form.find('[name=date]').val() && (form.find('[name=in]').val() || form.find('[name=out]').val())) {
-      var form = $(this).closest('form');
-      var data = form.serialize();
-
-      $.ajax({
-        url: form.action,
-        data: data,
-        method: "post",
-        success: function() {
-          form.removeClass('changed');
-
-          if(form.hasClass('new')) {
-            form.removeClass('new');
-          }
-        }
-      });
+    if(form.hasClass('changed') && form.find('[name=date]').val() && (form.find('[name=in]').val() || form.find('[name=out]').val()) && form.find('[name=category]').val()) {
+      saveEntry(form, false, false);
     }
   });
+
+  monthlyTrackingContainer.on('click', '[href=#add]', function(){
+
+    var form = $(this).closest('form');
+
+    saveEntry(form, true, true);
+
+  });
+
+  monthlyTrackingContainer.on('click', '[href=#newEntryModal]', function(){
+
+    $('.clicked').removeClass('clicked');
+    $(this).addClass('clicked');
+
+  });
+
+  monthlyTrackingContainer.on('click', '[href=#delete]', function(){
+    var form = $(this).closest('form');
+    var id = form.find('[name=id]').val();
+
+    $.ajax({
+      url: '/monthly-tracking/delete/' + id,
+      method: "get",
+      success: function() {
+
+        if(!form.siblings('form').length) {
+          form.closest('.monthly-tracking-section').remove();
+        }
+
+        form.next().find('[name=date]').focus();
+        form.remove();
+
+      },
+      error: function(e) {
+        $('#errorModal .modal-title').text('Error Deleting Entry');
+        $('#errorModal .modal-body p').text('There was an issue deleting this entry. Please try again.');
+        $('#errorModal').modal('show');
+      }
+    });
+  })
 
   // track the active form (show controls via css)
   monthlyTrackingContainer.on('focus', 'form input', function() {
@@ -562,6 +673,297 @@
 
     $(this).closest('form').addClass('active');
   });
+
+  // track the active form (show controls via css)
+  monthlyTrackingContainer.on('focus', 'form [name=category]', function() {
+    var form = $(this).closest('form');
+
+    if(form.find('[name=in]').val()) {
+      getIncomeCategories();
+    }
+
+    if(form.find('[name=out]').val()) {
+      getExpenseCategories();
+    }
+
+    $(this).closest('form').addClass('active');
+  });
+
+  monthlyTrackingContainer.on('click', '.dropdown-item', function() {
+    var collapse = $(this).attr('href');
+    $(collapse).collapse('show');
+    $('.panel-collapse:not('+collapse+')').collapse('hide');
+    $('#trackedMonthDropdown').html($(this).find('span:not(.hide)').text() + "<i class='fa fa-chevron-down dropdown-caret' aria-hidden='true'></i>");
+
+    $('html, body').animate({
+        scrollTop: $(collapse).offset().top
+    }, 1000);
+  });
+
+  $('.page-monthly-tracking a[href=#collapse]').click(function(){
+    $('.monthly-tracking .panel-collapse').collapse('hide');
+  });
+
+  $('.page-monthly-tracking a[href=#expand]').click(function(){
+    $('.monthly-tracking .panel-collapse').collapse('show');
+  });
+
+  monthlyTrackingContainer.on('change', '[name=in]', function() {
+
+    var value = roundTo($(this).val(), 2);
+    if((value.toString().split('.')[1] || []).length == 1){
+      value = value + "0";
+    }
+    $(this).val(value);
+
+    getIncomeCategories();
+  });
+
+  monthlyTrackingContainer.on('change', '[name=out]', function() {
+
+    var value = roundTo($(this).val(), 2);
+    if((value.toString().split('.')[1] || []).length == 1){
+      value = value + "0";
+    }
+    $(this).val(value);
+
+    getIncomeCategories();
+  });
+
+  $('#newEntryModal').on('shown.bs.modal', function () {
+    $('[name=date]').focus();
+})
+
+  function getExpenseCategories() {
+    $.ajax({
+      url: "/categories/expense",
+      method: "get",
+      dataType: 'json',
+      success: function(data) {
+        $( "[name=category]" ).autocomplete({
+          source: data
+        });
+      }
+    });
+  }
+
+  function getIncomeCategories() {
+    $.ajax({
+      url: "/categories/income",
+      method: "get",
+      dataType: 'json',
+      success: function(data) {
+        $( "[name=category]" ).autocomplete({
+          source: data
+        });
+      }
+    });
+  }
+
+//http://stackoverflow.com/questions/15762768/javascript-math-round-to-two-decimal-places
+  function roundTo(n, digits) {
+     if (digits === undefined) {
+       digits = 0;
+     }
+
+     var multiplicator = Math.pow(10, digits);
+     n = parseFloat((n * multiplicator).toFixed(11));
+     var test =(Math.round(n) / multiplicator);
+     return +(test.toFixed(2));
+   }
+
+
+   function saveEntry(form, addForm, closeModal) {
+     var data = form.serialize();
+
+     $.ajax({
+       url: form.action,
+       data: data,
+       method: "post",
+       dataType: "json",
+       success: function(data) {
+         form.removeClass('changed');
+
+         if(form.hasClass('new')) {
+           form.removeClass('new');
+         }
+
+         var month = form.find('[name=month_id]').val();
+         var monthName = '';
+
+
+         if(data.records.tracked_month.id != month) {
+           var oldPanel = $('#' + month);
+           var panel = $('#' + data.records.tracked_month.id)
+
+           var entry = `<form method="post" class="edit active">
+             <input class="form-control" name="_token" type="hidden" value="`+ form.find('[name=_token]').val()+`">
+
+             <input class="form-control" name="id" type="hidden" value="`+ data.records.id +`">
+             <input class="form-control" name="month_id" type="hidden" value="`+ data.records.month_id +`">
+
+             <div class="row">
+               <div class="col-xs-4"><input class="form-control" name="date" type="date" aria-labelledby="dateTrack" value="`+ data.records.occurred_at+`"></div>
+               <div class="col-xs-2"><input class="form-control" name="in" type="number" step="1" aria-labelledby="inTrack" value="`+ (parseFloat(data.records.value) > 0 ? parseFloat(data.records.value) : "") +`"></div>
+               <div class="col-xs-2"><input class="form-control" name="out" type="number" step="1" aria-labelledby="inTrack" value="`+ (parseFloat(data.records.value) < 0 ? parseFloat(data.records.value) : "") +`"></div>
+               <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" value="`+ data.records.category +`"></div>
+               <div class="control">
+                 <a href="#delete" class="btn btn-danger delete" class="submit">Delete</a>
+               </div>
+             </div>
+           </form>`;
+
+           var newPanel = $(`<div class="panel panel-default monthly-tracking-section" id="` + data.records.month_id + `">
+           <span class="panel-month hide">` + data.records.tracked_month.month + `</span>
+           <span class="panel-year hide">` + data.records.tracked_month.year + `</span>
+           <div class="panel-heading">
+             <h4 class="panel-title">
+               <a data-toggle="collapse" data-parent="#accordion" href="#`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year+`" aria-expanded="false" class="collapsed">
+                 `+ data.months[data.records.tracked_month.month] +` `+data.records.tracked_month.year+`</a>
+                 <!-- Trigger the modal with a button -->
+                 <a type="button" class="pull-right" data-toggle="modal" data-target="#newEntryModal" href="#newEntryModal" aria-label="` + data.months[data.records.tracked_month.month] +` add new Entry"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+               </h4>
+             </div>
+             <div id="`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year+`" class="panel-collapse collapse" aria-expanded="false">
+               <div class="panel-body">
+                 <div class="row header">
+                   <div class="col-xs-4" id="dateTrack">Date</div>
+                   <div class="col-xs-2" id="inTrack">In</div>
+                   <div class="col-xs-2" id="outTrack">Out</div>
+                   <div class="col-xs-4" id="categoryTrack">Category</div>
+                 </div>
+
+                 <div class="body"></div>
+
+               </div>
+             </div>
+           </div>`);
+
+
+           if(panel.length){
+             var inserted = false;
+               if(data.records.tracked_month.id != month) {
+                 panel.find('form').each(function(index) {
+                   if(data.records.occurred_at >= $(this).find('[name=date]').val()) {
+                     $(this).before(entry);
+                     inserted = true;
+
+                     if(form.hasClass('edit')){
+                       form.next().find('[name=date]').focus();
+                       form.remove();
+                       if(!oldPanel.find('form').length) {
+                         oldPanel.remove();
+                       }
+                     } else {
+                       form[0].reset();
+                       form.find('input:disabled').removeAttr('disabled');
+                     }
+
+                     return false;
+                   }
+                 });
+
+                 if(!inserted){
+                   panel.find('.panel-collapse .panel-body .body').append(entry);
+                   if(form.hasClass('edit')){
+                     form.next().find('[name=date]').focus();
+                     form.remove();
+                     if(!oldPanel.find('form').length) {
+                       oldPanel.remove();
+                     }
+                   } else {
+                     form[0].reset();
+                     form.find('input:disabled').removeAttr('disabled');
+                   }
+                 }
+               }
+           } else {
+             var inserted = false;
+             var dropdownItem = false;
+              $('.panel-month').each(function(index) {
+
+                if(data.records.tracked_month.year > $(this).siblings('.panel-year').text() || (data.records.tracked_month.month > $(this).text() && data.records.tracked_month.year == $(this).siblings('.panel-year').text())) {
+                  newPanel.find('.panel-body .body').append(entry);
+                  $(this).closest('.panel').before(newPanel);
+
+                  if(form.hasClass('edit')){
+                    form.next().find('[name=date]').focus();
+                    form.remove();
+                    if(!oldPanel.find('form').length) {
+                      oldPanel.remove();
+                    }
+                  } else {
+                    form[0].reset();
+                    form.find('input:disabled').removeAttr('disabled');
+                  }
+
+                  inserted = true;
+
+                  return false;
+                }
+              });
+              if(!inserted) {
+                newPanel.find('.panel-body .body').append(entry);
+                $('.panel-group').append(newPanel);
+
+                if(form.hasClass('edit')){
+                  form.next().find('[name=date]').focus();
+                  form.remove();
+                  if(!oldPanel.find('form').length) {
+                    oldPanel.remove();
+                  }
+                } else {
+                  form[0].reset();
+                  form.find('input:disabled').removeAttr('disabled');
+                }
+              }
+
+              var link = $(`<a  class="dropdown-item" data-parent="#accordion" href="#`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year +`">
+              <span class="dropdown-month hide">`+data.records.tracked_month.month+`</span>
+              <span class="dropdown-year hide">`+data.records.tracked_month.year+`</span>
+              <span>`+ data.months[data.records.tracked_month.month] +` `+ data.records.tracked_month.year+`</span>
+              </a>`);
+
+              $('.dropdown-item').each(function(index){
+                if(data.records.tracked_month.year > $(this).find('.dropdown-year').text()){
+                  $(this).before(link);
+                  dropdownItem = true;
+                  return false;
+                } else if(data.records.tracked_month.month > $(this).find('.dropdown-month').text() && data.records.tracked_month.year == $(this).find('.dropdown-year').text()) {
+                    $(this).before(link);
+                    dropdownItem = true;
+                    return false;
+                }
+
+              });
+
+              if(!dropdownItem) {
+                $('.dropdown-menu').append(link)
+              }
+          }
+         }
+
+         if(addForm) {
+           form.find('[name=date]').focus();
+
+         }
+
+         if(closeModal) {
+           $('#newEntryModal').modal('hide');
+           $('.clicked').focus();
+           $('.clicked').removeClass('clicked');
+         }
+       },
+       error: function(e) {
+         $('#errorModal .modal-title').text('Error Updating Entry');
+         $('#errorModal .modal-body p').text(e.message);
+         $('#errorModal').modal('show');
+       }
+     });
+
+   }
+
+
 }(jQuery));
 
 
@@ -579,7 +981,8 @@
         var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]').val();
 
         var totalExpenses = wrapper.find('[name=total_expenses]');
-        totalExpenses.val(Number(funeralExpense) + Number(debt) + Number(otherExpenses) + Number(enteredTotalIncomeForReplacement));
+        var totalExpensesValue = roundedValue(Number(funeralExpense) + Number(debt) + Number(otherExpenses) + Number(enteredTotalIncomeForReplacement));
+        totalExpenses.val(totalExpensesValue);
 
         var enteredTotalExpenses = $('[name=entered_total_expenses]');
         enteredTotalExpenses.val(totalExpenses.val());
@@ -601,7 +1004,8 @@
         var otherFunds = (wrapper.find('[name=other_funds]').val());
 
         var totalFundsFromOtherSources = (wrapper.find('[name=total_funds_from_other_sources]'));
-        totalFundsFromOtherSources.val(Number(governmentBenefits) + Number(otherFunds));
+        var totalFundsValue = roundedValue(Number(governmentBenefits) + Number(otherFunds))
+        totalFundsFromOtherSources.val(totalFundsValue);
 
         var enteredTotalFundsFromOtherSources = $('[name=entered_total_funds_from_other_sources]');
         enteredTotalFundsFromOtherSources.val(totalFundsFromOtherSources.val());
@@ -623,7 +1027,9 @@
         var enteredTotalExpenses = wrapper.find('[name=entered_total_expenses]').val();
         var enteredTotalFundsFromOtherSources = wrapper.find('[name=entered_total_funds_from_other_sources]').val();
 
-        wrapper.find("[name=insurance_needed]").val(Number(enteredTotalExpenses) - Number(enteredTotalFundsFromOtherSources));
+        var insuranceNeededValue = roundedValue(Number(enteredTotalExpenses) - Number(enteredTotalFundsFromOtherSources));
+
+        wrapper.find("[name=insurance_needed]").val(insuranceNeededValue);
     });
   });
 }(jQuery));
@@ -631,6 +1037,7 @@
 (function($){
   $(function(){
     var lifeInsurace = $('.life-insurance-type-income-replacement');
+    var lifeInsuranceContainer = $('.life-insurance');
 
     $(lifeInsurace).on('change', 'input', function() {
         var wrapper = $(this).closest('.ficheck-section-type');
@@ -638,14 +1045,20 @@
         var enteredAnnualIncome = (wrapper.find('[name=annual_income]').val() || 0) / 1;
 
         var insuranceNeeds = $('[name="insurance_needs"]', wrapper);
-        insuranceNeeds.val(enteredAnnualIncome * .75);
+
+        var insureanceNeedValue = roundedValue(enteredAnnualIncome * .75);
+
+        insuranceNeeds.val(insureanceNeedValue);
 
         var totalIncomeForReplacement = wrapper.find('[name=total_income_replacement]');
         var factorElement = $('[name="income_replacement_factor"]', wrapper);
 
-        totalIncomeForReplacement.val(insuranceNeeds.val() * factorElement.val());
+        var totalIncomeReplacementValue = roundedValue(insuranceNeeds.val() * factorElement.val());
+
+        totalIncomeForReplacement.val(totalIncomeReplacementValue);
 
         var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]');
+
         enteredTotalIncomeForReplacement.val(totalIncomeForReplacement.val());
         enteredTotalIncomeForReplacement.trigger("change");
     });
@@ -663,6 +1076,12 @@
 
     });
 
+    lifeInsuranceContainer.on('change', 'input', function() {
+
+      $(this).val(roundedValue($(this).val()));
+
+    });
+
   });
 }(jQuery));
 
@@ -670,6 +1089,7 @@
 (function($){
   $(function(){
     var retirementGoals = $('.retirement-needs-type-annual-savings-required');
+    var retirementNeedsContainer = $('.retirement-needs');
 
     $(retirementGoals).on('change', 'input', function() {
         var wrapper = $(this).closest('.ficheck-section-type');
@@ -677,8 +1097,6 @@
         var enteredretirementGoal = (wrapper.find('[name=entered_retirement_goal]').val() || 0) / 1;
         var enteredFutureValueOfSavingsAndInvestments = (wrapper.find('[name=entered_future_value_of_savings_and_investments]').val() || 0) / 1;
         var additionalSavingsNeededForRetirementElement = wrapper.find('[name=additional_savings_needed_for_retirement]');
-
-        console.log(additionalSavingsNeededForRetirementElement);
 
         var additionalSavingsNeededForRetirement = enteredretirementGoal - enteredFutureValueOfSavingsAndInvestments;
         additionalSavingsNeededForRetirementElement.val(additionalSavingsNeededForRetirement);
@@ -701,6 +1119,12 @@
         factorElement.val(factor).trigger('change');
     });
 
+    retirementNeedsContainer.on('change', 'input', function() {
+
+      $(this).val(roundedValue($(this).val()));
+
+    });
+
   });
 }(jQuery));
 
@@ -717,7 +1141,13 @@
         var goal = Math.round(currentValueSavingsAndInvestments * factor * 100) / 100;
 
         var futureValueSavingsAndInvestmentsElement = $('[name="future_value_of_savings_and_investments"]', wrapper);
-        futureValueSavingsAndInvestmentsElement.val(goal);
+        var oldGoal = parseFloat(futureValueSavingsAndInvestmentsElement.val());
+        if(oldGoal != goal) {
+          futureValueSavingsAndInvestmentsElement.val(goal);
+
+          var annualSavingsFutureSavings = $('[name="entered_future_value_of_savings_and_investments"]');
+          annualSavingsFutureSavings.val(goal).trigger('change');
+        }
     });
 
     $(futureSavingsInvestments).on('change', 'select', function() {
@@ -752,7 +1182,14 @@
         var goal = Math.round(additionalAnnualIncomeRequired * factor * 100) / 100;
 
         var retirementGoal = $('[name="retirement_goal"]', wrapper);
-        retirementGoal.val(goal);
+        var oldGoal = parseFloat(retirementGoal.val());
+        if(oldGoal != goal) {
+          retirementGoal.val(goal);
+          var annualSavingsRetirementGoal = $('[name="entered_retirement_goal"]');
+          annualSavingsRetirementGoal.val(goal).trigger('change');
+
+        }
+
     });
 
     $(retirementGoals).on('change', 'select', function() {

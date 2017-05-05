@@ -51,6 +51,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('/financial-ratios/{user_id?}', ['uses'=>'FinancialRatiosController@index', 'as'=>'financial-ratios']);
         Route::get('/retirement-needs/{user_id?}', ['uses'=>'RetirementNeedsController@index', 'as'=>'retirement-needs']);
         Route::get('/life-insurance/{user_id?}', ['uses'=>'LifeInsuranceController@index', 'as'=>'life-insurance']);
+        Route::get('/categories/{type}', ['uses' => 'MonthlyTrackingController@categories', 'as' => 'tracking-categories']);
+        Route::get('/month/{id}', ['uses' => 'MonthlyTrackingController@deleteMonth', 'as' => 'delete-tracked-month']);
     });
 });
 
@@ -61,4 +63,6 @@ Route::group([
 ], function() {
     Route::get('/', ['uses'=>'AdminController@index']);
     Route::post('/grade', ['uses'=>'AdminController@grade']);
+    Route::post('/group/add/user/{id}', ['uses'=>'AdminController@addGroupUser']);
+    Route::get('/group/delete/{userID}/{semesterID}', ['uses'=>'AdminController@deleteGroupUser']);
 });

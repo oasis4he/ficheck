@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class MonthlyTrackingRecord extends Model
 {
-    function user()
+    function trackedMonth()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\TrackedMonth', 'month_id');
     }
 }

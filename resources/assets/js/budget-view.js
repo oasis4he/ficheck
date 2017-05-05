@@ -19,13 +19,26 @@
 
     sumSections();
 
+    if(onlyActual){
+      sumStatementSections();
+    }
+
     //loop through all sections and sum
     function sumSections()
     {
       var sections = $(".monthly-budget-type");
       $.each(sections, function(index, section){
-        $.each($(section).find(".valueType"), function(index, element){
+        $.each($(section).find(".valueType .valueContainer"), function(index, element){
           sumTotal($(element));
+        })
+      });
+    }
+
+    function sumStatementSections() {
+      var sections = $(".monthly-budget-type");
+      $.each(sections, function(index, section){
+        $.each($(section).find(".valueType"), function(index, element){
+          sumStatmentTotal($(element));
         })
       });
     }
@@ -68,19 +81,24 @@
       var row = $(this).parents(".valueType");
       var recordId = $(row).attr("data-record-id");
       //get planned, actual and difference rows
-      var plannedRow = $(".budget-view ." + planned + ".valueType[data-record-id='" + recordId + "']");
-      var actualRow = $(".budget-view ." + actual + ".valueType[data-record-id='" + recordId + "']");
-      var differenceRow = $(".budget-view ." + difference + ".valueType[data-record-id='" + recordId + "']");
+      var plannedRow = $(".budget-view .valueType[data-record-id='" + recordId + "'] ." + planned );
+      var actualRow = $(".budget-view .valueType[data-record-id='" + recordId + "'] ." + actual);
+      var differenceRow = $(".budget-view .valueType[data-record-id='" + recordId + "'] ." + difference );
 
       //get planned and actual values
       var plannedValue = plannedRow.find(".valueInput").val();
       var actualValue = actualRow.find(".valueInput").val();
 
       //update difference value based on planned and actual values
-      differenceRow.find(".valueInput").val(plannedValue - actualValue);
+      var differenceValue = roundedValue(plannedValue - actualValue);
 
-      sumTotal(row);
-      sumTotal(differenceRow);
+      differenceRow.find(".valueInput").val(differenceValue);
+
+      sumSections();
+
+      if(onlyActual){
+        sumStatementSections();
+      }
     });
 
     //function to sum total for a type
@@ -91,7 +109,7 @@
       {
         var monthlyBudgetType = element.closest(".monthly-budget-type");
 
-        var inputsToUpdate = monthlyBudgetType.find(".valueType." + type);
+        var inputsToUpdate = monthlyBudgetType.find(".valueType ." + type);
 
         var total = 0;
 
@@ -114,6 +132,10 @@
       var editableContainer = $(this).closest(".editable");
       var value = editableContainer.find("label[for='" + inputId + "']").text().trim();
 
+      if(revolvingSavings) {
+        var month = $(this).closest(".month").attr("data-month-name");
+      }
+
       $(this).toggleClass("glyphicon-ok");
       $(this).toggleClass("glyphicon-pencil");
 
@@ -125,7 +147,13 @@
       else
       {
         editableContainer.find(".input-group").toggleClass("deleteShow");
-        editableContainer.find(".input-group").prepend("<input type='text' name='names[" + recordId + "][name]' value='" + value + "' class='form-control'>");
+
+        if(revolvingSavings){
+          editableContainer.find(".input-group").prepend("<input type='text' name='names[" + recordId + "][name]' value='" + value + "' aria-label='" + month + " Item Description" + value +"' class='form-control'>");
+        } else {
+          editableContainer.find(".input-group").prepend("<input type='text' name='names[" + recordId + "][name]' value='" + value + "' id='" + recordId + "_name' class='form-control'>");
+        }
+
         editableContainer.find("label").hide();
       }
 
@@ -185,6 +213,8 @@
         ];
       }
 
+      var calculator = $('[name=calculator').val();
+
 
       var category = getCategoryForSave(thisElement);
       var type = getTypeForSave(thisElement);
@@ -192,6 +222,7 @@
       if (revolvingSavings)
       {
         var month = $(thisElement).closest(".month").attr("data-month");
+        var monthName = $(thisElement).closest(".month").attr("data-month-name");
 
         var recordId =  "new_" + month + "_" + newInputCount;
       }
@@ -200,8 +231,7 @@
         var recordId =  "new_" + category + "_" + type + "_" + newInputCount;
       }
 
-      for (var i = 0; i < rowTypes.length; i++) {
-         var inputId = rowTypes[i] + "_" + newInputCount;
+         var inputId = newInputCount;
 
          var template = $(thisElement).closest(".monthly-budget-type").find(".valueTypeTemplate");
          template.find("input").attr("value", $(thisElement).find("input").val());
@@ -216,29 +246,26 @@
          clone.find(".editLabel").attr("input-id", "value_" + inputId);
          clone.find("input").attr("id", "value_" + inputId);
 
-         if (!revolvingSavings)
+         if(calculator == 'net-worth'){
+           clone.find("input").attr("name", "names[" + recordId + "][actual_" + inputId + "][values]");
+         } else if (!revolvingSavings)
          {
-           clone.find("input").attr("name", "names[" + recordId + "][" + inputId + "][values]");
+           clone.find(".planned input").attr("name", "names[" + recordId + "][planned_" + inputId + "][values]");
+           clone.find(".actual input").attr("name", "names[" + recordId + "][actual_" + inputId + "][values]");
+           clone.find(".difference input").attr("name", "names[" + recordId + "][difference_" + inputId + "][values]");
          }
          else
          {
-           clone.find("input").attr("name", "names[" + recordId + "][value]");
-         }
-
-
-         if (rowTypes[i] == "difference")
-         {
-           clone.find("input").attr("readonly", "readonly");
+           clone.find(".input").attr("name", "names[" + recordId + "][value]");
+           clone.find("input").attr("aria-label", monthName + " Item Amount ");
          }
 
          //Set up  row to clone
          clone.removeClass("valueTypeTemplate");
-         clone.addClass(rowTypes[i]);
          $(thisElement).before(clone);
 
          template.find("input").removeAttr("readonly");
 
-      }
 
       //add active to active class
       $(".valueType." + activeClass).addClass(active);
@@ -344,12 +371,36 @@
 
         $("#expenseTotal").val(expenseTotal.toFixed(2));
 
-        $("#netTotal").val((incomeTotal - expenseTotal).toFixed(2));
+        $("#netTotal").val((incomeTotal + expenseTotal).toFixed(2));
 
       });
 
       $(".valueInput").trigger("change");
 
+    }
+
+  }
+
+  //function to sum total for a type
+  function sumStatmentTotal(element)
+  {
+    var type = 'actual';
+    if(type)
+    {
+      var monthlyBudgetType = element.closest(".monthly-budget-type");
+
+      var inputsToUpdate = monthlyBudgetType.find(".valueType." + type);
+
+      var total = 0;
+
+      $.each(inputsToUpdate, function(index, input){
+        var inputTotal = Number($(input).find(".valueInput").val());
+        total += inputTotal;
+      });
+
+      var totalInput = monthlyBudgetType.find("." + type + " .totalInput");
+
+      totalInput.val(total.toFixed(2));
     }
 
   }

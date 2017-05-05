@@ -12,7 +12,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name', 'last_name', 'email', 'password',
     ];
 
     /**
@@ -30,9 +30,15 @@ class User extends Authenticatable
     }
 
     public function role()
-	{
-		return $this->hasOne('App\Role', 'id', 'role_id');
-	}
+  	{
+  		return $this->hasOne('App\Role', 'id', 'role_id');
+  	}
+
+    public function semesters()
+    {
+      return $this->belongsToMany('App\Semester', 'user_semesters')->withTimestamps();
+    }
+
 	public function hasRole($roles)
 	{
 		$this->have_role = $this->getUserRole();
@@ -59,4 +65,10 @@ class User extends Authenticatable
 	{
 		return ($this->have_role && strtolower($need_role)==strtolower($this->have_role->name)) ? true : false;
 	}
+
+  private function getUserSemsters()
+  {
+    return $this->semesters()->getResults();
+  }
+
 }

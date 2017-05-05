@@ -2,6 +2,45 @@
   .btn-primary {
     display: none;
   }
+
+  .dropdown {
+    margin-top: 15px;
+
+    button {
+      color: #000;
+      padding: 5px 10px;
+      max-width: 230px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .dropdown-toggle {
+    font-size: 20px;
+    text-align: left;
+    border-radius: 0px;
+    width: 230px;
+  }
+
+  .dropdown-menu{
+    position: absolute;
+    background-color: #ddd;
+    border-radius: 0px;
+    width: 230px;
+
+    .dropdown-item {
+      display: block;
+      padding: 10px;
+    }
+  }
+
+  .dropdown-caret {
+    margin-top: 5px;
+    float: right;
+  }
+
+  .well {
+    margin-left: -15px;
+  }
 }
 
 .budget-view {
@@ -160,7 +199,6 @@
       label {
         background:#fff;
         width:100%;
-        height:34px;
         padding-top:.5em;
       }
 
@@ -183,5 +221,32 @@
     }
   }
 
+  .section-header {
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
 
+  @media (max-width: 430px) {
+
+    .valueContainer, .valueTypeTotal {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .section-header {
+      font-size: 12px;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .valueInput, .totalInput {
+      font-size: 11px;
+      padding: 5px 3px;
+    }
+
+    label {
+      font-size: 12px;
+    }
+
+  }
 }

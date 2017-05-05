@@ -4,16 +4,24 @@ namespace App\Http\Controllers;
 
 use App\MonthlyBudgetRecord;
 use App\MonthlyBudgetRecordValue;
+use App\MonthlyTrackingRecord;
+use App\TrackedMonth;
+
 use Illuminate\Http\Request;
 use Auth;
 use Redirect;
+
+use Carbon\Carbon;
 
 class MonthlyBudgetController extends Controller
 {
     public function index(Request $request)
     {
         $user = $request->viewUser;
-        $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->get();
+
+        $data = $this->getTrackedCategoryRecords($user, []);
+
+        $monthlyBudgetRecords = $data['budgetRecords'];
 
         if(!$monthlyBudgetRecords->count()) {
             MonthlyBudgetRecord::setupMonthlyRecords($user->id);
@@ -21,14 +29,17 @@ class MonthlyBudgetController extends Controller
             $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('order')->get();
         }
 
-        return view('monthly-budget', ['calculator' => 'monthly-budget', 'monthlyBudgetCategories' => $this->getMonthlyBudgetCategories(), 'monthlyBudgetRecords' => $monthlyBudgetRecords, 'title' => 'Monthly Budget']);
+        return view('monthly-budget', ['calculator' => 'monthly-budget', 'monthlyBudgetCategories' => $this->getMonthlyBudgetCategories(), 'monthlyBudgetRecords' => $monthlyBudgetRecords, 'title' => 'Monthly Budget', 'trackedMonthRecords' => $data['trackedMonthRecords'], 'trackedMonth' => $data['month'], 'trackedYear' => $data['year']]);
     }
 
     public function ieStatement(Request $request)
     {
         $user = $request->viewUser;
-        $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->get();
+        $params['month'] = $request->get('month');
+        $params['year'] = $request->get('year');
+        $data = $this->getTrackedCategoryRecords($user, $params, true);
 
+        $monthlyBudgetRecords = $data['budgetRecords'];
 
         if(!$monthlyBudgetRecords->count()) {
             MonthlyBudgetRecord::setupMonthlyRecords($user->id);
@@ -36,10 +47,18 @@ class MonthlyBudgetController extends Controller
             $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('order')->get();
         }
 
-        return view('monthly-budget', ['calculator' => 'monthly-budget', "onlyActual" => true,
+        $userTrackedMonths = TrackedMonth::where('user_id', $user->id)->orderBy('year', 'desc')->orderBy('month', 'desc')->get();
+
+        return view('ie-statement', ['calculator' => 'monthly-budget', "onlyActual" => true,
                     'monthlyBudgetCategories' => $this->getMonthlyBudgetCategories(),
-                    'monthlyBudgetRecords' => $monthlyBudgetRecords, 'statement' => true,
-                    "showTotals" => true, 'title' => 'I & E Statement']);
+                    'monthlyBudgetRecords' => $monthlyBudgetRecords,
+                    'trackedRecords' => $data['trackedRecords'], 'statement' => true,
+                    "showTotals" => true, 'title' => 'I & E Statement', 'trackedMonthRecords' => $data['trackedRecords'],
+                    'trackedMonth' => $data['month'], 'trackedYear' => $data['year'],
+                    'trackedMonths' => $userTrackedMonths,
+                    'months' => $data['months']]
+                  );
+
     }
 
     public function netWorthStatement(Request $request)
@@ -86,7 +105,7 @@ class MonthlyBudgetController extends Controller
           ],
         ];
 
-        return view('monthly-budget', ['calculator' => 'net-worth', 'monthlyBudgetRecords' => $monthlyBudgetRecords, "monthlyBudgetCategories" => $monthlyBudgetCategories,
+        return view('ie-statement', ['calculator' => 'net-worth', 'monthlyBudgetRecords' => $monthlyBudgetRecords, 'trackedMonthRecords' => true, 'trackedMonth' => false, "monthlyBudgetCategories" => $monthlyBudgetCategories,
                     "showTotals" => true, "onlyActual" => true, 'title' => 'Net Worth Statement']);
     }
 
@@ -178,5 +197,61 @@ class MonthlyBudgetController extends Controller
 
         return Redirect::back();
 
+    }
+
+    function getTrackedCategoryRecords($user, $data, $statement=false){
+      $trackedMonthRecords = false;
+      $trackedRecords = false;
+
+      if(isset($data['month']) && isset($data['year'])) {
+        $trackedMonth = TrackedMonth::where('user_id', $user->id)->where('month', $data['month'])->where('year', $data['year'])->with('records')->first();
+      } else {
+        $trackedMonth = TrackedMonth::where('user_id', $user->id)->orderBy('year', 'desc')->orderBy('month', 'desc')->with('records')->first();
+      }
+
+      $months = [
+        '12' => 'December',
+        '11' => 'November',
+        '10' => 'October',
+        '09' => 'September',
+        '08' => 'August',
+        '07' => 'July',
+        '06' => 'June',
+        '05' => 'May',
+        '04' => 'April',
+        '03' => 'March',
+        '02' => 'February',
+        '01' => 'January'
+      ];
+
+      $trackedCategories = $trackedMonth->records->pluck('category')->toArray();
+        if($statement){
+          if($trackedCategories) {
+            $trackedMonthRecords = true;
+            $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->whereIn('description', $trackedCategories)->with(['values' => function($query){
+                $query->where('type', 'actual');
+              }])->orderBy('type', 'desc')->orderBy('category', 'asc')->get();
+          } else {
+            $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with(['values' => function($query){
+                $query->where('type', 'actual');
+              }])->orderBy('type', 'desc')->orderBy('category', 'asc')->get();
+          }
+          $trackedRecords = MonthlyTrackingRecord::where('month_id', $trackedMonth->id)->groupBy('category')->selectRaw('sum(value) as sum, category, id')->orderBy('category', 'desc')->get();
+        } else {
+          if($trackedCategories) {
+            $trackedMonthRecords = true;
+            $monthlyRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->whereIn('description', $trackedCategories)->orderBy('type', 'desc')->orderBy('category', 'asc')->get();
+            $addedRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->whereHas('values', function($query){
+                $query->where('value', '!=', 0);
+            })->orderBy('type', 'desc')->orderBy('category', 'asc')->get();
+            $records = $monthlyRecords->merge($addedRecords);
+          } else {
+            $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('type', 'desc')->orderBy('category', 'asc')->get();
+          }
+
+          $trackedRecords = MonthlyTrackingRecord::where('month_id', $trackedMonth->id)->get();
+        }
+
+      return ['trackedMonthRecords' => $trackedMonthRecords, 'budgetRecords' => $records, 'trackedRecords' => !$trackedRecords->isEmpty() ? $trackedRecords : false, 'month' => $months[$trackedMonth->month], 'year' => $trackedMonth->year, 'months' => $months];
     }
 }
