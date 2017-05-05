@@ -16,6 +16,24 @@
 
     @include('partials.monthly-budget-records')
 
+    @if(!isset($statement))
+      <div class="row newItem">
+          <div class="form-group col-xs-3 text-left">
+             <label for="new_{{$category}}">Add {{$monthlyBudgetCategories[$category]['secondaryText']}} source.</label>
+          </div>
+
+          <div class="form-group col-xs-3">
+             <input name="{{$category}}" id="{{$category}}" value="" class="form-control">
+          </div>
+          <div class="form-group col-xs-3">
+             <input name="{{$category}}" id="{{$category}}" value="" class="form-control">
+          </div>
+          <div class="form-group col-xs-3">
+             <input name="{{$category}}" id="{{$category}}" value="" class="form-control">
+          </div>
+      </div>
+   @endif
+
 
     <div class="row ">
         <div class="form-group col-xs-3 text-left">

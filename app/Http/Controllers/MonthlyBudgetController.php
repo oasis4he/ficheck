@@ -240,7 +240,11 @@ class MonthlyBudgetController extends Controller
         } else {
           if($trackedCategories) {
             $trackedMonthRecords = true;
-            $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->whereIn('description', $trackedCategories)->with('values')->orderBy('type', 'desc')->orderBy('category', 'asc')->get();
+            $monthlyRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->whereIn('description', $trackedCategories)->orderBy('type', 'desc')->orderBy('category', 'asc')->get();
+            $addedRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->whereHas('values', function($query){
+                $query->where('value', '!=', 0);
+            })->orderBy('type', 'desc')->orderBy('category', 'asc')->get();
+            $records = $monthlyRecords->merge($addedRecords);
           } else {
             $records = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('type', 'desc')->orderBy('category', 'asc')->get();
           }

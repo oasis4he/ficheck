@@ -11,8 +11,6 @@
         var enteredFutureValueOfSavingsAndInvestments = (wrapper.find('[name=entered_future_value_of_savings_and_investments]').val() || 0) / 1;
         var additionalSavingsNeededForRetirementElement = wrapper.find('[name=additional_savings_needed_for_retirement]');
 
-        console.log(additionalSavingsNeededForRetirementElement);
-
         var additionalSavingsNeededForRetirement = enteredretirementGoal - enteredFutureValueOfSavingsAndInvestments;
         additionalSavingsNeededForRetirementElement.val(additionalSavingsNeededForRetirement);
 
