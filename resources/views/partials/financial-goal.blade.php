@@ -28,7 +28,7 @@
 
     <div class="form-group col-xs-6">
       <label for="date">Date</label>
-      <input name="date" id="date" type="date" value="{{$goal->date}}" class="form-control">
+      <input name="date" id="date-{{$goalType->id}}" value="{{$goal->date}}" class="form-control">
     </div>
   </div>
 
