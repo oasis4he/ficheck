@@ -15,7 +15,7 @@
   //
   //   return false;
   // });
-
+monthlyTrackingContainer.find('[name=date]').datepicker();
   // disable in/out if other if filled in  (only one or the other should be active)
   monthlyTrackingContainer.on('change', '[name=in],[name=out]', function(){
     var form = $(this).closest('form');
@@ -28,6 +28,7 @@
       sibling.removeAttr('disabled');
     }
   }).find('[name=in],[name=out]').trigger('change');
+
 
   // if an input changes and the form is valid, submit it via ajax
   monthlyTrackingContainer.on('blur', '.edit', function(){
@@ -224,7 +225,7 @@
              <input class="form-control" name="month_id" type="hidden" value="`+ data.records.month_id +`">
 
              <div class="row">
-               <div class="col-xs-4"><input class="form-control" name="date" type="date" aria-labelledby="dateTrack" value="`+ data.records.occurred_at+`"></div>
+               <div class="col-xs-4"><input class="form-control" name="date" aria-labelledby="dateTrack" value="`+ data.records.occurred_at+`"></div>
                <div class="col-xs-2"><input class="form-control" name="in" type="number" step="1" aria-labelledby="inTrack" value="`+ (parseFloat(data.records.value) > 0 ? parseFloat(data.records.value) : "") +`"></div>
                <div class="col-xs-2"><input class="form-control" name="out" type="number" step="1" aria-labelledby="inTrack" value="`+ (parseFloat(data.records.value) < 0 ? parseFloat(data.records.value) : "") +`"></div>
                <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" value="`+ data.records.category +`"></div>
@@ -374,6 +375,8 @@
            $('.clicked').focus();
            $('.clicked').removeClass('clicked');
          }
+
+         $('[name=date]').datepicker();
        },
        error: function(e) {
          $('#errorModal .modal-title').text('Error Updating Entry');

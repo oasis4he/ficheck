@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use Carbon\Carbon;
 use Auth;
 use Redirect;
 
@@ -37,7 +38,7 @@ class FinancialGoalsController extends Controller
 
       $record->user_id = Auth::user()->id;
 
-      $record->date = $request->get('date');
+      $record->date = new Carbon($request->get('date'));
       $record->financial_goal_type_id = $request->get('financial_goal_type_id');
       $record->description = $request->get('description');
       $record->plan = $request->get('plan');

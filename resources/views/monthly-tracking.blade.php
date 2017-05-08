@@ -19,7 +19,7 @@
         {{ csrf_field() }}
 
         <div class="row new">
-          <div class="col-xs-4"><input class="form-control" name="date" type="date" aria-labelledby="dateTrack" value="{{old('date')}}" @if($saved) autofocus @endif></div>
+          <div class="col-xs-4"><input class="form-control" name="date" type aria-labelledby="dateTrack" value="{{old('date')}}" @if($saved) autofocus @endif></div>
           <div class="col-xs-2"><input class="form-control" name="in" type="number" step="1" aria-labelledby="inTrack" value="{{old('in')}}"></div>
           <div class="col-xs-2"><input class="form-control" name="out" name="out" type="number" step="1" aria-labelledby="outTrack" value="{{old('out')}}"></div>
           <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" id="newCategory" value="{{old('category')}}"></div>
@@ -88,7 +88,7 @@
                         <input class="form-control" name="month_id" type="hidden" value="{{$record->month_id}}">
 
                         <div class="row">
-                          <div class="col-xs-4"><input class="form-control" name="date" type="date" aria-labelledby="dateTrack" value="{{$record->occurred_at}}"></div>
+                          <div class="col-xs-4"><input class="form-control" name="date" type aria-labelledby="dateTrack" value="{{$record->occurred_at}}"></div>
                           <div class="col-xs-2"><input class="form-control" name="in" type="number"  step="1" aria-labelledby="inTrack" value="{{$record->value>0?$record->value:''}}"></div>
                           <div class="col-xs-2"><input class="form-control" name="out" type="number" step="1" aria-labelledby="outTrack" value="{{$record->value<0?-1*$record->value:''}}"></div>
                           <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" value="{{$record->category}}"></div>
@@ -128,7 +128,7 @@
                     {{ csrf_field() }}
 
                     <div class="row new">
-                      <div class="col-xs-4"><input class="form-control" name="date" type="date" aria-labelledby="dateTrack" value="{{old('date')}}"></div>
+                      <div class="col-xs-4"><input class="form-control" name="date" type aria-labelledby="dateTrack" value="{{old('date')}}"></div>
                       <div class="col-xs-2"><input class="form-control" name="in" type="number" step="1" aria-labelledby="inTrack" value="{{old('in')}}"></div>
                       <div class="col-xs-2"><input class="form-control" name="out" name="out" type="number" step="1" aria-labelledby="outTrack" value="{{old('out')}}"></div>
                       <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" id="newCategory" value="{{old('category')}}"></div>

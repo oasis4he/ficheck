@@ -28,4 +28,5 @@
     });
 
   });
+  $('[name=date]').datepicker();
 }(jQuery));
