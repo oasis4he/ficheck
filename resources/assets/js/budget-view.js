@@ -256,7 +256,7 @@
          }
          else
          {
-           clone.find(".input").attr("name", "names[" + recordId + "][value]");
+           clone.find("input").attr("name", "names[" + recordId + "][value]");
            clone.find("input").attr("aria-label", monthName + " Item Amount ");
          }
 
