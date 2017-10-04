@@ -36,17 +36,19 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        if(env('APP_ENV') == 'production') {
-            $user = Auth::user();
+        if (parent::shouldReport($e)) {
+            if(env('APP_ENV') == 'production') {
+                $user = Auth::user();
 
-            if($user) {
-                $user = [
-                    'id' => $user->id,
-                    'email' => $user->email
-                ];
+                if($user) {
+                    $user = [
+                        'id' => $user->id,
+                        'email' => $user->email
+                    ];
+                }
+
+                Log::error($e, [ 'person'=>$user ]); //rollbar
             }
-
-            Log::error($e, [ 'person'=>$user ]); //rollbar
         }
 
         parent::report($e);
