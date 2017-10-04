@@ -42,7 +42,8 @@ class Handler extends ExceptionHandler
             if($user) {
                 $user = [
                     'id' => $user->id,
-                    'username' => $user->first_name." ".$user->last_name,
+                    'name' => $user->first_name." ".$user->last_name,
+                    'username' => $user->external_id,
                     'email' => $user->email
                 ];
             }
