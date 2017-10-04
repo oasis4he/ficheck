@@ -33,7 +33,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        if($this->app->environment('production')) {
+        if(env('APP_ENV') == 'production') {
             \Log::error($e); //rollbar
         }
 
