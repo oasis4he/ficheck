@@ -24,8 +24,8 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         if ($this->app->environment('production')) {
-            $this->app->register(\Jenssegers\Rollbar\RollbarServiceProvider::class);
-        } elseif($this->app->environment('production')) {
+            $this->app->register(\Rollbar\Laravel\RollbarServiceProvider::class);
+        } elseif($this->app->environment('local')) {
             $this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);
         }
     }
