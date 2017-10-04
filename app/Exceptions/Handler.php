@@ -33,7 +33,9 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        \Log::error($e); //rollbar
+        if($this->app->environment('production')) {
+            \Log::error($e); //rollbar
+        }
 
         parent::report($e);
     }

@@ -25,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
     {
         if ($this->app->environment('production')) {
             $this->app->register(\Jenssegers\Rollbar\RollbarServiceProvider::class);
+        } elseif($this->app->environment('production')) {
+            $this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);
         }
     }
 }
