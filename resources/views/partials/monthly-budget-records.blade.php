@@ -1,10 +1,11 @@
 @foreach($records as $record)
 
   <div class="row valueType" data-record-id="{{$record->id}}">
-    <div class="form-group col-xs-3 text-left editable">
-      <span class="section-header">
-        {{$record->description}}
-      </span>
+    <div class="form-group col-xs-3 text-left editable" aria-label="Edit Label">
+        <span class="editLabel glyphicon glyphicon-pencil" record-id="{{$record['id']}}" input-id="value_{{$record['id']}}" aria-label="Edit Label"></span>
+        <label for="value_{{$record['id']}}">
+          {{$record['description']}}
+        </label>
 
       <div class="input-group deleteGroup">
         <span class="input-group-addon deleteRow" aria-label="Delete row" data-record-id="{{$record->id}}">

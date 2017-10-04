@@ -149,7 +149,7 @@ class MonthlyBudgetController extends Controller
                   $record->category = $explodedKey[1];
                   $record->calculator = $request['calculator'];
                   $record->type = $explodedKey[2];
-                  $record->description = $value['name'];
+                  $record->description = isset($value['name']) ? $value['name'] : 'Budget Item';
                   $record->save();
 
                   unset($value['name']);
