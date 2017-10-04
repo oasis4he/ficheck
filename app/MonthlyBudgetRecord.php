@@ -107,21 +107,31 @@ class MonthlyBudgetRecord extends Model
                     $type = 'income';
                 }
 
-                $newRecord->calculator = $calculator;
-                $newRecord->type = $type;
-                $newRecord->user_id = $user_id;
-                $newRecord->description = $description;
-                $newRecord->order = $count;
+                // don't add a default record if they already have one
+                $hasRecordAlready = MonthlyBudgetRecord::where('calculator', $calculator)
+                    ->where('type', $type)
+                    ->where('user_id', $user_id)
+                    ->where('description', $description)
+                    ->first();
 
-                $newRecord->save();
+                if(!$hasRecordAlready) {
 
-                //Loop through record values and set default to 0
-                foreach ($recordValueTypes as $type) {
-                    $newValue = new MonthlyBudgetRecordValue();
-                    $newValue->record_id = $newRecord->id;
-                    $newValue->type = $type;
-                    $newValue->value = 0;
-                    $newValue->save();
+                    $newRecord->calculator = $calculator;
+                    $newRecord->type = $type;
+                    $newRecord->user_id = $user_id;
+                    $newRecord->description = $description;
+                    $newRecord->order = $count;
+
+                    $newRecord->save();
+
+                    //Loop through record values and set default to 0
+                    foreach ($recordValueTypes as $type) {
+                        $newValue = new MonthlyBudgetRecordValue();
+                        $newValue->record_id = $newRecord->id;
+                        $newValue->type = $type;
+                        $newValue->value = 0;
+                        $newValue->save();
+                    }
                 }
             }
         }

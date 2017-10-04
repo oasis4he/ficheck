@@ -23,10 +23,11 @@ class MonthlyBudgetController extends Controller
 
         $monthlyBudgetRecords = $data['budgetRecords'];
 
-        if(!$monthlyBudgetRecords->count()) {
+        // make sure we have at least one income and one expense
+        if(!$monthlyBudgetRecords->pluck('type')->unique()->count() < 2) {
             MonthlyBudgetRecord::setupMonthlyRecords($user->id);
 
-            $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('order')->get();
+            $monthlyBudgetRecords = MonthlyBudgetRecord::where(['user_id' => $user->id, 'calculator' => 'monthly-budget'])->with('values')->orderBy('type', 'desc')->orderBy('order')->get();
         }
 
         return view('monthly-budget', ['calculator' => 'monthly-budget', 'monthlyBudgetCategories' => $this->getMonthlyBudgetCategories(), 'monthlyBudgetRecords' => $monthlyBudgetRecords, 'title' => 'Monthly Budget', 'trackedMonthRecords' => $data['trackedMonthRecords'], 'trackedMonth' => $data['month'], 'trackedYear' => $data['year']]);
@@ -176,12 +177,14 @@ class MonthlyBudgetController extends Controller
           }
         }//if isset($request['names'])
 
-        //save any value for records that already existed
-        foreach ($request['values'] as $type => $values) {
-            foreach ($values as $id => $value) {
-                $recordValue = MonthlyBudgetRecordValue::find($id);
-                $recordValue->value = $value;
-                $recordValue->save();
+        if($request['values']) {
+            //save any value for records that already existed
+            foreach ($request['values'] as $type => $values) {
+                foreach ($values as $id => $value) {
+                    $recordValue = MonthlyBudgetRecordValue::find($id);
+                    $recordValue->value = $value;
+                    $recordValue->save();
+                }
             }
         }
 
