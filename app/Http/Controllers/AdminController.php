@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Role;
 use App\Semester;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 
 use Auth;
 
@@ -28,6 +30,13 @@ class AdminController extends Controller
 
           foreach(explode(",", $fixedSearch) as $searchTerm) {
             $query->orWhere('external_id', 'LIKE', '%'.trim($searchTerm).'%');
+
+            if(preg_match('/^group\:\d+/', $searchTerm)) {
+                $query->orWhereHas('semesters', function ($query) use ($searchTerm) {
+                    $groupId = explode(':', $searchTerm)[1];
+                    $query->where('semesters.id', $groupId);
+                });
+            }
           }
 
           $query->orWhereHas('role', function ($query) use ($search) {
@@ -44,9 +53,15 @@ class AdminController extends Controller
         $usersQuery= $usersQuery->orderBy('role_id', 'desc')->orderBy('first_name')->orderBy('email');
 
         $users = $usersQuery->paginate();
-        $semesters = Semester::all();
+        $semesters = Semester::orderBy('name')->get();
 
-        return view('admin.index', ['users' => $users, 'semesters' => $semesters]);
+        $roles = Role::orderBy('name')->get();
+
+        return view('admin.index', [
+            'users' => $users,
+            'semesters' => $semesters,
+            'roles' => $roles
+        ]);
     }
 
     public function grade(Request $request)
@@ -72,6 +87,63 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
+    public function groups(Request $request)
+    {
+        $groupsQuery = Semester::orderBy('name');
+
+        $search = $request->get('search');
+        $groupsQuery->where(function($query) use ($search){
+          $query->where('name', 'LIKE', '%'.trim($search).'%');
+
+          // allow space separated, comma or semicolon separated items to be searched on (external_id)
+          $fixedSearch = preg_replace('/[\s,;]+/', ',', $search);
+
+          foreach(explode(",", $fixedSearch) as $searchTerm) {
+            $query->orWhere('id', 'LIKE', '%'.trim($searchTerm).'%');
+          }
+        });
+
+        $groups = $groupsQuery->with('users')->paginate();
+
+        return view('admin.groups', ['groups' => $groups]);
+    }
+
+    public function saveGroups(Request $request)
+    {
+        $errors = [];
+
+        if($request->has('new_group')) {
+            $newGroup = new Semester();
+            $newGroup->name = $request->input('new_group');
+            $newGroup->description = $request->input('new_description');
+
+            $newGroup->save();
+        }
+
+        if($request->has('group')) {
+            foreach($request->input('group') as $groupId => $groupData) {
+                $group = Semester::findOrFail($groupId);
+
+                if($groupData['name'] == '') {
+                    try {
+                        $group->delete();
+                    } catch(QueryException $e) {
+                        if($e->getCode() == 23000) {
+                            $errors[] = ['danger'=>"Can't delete the group ".$group->name.". Remove all members from the group to delete it."];
+                        }
+                    }
+                } else {
+                    $group->name = $groupData['name'];
+                    $group->description = $groupData['description'];
+
+                    $group->save();
+                }
+            }
+        }
+dd($errors);
+        return redirect()->back()->withErrors($errors);
+    }
+
     public function addGroupUser(Request $request, $id)
     {
       $user = User::findOrFail($id);
@@ -93,6 +165,16 @@ class AdminController extends Controller
       if($hasSemester) {
         $user->semesters()->detach($semesterID);
       }
+
+      return redirect()->back();
+    }
+
+    public function saveRole(Request $request, $userID)
+    {
+      $user = User::findOrFail($userID);
+
+      $user->role_id = $request->input('role');
+      $user->save();
 
       return redirect()->back();
     }

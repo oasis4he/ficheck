@@ -9,6 +9,6 @@ class Semester extends Model
   protected $table = 'semesters';
   public function users()
   {
-      return $this->belongsToMany('App\Users', 'user_semesters')->withTimestamps();
+      return $this->belongsToMany('App\User', 'user_semesters')->withTimestamps();
   }
 }
