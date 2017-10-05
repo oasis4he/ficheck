@@ -129,7 +129,7 @@ class AdminController extends Controller
                         $group->delete();
                     } catch(QueryException $e) {
                         if($e->getCode() == 23000) {
-                            $errors[] = ['danger'=>"Can't delete the group ".$group->name.". Remove all members from the group to delete it."];
+                            $errors[] = "Can't delete the group ".$group->name.". Remove all members from the group to delete it.";
                         }
                     }
                 } else {
@@ -140,8 +140,8 @@ class AdminController extends Controller
                 }
             }
         }
-dd($errors);
-        return redirect()->back()->withErrors($errors);
+
+        return \Redirect::back()->withErrors($errors);;
     }
 
     public function addGroupUser(Request $request, $id)
