@@ -24,7 +24,7 @@ class MonthlyTrackingRequest extends Request
     public function rules()
     {
         return [
-            'date' => 'required'
+            'date' => 'required|date'
         ];
     }
 }
