@@ -36,7 +36,7 @@ class AdminController extends Controller
 
                 if($groupId != 0) {
 
-                    $query->orWhereHas('semesters', function ($query) use ($searchTerm) {
+                    $query->orWhereHas('semesters', function ($query) use ($groupId) {
 
                         $query->where('semesters.id', $groupId);
                     });

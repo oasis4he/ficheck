@@ -30,7 +30,7 @@
                 <tr>
                     <th></th>
                     <th>Role</th>
-                    <th>Semester Group</th>
+                    <th>Groups</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
@@ -63,13 +63,15 @@
                         @endif
                     </td>
                     <td>
-                      @if($user->semesters)
+                      @if(count($user->semesters))
                           @foreach ($user->semesters as $semester)
                             <span class="badge">
-                              {{$semester->name}}
+                              <a href="/admin?search=group:{{$semester->id}}">{{$semester->name}}</a>
                               <a href="admin/group/delete/{{$user->id}}/{{$semester->id}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                             </span>
                           @endforeach
+                      @else
+                        <a href="/admin?search=group:0">&lt;none&gt;</a>
                       @endif
                     </td>
                     <td><a href="/monthly-tracking/{{$user->id}}">{{$user->first_name}}</a></td>
@@ -111,13 +113,13 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Add Semester Group</h4>
+              <h4 class="modal-title">Add Group</h4>
             </div>
             <div class="modal-body">
               <form class="" action="admin/group/add/user/{{$user->id}}" method="post">
                 {!! csrf_field() !!}
                 <div class="form-group">
-                  <label for="semester">Semester:</label>
+                  <label for="semester">Group Name:</label>
                   <select class="form-control" name="semester" id="semester">
                       <option></option>
                       @foreach ($semesters as $semester)
