@@ -179,6 +179,8 @@ class AdminController extends Controller
         $user->role_id = null;
       }
 
+      $user->save();
+
       return redirect()->back();
     }
 }
