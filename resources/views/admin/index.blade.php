@@ -34,7 +34,7 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
-                    <th>A-Number</th>
+                    <th>Created</th>
                     {{-- <th>Graded</th> --}}
             </thead>
             <tbody>
@@ -74,8 +74,14 @@
                     </td>
                     <td><a href="/monthly-tracking/{{$user->id}}">{{$user->first_name}}</a></td>
                     <td>{{$user->last_name}}</td>
-                    <td>{{$user->email}}</td>
-                    <td>{{$user->external_id}}</td>
+                    <td>
+                        <div>{{$user->email}}</div>
+                        <div>{{$user->external_id}}</div>
+                    </td>
+                    <td>
+                        <div>{{$user->created_at->diffForHumans()}}</div>
+                        <small><div class="help-block">{{$user->created_at->format('Y-m-d H:i T')}}</div></small>
+                    </td>
                     {{-- <td>
                         <div class="form-group" @if($user->graded_at) title="Grader: {{$user->grader->name}} ({{$user->graded_at}})" @endif>
                             <label>
@@ -93,7 +99,7 @@
             </tbody>
         </table>
 
-        <button class="btn btn-primary pull-right">Save</button>
+        <!-- <button class="btn btn-primary pull-right">Save</button> -->
     </form>
 
     @foreach ($users as $user)

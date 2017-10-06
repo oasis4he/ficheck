@@ -32,10 +32,19 @@ class AdminController extends Controller
             $query->orWhere('external_id', 'LIKE', '%'.trim($searchTerm).'%');
 
             if(preg_match('/^group\:\d+/', $searchTerm)) {
-                $query->orWhereHas('semesters', function ($query) use ($searchTerm) {
-                    $groupId = explode(':', $searchTerm)[1];
-                    $query->where('semesters.id', $groupId);
-                });
+                $groupId = explode(':', $searchTerm)[1];
+
+                if($groupId != 0) {
+
+                    $query->orWhereHas('semesters', function ($query) use ($searchTerm) {
+
+                        $query->where('semesters.id', $groupId);
+                    });
+                } else {
+                    $query->orWhere(function($query) use ($groupId) {
+                        $query->whereDoesntHave('semesters');
+                    });
+                }
             }
           }
 
