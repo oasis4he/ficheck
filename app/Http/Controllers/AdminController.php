@@ -174,7 +174,10 @@ class AdminController extends Controller
       $user = User::findOrFail($userID);
 
       $user->role_id = $request->input('role');
-      $user->save();
+
+      if(!$user->role_id){
+        $user->role_id = null;
+      }
 
       return redirect()->back();
     }
