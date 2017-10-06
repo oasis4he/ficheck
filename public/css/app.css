@@ -1,3 +1,29 @@
+.headerSortUp,
+.headerSortDown {
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: 700 !important;
+  color: #1ca8dd !important;
+  border-bottom-color: #1ca8dd !important; }
+
+.headerSortUp:after,
+.headerSortDown:after {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  content: "";
+  margin-right: -10px;
+  margin-bottom: 2px;
+  margin-left: 5px;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent; }
+
+.headerSortUp:after {
+  border-top: 4px solid; }
+
+.headerSortDown:after {
+  border-bottom: 4px solid; }
+
 body {
   margin-top: 60px;
   font-family: 'Lato'; }

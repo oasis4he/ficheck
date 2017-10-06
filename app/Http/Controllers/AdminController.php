@@ -20,6 +20,8 @@ class AdminController extends Controller
         $groups = $user->semesters()->pluck('semester_id')->toArray();
 
         $search = $request->get('search');
+        $page = $request->query('page', 1);
+
         $usersQuery = User::where(function($query) use ($search){
           $query->where('first_name', 'LIKE', '%'.trim($search).'%');
           $query->orWhere('last_name', 'LIKE', '%'.trim($search).'%');
@@ -59,7 +61,35 @@ class AdminController extends Controller
           });
         }
 
-        $usersQuery= $usersQuery->orderBy('role_id', 'desc')->orderBy('first_name')->orderBy('email');
+        $sort = $request->query('sort');
+        $sortDirection = $request->query('direction', '1');
+
+        $sortColumns = [
+            'storeID',
+            'first_name',
+            'last_name',
+            'email',
+            'created_at'
+        ];
+
+        $sortColumn = in_array($sort, $sortColumns) ? $sort : null;
+
+        $sortAscending = 1;
+        $sortDescending = -1;
+
+
+        if($sortDirection == $sortAscending){
+            $sortDir = 'ASC';
+        } else {
+            $sortDir = 'DESC';
+        }
+
+        $usersQuery->when($sortColumn, function($query) use ($sortColumn, $sortDir) {
+            $query->orderBy($sortColumn, $sortDir);
+        },
+        function($query) {
+            $query->orderBy('role_id', 'desc')->orderBy('first_name')->orderBy('email');
+        });
 
         $users = $usersQuery->paginate();
         $semesters = Semester::orderBy('name')->get();
@@ -69,7 +99,11 @@ class AdminController extends Controller
         return view('admin.index', [
             'users' => $users,
             'semesters' => $semesters,
-            'roles' => $roles
+            'roles' => $roles,
+            'sort' => $sort,
+            'sortDirection' => $sortDirection,
+            'page' => $page,
+            'search' => $search,
         ]);
     }
 

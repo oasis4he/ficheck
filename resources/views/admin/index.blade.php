@@ -31,10 +31,10 @@
                     <th></th>
                     <th>Role</th>
                     <th>Groups</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Created</th>
+                    <th class="@if($sort=='first_name') @if($sortDirection == -1) headerSortUp @else headerSortDown @endif @endif "><a href="{{$users->appends(['search'=>$search,'sort'=>'first_name','direction'=>-$sortDirection])->url($page)}}">First Name</a></th>
+                    <th class="@if($sort=='last_name') @if($sortDirection == -1) headerSortUp @else headerSortDown @endif @endif "><a href="{{$users->appends(['search'=>$search,'sort'=>'last_name','direction'=>-$sortDirection])->url($page)}}">Last Name</a></th>
+                    <th class="@if($sort=='email') @if($sortDirection == -1) headerSortUp @else headerSortDown @endif @endif "><a href="{{$users->appends(['search'=>$search,'sort'=>'email','direction'=>-$sortDirection])->url($page)}}">Email</a></th>
+                    <th class="@if($sort=='created_at') @if($sortDirection == -1) headerSortUp @else headerSortDown @endif @endif "><a href="{{$users->appends(['search'=>$search,'sort'=>'created_at','direction'=>-$sortDirection])->url($page)}}">Created</a></th>
                     {{-- <th>Graded</th> --}}
             </thead>
             <tbody>
@@ -178,6 +178,6 @@
     @endforeach
 </div>
 <div class="text-center">
-    {!! $users->render() !!}
+    {!! $users->appends(['search'=>$search,'sort'=>$sort,'direction'=>$sortDirection]) !!}
 </div>
 @stop
