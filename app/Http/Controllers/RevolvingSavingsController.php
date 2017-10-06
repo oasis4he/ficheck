@@ -64,7 +64,7 @@ class RevolvingSavingsController extends Controller
 
                 if (isset($value['name']))
                 {
-                    $record->description = isset($value['name']) ? $value['name'] : 0;
+                    $record->description = isset($value['name']) ? $value['name'] : 'Item';
                 }
 
                 $record->value = isset($value['value']) ? $value['value'] : 0;
