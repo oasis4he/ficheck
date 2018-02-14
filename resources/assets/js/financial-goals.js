@@ -11,7 +11,6 @@
       var newRecord = template.find('form').clone();
 
       if(!goals.length) {
-        console.log('no goals for you');
         goals = $('<div class="body"/>');
         template.before(goals);
       }

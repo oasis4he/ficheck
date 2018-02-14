@@ -19,7 +19,6 @@
 
         if(factorElement.val()) {
             var totalIncomeReplacementValue = roundedValue(insureanceNeedValue * factorElement.val());
-            console.log(insureanceNeedValue, factorElement.val(), insureanceNeedValue * factorElement.val());
             totalIncomeForReplacement.val(totalIncomeReplacementValue);
 
             var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]');

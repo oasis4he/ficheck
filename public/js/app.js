@@ -448,7 +448,6 @@
       var newRecord = template.find('form').clone();
 
       if(!goals.length) {
-        console.log('no goals for you');
         goals = $('<div class="body"/>');
         template.before(goals);
       }
@@ -1093,7 +1092,6 @@ monthlyTrackingContainer.find('[name=date]').datepicker();
 
         if(factorElement.val()) {
             var totalIncomeReplacementValue = roundedValue(insureanceNeedValue * factorElement.val());
-            console.log(insureanceNeedValue, factorElement.val(), insureanceNeedValue * factorElement.val());
             totalIncomeForReplacement.val(totalIncomeReplacementValue);
 
             var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]');
