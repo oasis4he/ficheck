@@ -17,48 +17,65 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $groups = $user->semesters()->pluck('semester_id')->toArray();
+        $hasRoot = $user->hasRole('root');
+        $groups = $user->semesters()->get();
+
+        $globalUser = false;
+
+        if(count($groups) == 0) {
+            $globalUser = true;
+            $groups = Semester::orderBy('name')->get();
+        }
 
         $search = $request->get('search');
         $page = $request->query('page', 1);
+        $groupFilter = $request->query('group');
 
         $usersQuery = User::where(function($query) use ($search){
-          $query->where('first_name', 'LIKE', '%'.trim($search).'%');
-          $query->orWhere('last_name', 'LIKE', '%'.trim($search).'%');
-          $query->orWhere('email', 'LIKE', '%'.trim($search).'%');
+            if($search) {
+                $query->where('first_name', 'LIKE', '%'.trim($search).'%');
+                $query->orWhere('last_name', 'LIKE', '%'.trim($search).'%');
+                $query->orWhere('email', 'LIKE', '%'.trim($search).'%');
 
-          // allow space separated, comma or semicolon separated items to be searched on (external_id)
-          $fixedSearch = preg_replace('/[\s,;]+/', ',', $search);
+                // allow space separated, comma or semicolon separated items to be searched on (external_id)
+                $fixedSearch = preg_replace('/[\s,;]+/', ',', $search);
 
-          foreach(explode(",", $fixedSearch) as $searchTerm) {
-            $query->orWhere('external_id', 'LIKE', '%'.trim($searchTerm).'%');
+                foreach(explode(",", $fixedSearch) as $searchTerm) {
+                    $query->orWhere('external_id', 'LIKE', '%'.trim($searchTerm).'%');
 
-            if(preg_match('/^group\:\d+/', $searchTerm)) {
-                $groupId = explode(':', $searchTerm)[1];
+                    if(preg_match('/^group\:\d+/', $searchTerm)) {
+                        $groupId = explode(':', $searchTerm)[1];
 
-                if($groupId != 0) {
-
-                    $query->orWhereHas('semesters', function ($query) use ($groupId) {
-
-                        $query->where('semesters.id', $groupId);
-                    });
-                } else {
-                    $query->orWhere(function($query) use ($groupId) {
-                        $query->whereDoesntHave('semesters');
-                    });
+                        if($groupId != 0) {
+                            $query->orWhereHas('semesters', function ($query) use ($groupId) {
+                                $query->where('semesters.id', $groupId);
+                            });
+                        } else {
+                            $query->orWhere(function($query) use ($groupId) {
+                                $query->whereDoesntHave('semesters');
+                            });
+                        }
+                    }
                 }
-            }
-          }
 
-          $query->orWhereHas('role', function ($query) use ($search) {
-              $query->where('name', 'LIKE', $search);
-          });
+                $query->orWhereHas('role', function ($query) use ($search) {
+                    $query->where('name', 'LIKE', $search);
+                });
+            }
         });
 
-        if($groups){
+
+        // limit view to groups the user has access to if they aren't a global user
+        if(!$globalUser){
           $usersQuery = $usersQuery->whereHas('semesters', function($query) use ($groups){
-            $query->whereIn('semester_id', $groups);
+            $query->whereIn('semester_id', $groups->pluck('semester_id')->toArray());
           });
+        }
+
+        if($groupFilter) {
+            $usersQuery->whereHas('semesters', function ($query) use ($groupFilter) {
+                $query->where('semesters.slug', $groupFilter);
+            });
         }
 
         $sort = $request->query('sort');
@@ -98,7 +115,11 @@ class AdminController extends Controller
 
         return view('admin.index', [
             'users' => $users,
+            'user' => $user,
+            'hasRoot' => $hasRoot,
             'semesters' => $semesters,
+            'groups' => $groups,
+            'groupFilter' => $groupFilter,
             'roles' => $roles,
             'sort' => $sort,
             'sortDirection' => $sortDirection,
@@ -132,7 +153,8 @@ class AdminController extends Controller
 
     public function groups(Request $request)
     {
-        $groupsQuery = Semester::orderBy('name');
+        $groupsQuery = Semester::orderBy('id', 'desc');
+        $page = $request->get('page', 1);
 
         $search = $request->get('search');
         $groupsQuery->where(function($query) use ($search){
@@ -143,12 +165,13 @@ class AdminController extends Controller
 
           foreach(explode(",", $fixedSearch) as $searchTerm) {
             $query->orWhere('id', 'LIKE', '%'.trim($searchTerm).'%');
+            $query->orWhere('slug', 'LIKE', '%'.trim($searchTerm).'%');
           }
         });
 
         $groups = $groupsQuery->with('users')->paginate();
 
-        return view('admin.groups', ['groups' => $groups]);
+        return view('admin.groups', ['groups' => $groups, 'page' => $page, 'search' => $search]);
     }
 
     public function saveGroups(Request $request)
@@ -158,7 +181,7 @@ class AdminController extends Controller
         if($request->has('new_group')) {
             $newGroup = new Semester();
             $newGroup->name = $request->input('new_group');
-            $newGroup->description = $request->input('new_description');
+            $newGroup->slug = $request->input('new_slug');
 
             $newGroup->save();
         }
@@ -177,7 +200,7 @@ class AdminController extends Controller
                     }
                 } else {
                     $group->name = $groupData['name'];
-                    $group->description = $groupData['description'];
+                    $group->slug = $groupData['slug'];
 
                     $group->save();
                 }

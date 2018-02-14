@@ -31,24 +31,29 @@
         <table class="table striped">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Members</th>
-                    <th>Created</th>
-                    <th>Updated</th>
+                    <th scope="row">ID</th>
+                    <th scope="row">Name</th>
+                    <th scope="row">Slug</th>
+                    <th scope="row">Members</th>
+                    <th scope="row">Created</th>
+                    <th scope="row">Updated</th>
             </thead>
             <tbody>
-                @foreach($groups as $group)
-                <tr>
-                    <td>
+                @foreach($groups as $i=>$group)
+                <tr @if($i == 0 && $page == 1 && $search == '') style="background: #ffe;"@endif>
+                    <th scope="row" class="text-center">
                         {{$group->id}}
-                    </td>
+                        @if($i == 0 && $page == 1 && $search == '')
+                            <div class="text-muted small">
+                                &lt;DEFAULT&gt;
+                            </div>
+                        @endif
+                    </th>
                     <td>
                         <input type="text" class="form-control" name="group[{{$group->id}}][name]" value="{{old('group['.$group->id.'][name]', $group->name)}}" id="group_{{$group->id}}_name" placeholder="Group Name">
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="group[{{$group->id}}][description]" value="{{old('group['.$group->id.'][description]', $group->description)}}" id="group_{{$group->id}}_description" placeholder="Description">
+                        <input type="text" class="form-control" name="group[{{$group->id}}][slug]" value="{{old('group['.$group->id.'][slug]', $group->slug)}}" id="group_{{$group->id}}_slug" placeholder="slug">
                     </td>
                     <td>
                       <a href="/admin?search=group:{{$group->id}}">
@@ -71,13 +76,9 @@
                         <input type="text" class="form-control" name="new_group" value="{{old('new_group')}}" id="new_group" placeholder="Create new group">
                     </td>
                     <td>
-                        <input type="text" class="form-control" name="new_description" value="{{old('new_description')}}" id="new_description" placeholder="Description">
+                        <input type="text" class="form-control" name="new_slug" value="{{old('new_slug')}}" id="new_slug" placeholder="slug">
                     </td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td>
+                    <td colspan="3">
                     </td>
                 </tr>
             </tbody>

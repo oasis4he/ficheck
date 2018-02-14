@@ -3,19 +3,30 @@
 @section('content')
 
 <div class="row">
-    <form method="get" class="search col-md-6">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Name, email, A-Number, Role" name="search" value="{{Request::get('search')}}">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="submit" aria-label="Search"><i class="glyphicon glyphicon-search"></i></button>
-            </span>
+    <form method="get" class="search">
+        <div class="col-md-6">
+            <div>
+                <label for="group">Group</label>
+                <select name="group" id="group">
+                    <option value="">All</option>
+                    @foreach($groups as $group)
+                        <option value="{{$group->slug ? $group->slug : $group->id }}" @if($group->slug == $groupFilter || $group->id == $groupFilter) selected @endif>{{$group->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Name, email, Role" name="search" value="{{Request::get('search')}}">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit" aria-label="Search"><i class="glyphicon glyphicon-search"></i></button>
+                </span>
+            </div>
+            @if(Request::get('search'))
+                <a href="/admin">clear search</a>
+            @endif
         </div>
-        @if(Request::get('search'))
-            <a href="/admin">clear search</a>
-        @endif
     </form>
 
-    @if(Auth::user()->hasRole('root'))
+    @if($hasRoot)
         <div class="col-md-6 text-right">
             <a class="btn btn-default" href="/admin/groups">Groups</a>
         </div>
@@ -42,13 +53,13 @@
                 <tr>
                     <td>
                       {{-- only let admins add people they are over to groups, they can't add themselves --}}
-                      @if($user->id != Auth::user()->id)
+                      @if($user->id != $user->id)
                         <!-- Trigger group add modal -->
                         <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#addGroup{{$user->id}}">Add Group</button>
                       @endif
                     </td>
                     <td>
-                        @if(Auth::user()->hasRole('root') && Auth::user()->id != $user->id)
+                        @if($hasRoot && $user->id != $user->id)
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#manageRole{{$user->id}}">
                         @endif
 
@@ -58,7 +69,7 @@
                             User
                         @endif
 
-                        @if(Auth::user()->hasRole('root'))
+                        @if($hasRoot)
                             </button>
                         @endif
                     </td>
@@ -139,7 +150,7 @@
         </div>
       </div>
 
-      @if(Auth::user()->hasRole('root'))
+      @if($hasRoot)
         <!-- Role Manage Modal -->
         <div id="manageRole{{$user->id}}" class="modal fade" role="dialog">
           <div class="modal-dialog">
