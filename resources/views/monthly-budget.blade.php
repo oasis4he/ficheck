@@ -6,12 +6,8 @@
     <input type="hidden" name="calculator" value="{{$calculator}}">
     <div class="ficheck-sections budget-view-record">
 
-      @if($trackedMonthRecords)
-        @if($trackedMonth && $trackedYear)
-          @include('layouts.title', ['title'=>$title, 'month'=>$trackedMonth, 'year'=>$trackedYear])
-        @else
-          @include('layouts.title', ['title'=>$title])
-        @endif
+        @include('layouts.title', ['title'=>$title])
+
         @include('partials.form-errors')
         @if(isset($showTotals))
           @include('partials.monthly-budget-totals')
@@ -26,9 +22,6 @@
 
           </div><!-- .ficheck-section-type -->
         @endforeach
-      @else
-          @include('partials.monthly-tracker-message')
-      @endif
 
     </div><!-- .ficheck-sections -->
   </form>

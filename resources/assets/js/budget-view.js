@@ -264,12 +264,9 @@
          clone.removeClass("valueTypeTemplate");
          $(thisElement).before(clone);
 
-         template.find("input").removeAttr("readonly");
-
-
       //add active to active class
       $(".valueType." + activeClass).addClass(active);
-      var newActiveRow = $(".valueType." + activeClass + "[data-record-id='" + recordId + "']");
+      var newActiveRow = $(".valueType[data-record-id='" + recordId + "']");
       newActiveRow.find(".editLabel").click();
       newActiveRow.show();
       newActiveRow.find(".valueInput").trigger("change");
@@ -292,10 +289,10 @@
 
 
     //hide empty fields
-    $(".budget-view").on("click", ".hide-empty-fields", function(){
+    $("body").on("click", ".hide-empty-fields", function(){
       event.preventDefault()
 
-      var rows = $(this).closest(".monthly-budget-type").find(".valueType." + activeClass);
+      var rows = $(this).closest(".monthly-budget-type").find(".valueType.row, .valueType." + activeClass);
       $.each(rows, function(index, row) {
         var rowVal = $(row).find("input[type='number']").val();
         if((rowVal == "" || rowVal == 0))
@@ -309,7 +306,7 @@
     $(".budget-view").on("click", ".show-all-fields", function(){
       event.preventDefault()
 
-      var rows = $(this).closest(".monthly-budget-type").find(".valueType." + activeClass).slideDown("fast");
+      var rows = $(this).closest(".monthly-budget-type").find(".valueType.row, .valueType." + activeClass).slideDown("fast");
 
     })
 
@@ -371,7 +368,7 @@
 
         $("#expenseTotal").val(expenseTotal.toFixed(2));
 
-        $("#netTotal").val((incomeTotal + expenseTotal).toFixed(2));
+        $("#netTotal").val((incomeTotal - expenseTotal).toFixed(2));
 
       });
 

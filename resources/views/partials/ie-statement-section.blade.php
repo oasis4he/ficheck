@@ -12,7 +12,10 @@
            </div>
 
           <div class="form-group col-xs-6">
-              <input name="{{$category}}" id="{{$category}}" value="" class="form-control">
+              <div class="input-group">
+                  <span class="input-group-addon">$</span>
+                  <input name="{{$category}}" id="{{$category}}" value="" class="form-control">
+              </div>
           </div>
        </div>
      @endif
@@ -23,7 +26,10 @@
         </div>
 
         <div class="form-group col-xs-6">
-            <input readonly name="total_{{$category}}_actual" id="total_{{$category}}_actual" value="" class="form-control totalInput">
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input type="number" readonly name="total_{{$category}}_actual" id="total_{{$category}}_actual" value="" class="form-control totalInput">
+            </div>
         </div>
     </div>
 

@@ -1,10 +1,3 @@
-// remove fields or add datepicker (mm/dd/yyyy) - jquery UI
-// monthly tracking hide categories link
-// delete button on right side of category field (removes row)
-// reset button on monthly tracker, with are you sure dialog
-// stage for george
-
-
 //http://stackoverflow.com/questions/15762768/javascript-math-round-to-two-decimal-places
   function roundTo(n, digits) {
      if (digits === undefined) {
@@ -18,19 +11,23 @@
    }
 
    function roundedValue(number) {
-     var value = roundTo(number, 2);
-     if((value.toString().split('.')[1] || []).length == 1){
-       value = value + "0";
-     }
-     return value;
+       var value = parseFloat(number);
+       return Number(Math.round(value+'e2')+'e-2').toFixed(2);
    }
 
-   $('body').on('change', '[type=number]', function() {
+(function($){
+   $('body').on('change', '[type="number"]', function() {
 
      $(this).val(roundedValue($(this).val()));
 
-   });
+   }).find('[type="number"]').trigger('change');
 
+    $('body').on('focus', '[type="number"]', function() {
+
+        $(this).select();
+
+    });
+})(jQuery);
 (function($){
   $(function(){
 
@@ -297,12 +294,9 @@
          clone.removeClass("valueTypeTemplate");
          $(thisElement).before(clone);
 
-         template.find("input").removeAttr("readonly");
-
-
       //add active to active class
       $(".valueType." + activeClass).addClass(active);
-      var newActiveRow = $(".valueType." + activeClass + "[data-record-id='" + recordId + "']");
+      var newActiveRow = $(".valueType[data-record-id='" + recordId + "']");
       newActiveRow.find(".editLabel").click();
       newActiveRow.show();
       newActiveRow.find(".valueInput").trigger("change");
@@ -325,10 +319,10 @@
 
 
     //hide empty fields
-    $(".budget-view").on("click", ".hide-empty-fields", function(){
+    $("body").on("click", ".hide-empty-fields", function(){
       event.preventDefault()
 
-      var rows = $(this).closest(".monthly-budget-type").find(".valueType." + activeClass);
+      var rows = $(this).closest(".monthly-budget-type").find(".valueType.row, .valueType." + activeClass);
       $.each(rows, function(index, row) {
         var rowVal = $(row).find("input[type='number']").val();
         if((rowVal == "" || rowVal == 0))
@@ -342,7 +336,7 @@
     $(".budget-view").on("click", ".show-all-fields", function(){
       event.preventDefault()
 
-      var rows = $(this).closest(".monthly-budget-type").find(".valueType." + activeClass).slideDown("fast");
+      var rows = $(this).closest(".monthly-budget-type").find(".valueType.row, .valueType." + activeClass).slideDown("fast");
 
     })
 
@@ -404,7 +398,7 @@
 
         $("#expenseTotal").val(expenseTotal.toFixed(2));
 
-        $("#netTotal").val((incomeTotal + expenseTotal).toFixed(2));
+        $("#netTotal").val((incomeTotal - expenseTotal).toFixed(2));
 
       });
 
@@ -454,7 +448,6 @@
       var newRecord = template.find('form').clone();
 
       if(!goals.length) {
-        console.log('no goals for you');
         goals = $('<div class="body"/>');
         template.before(goals);
       }
@@ -469,6 +462,20 @@
 
       return false;
     });
+
+      $('.page-financial-goals  a[href=#collapse]').click(function(){
+          $('.financial-goals .financial-goal').slideUp();
+      });
+
+      $('.page-financial-goals  a[href=#expand]').click(function(){
+          $('.financial-goals .financial-goal').slideDown();
+      });
+
+      $('.page-financial-goals  h2').on('click', function(e){
+          $('form', $(this).closest('.ficheck-section-type')).slideToggle();
+
+          return false;
+      });
 
   });
   $('[name=date]').datepicker();
@@ -807,7 +814,7 @@ monthlyTrackingContainer.find('[name=date]').datepicker();
              <div class="row">
                <div class="col-xs-4"><input class="form-control" name="date" aria-labelledby="dateTrack" value="`+ data.records.occurred_at+`"></div>
                <div class="col-xs-2"><input class="form-control" name="in" type="number" step="1" aria-labelledby="inTrack" value="`+ (parseFloat(data.records.value) > 0 ? parseFloat(data.records.value) : "") +`"></div>
-               <div class="col-xs-2"><input class="form-control" name="out" type="number" step="1" aria-labelledby="inTrack" value="`+ (parseFloat(data.records.value) < 0 ? parseFloat(data.records.value) : "") +`"></div>
+               <div class="col-xs-2"><input class="form-control" name="out" type="number" step="1" aria-labelledby="inTrack" value="`+ (parseFloat(data.records.value) < 0 ? -1 * parseFloat(data.records.value) : "") +`"></div>
                <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" value="`+ data.records.category +`"></div>
                <div class="control">
                  <a href="#delete" class="btn btn-danger delete" class="submit">Delete</a>
@@ -972,6 +979,32 @@ monthlyTrackingContainer.find('[name=date]').datepicker();
 
 
 (function($){
+    $(function(){
+        var revolvingSavingsContainer = $('.page-revolving-savings .ficheck-sections');
+        var totalsContainer = $('.budget-sums', revolvingSavingsContainer);
+        var wrapper = $('.ficheck-section-type', revolvingSavingsContainer);
+
+        $('.ficheck-section-type', revolvingSavingsContainer).on('change', 'input', function() {
+
+            var inputs = $(wrapper).find('input[type="number"]');
+            var sum = 0;
+
+            inputs.each(function(a){
+                var value = parseFloat($(a).val());
+                sum += value;
+            });
+
+            var monthly = roundedValue(sum / 12);
+
+            $('#perYearTotal', totalsContainer).val(sum);
+            $('#perMonthTotal', totalsContainer).val(monthly);
+        });
+
+    });
+}(jQuery));
+
+
+(function($){
   $(function(){
     var expenses = $('.life-insurance-type-expenses');
 
@@ -1057,14 +1090,15 @@ monthlyTrackingContainer.find('[name=date]').datepicker();
         var totalIncomeForReplacement = wrapper.find('[name=total_income_replacement]');
         var factorElement = $('[name="income_replacement_factor"]', wrapper);
 
-        var totalIncomeReplacementValue = roundedValue(insuranceNeeds.val() * factorElement.val());
+        if(factorElement.val()) {
+            var totalIncomeReplacementValue = roundedValue(insureanceNeedValue * factorElement.val());
+            totalIncomeForReplacement.val(totalIncomeReplacementValue);
 
-        totalIncomeForReplacement.val(totalIncomeReplacementValue);
+            var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]');
 
-        var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]');
-
-        enteredTotalIncomeForReplacement.val(totalIncomeForReplacement.val());
-        enteredTotalIncomeForReplacement.trigger("change");
+            enteredTotalIncomeForReplacement.val(totalIncomeForReplacement.val());
+            enteredTotalIncomeForReplacement.trigger("change");
+        }
     });
 
     $(lifeInsurace).on('change', 'select', function() {
@@ -1106,10 +1140,13 @@ monthlyTrackingContainer.find('[name=date]').datepicker();
         additionalSavingsNeededForRetirementElement.val(additionalSavingsNeededForRetirement);
 
         var factor = $('[name="entered_retirement_age_factor"]', wrapper).val();
-        var goal = Math.round(additionalSavingsNeededForRetirement / factor * 100) / 100;
 
-        var additionAnnualSavingsRequired = $('[name="addition_annual_savings_required"]', wrapper);
-        additionAnnualSavingsRequired.val(goal);
+        if(factor) {
+            var goal = Math.round(additionalSavingsNeededForRetirement / factor * 100) / 100;
+
+            var additionAnnualSavingsRequired = $('[name="addition_annual_savings_required"]', wrapper);
+            additionAnnualSavingsRequired.val(goal);
+        }
     });
 
     $(retirementGoals).on('change', 'select', function() {
@@ -1142,15 +1179,19 @@ monthlyTrackingContainer.find('[name=date]').datepicker();
         var currentValueSavingsAndInvestments = wrapper.find('[name=retirement_savings_and_investments]').val() / 1;
 
         var factor = $('[name="retirement_years_factor"]', wrapper).val();
-        var goal = Math.round(currentValueSavingsAndInvestments * factor * 100) / 100;
 
-        var futureValueSavingsAndInvestmentsElement = $('[name="future_value_of_savings_and_investments"]', wrapper);
-        var oldGoal = parseFloat(futureValueSavingsAndInvestmentsElement.val());
-        if(oldGoal != goal) {
-          futureValueSavingsAndInvestmentsElement.val(goal);
+        if(currentValueSavingsAndInvestments && factor) {
+            var goal = Math.round(currentValueSavingsAndInvestments * factor * 100) / 100;
 
-          var annualSavingsFutureSavings = $('[name="entered_future_value_of_savings_and_investments"]');
-          annualSavingsFutureSavings.val(goal).trigger('change');
+            var futureValueSavingsAndInvestmentsElement = $('[name="future_value_of_savings_and_investments"]', wrapper);
+            var oldGoal = parseFloat(futureValueSavingsAndInvestmentsElement.val());
+
+            if (oldGoal != goal) {
+                futureValueSavingsAndInvestmentsElement.val(goal);
+
+                var annualSavingsFutureSavings = $('[name="entered_future_value_of_savings_and_investments"]');
+                annualSavingsFutureSavings.val(goal).trigger('change');
+            }
         }
     });
 
@@ -1183,15 +1224,18 @@ monthlyTrackingContainer.find('[name=date]').datepicker();
         additionalAnnualIncomeRequiredElement.val(additionalAnnualIncomeRequired);
 
         var factor = $('[name="retirement_age_factor"]', wrapper).val();
-        var goal = Math.round(additionalAnnualIncomeRequired * factor * 100) / 100;
 
-        var retirementGoal = $('[name="retirement_goal"]', wrapper);
-        var oldGoal = parseFloat(retirementGoal.val());
-        if(oldGoal != goal) {
-          retirementGoal.val(goal);
-          var annualSavingsRetirementGoal = $('[name="entered_retirement_goal"]');
-          annualSavingsRetirementGoal.val(goal).trigger('change');
+        if(factor) {
+            var goal = Math.round(additionalAnnualIncomeRequired * factor * 100) / 100;
 
+            var retirementGoal = $('[name="retirement_goal"]', wrapper);
+            var oldGoal = parseFloat(retirementGoal.val());
+            if (oldGoal != goal) {
+                retirementGoal.val(goal);
+                var annualSavingsRetirementGoal = $('[name="entered_retirement_goal"]');
+                annualSavingsRetirementGoal.val(goal).trigger('change');
+
+            }
         }
 
     });

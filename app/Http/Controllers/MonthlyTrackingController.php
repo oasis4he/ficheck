@@ -80,9 +80,13 @@ class MonthlyTrackingController extends Controller
     function saveRecord(MonthlyTrackingRequest $request)
     {
       $record = MonthlyTrackingRecord::findOrNew($request->input('id'));
+
+      if($record->user_id && $record->user_id != Auth::user()->id) {
+          abort(403, 'Unauthorized action.');
+      }
+
       $date = new Carbon($request->get('date'));
       $oldCategory = $record->category;
-
 
       if($request->has('month_id')) {
         $trackedMonth = TrackedMonth::where('id', $request->get('month_id'))->first();
@@ -99,16 +103,6 @@ class MonthlyTrackingController extends Controller
         $trackedMonth = TrackedMonth::where('user_id', Auth::user()->id)->where('month', $date->format('m'))->where('year', $date->format('Y'))->first();
       }
 
-      if($request->has('in')){
-        $category = MonthlyBudgetRecord::where('user_id', Auth::user()->id)->where('type','income')->where('description', $request->get('category'))->first();
-      } else {
-        $category = MonthlyBudgetRecord::where('user_id', Auth::user()->id)->where('type','expense')->where('description', $request->get('category'))->first();
-      }
-
-      if(!$category) {
-        $this->createCategory($request->all());
-      }
-
       if(!$trackedMonth) {
         $trackedMonth = new TrackedMonth;
         $trackedMonth->user_id = Auth::user()->id;
@@ -116,9 +110,6 @@ class MonthlyTrackingController extends Controller
         $trackedMonth->year = $date->format('Y');
         $trackedMonth->save();
       }
-      // if($record->user_id && $record->user_id != Auth::user()->id) {
-      //   abort(403, 'Unauthorized action.');
-      // }
 
       $record->month_id = $trackedMonth->id;
 

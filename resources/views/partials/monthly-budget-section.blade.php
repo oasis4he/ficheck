@@ -23,13 +23,22 @@
           </div>
 
           <div class="form-group col-xs-3">
-             <input name="{{$category}}" id="{{$category}}" value="" class="form-control">
+              <div class="input-group">
+                  <span class="input-group-addon">$</span>
+                  <input name="{{$category}}" id="{{$category}}" value="" class="form-control">
+              </div>
           </div>
           <div class="form-group col-xs-3">
-             <input name="{{$category}}" id="{{$category}}" value="" class="form-control">
+              <div class="input-group">
+                  <span class="input-group-addon">$</span>
+                  <input name="{{$category}}" id="{{$category}}" value="" class="form-control">
+              </div>
           </div>
           <div class="form-group col-xs-3">
-             <input name="{{$category}}" id="{{$category}}" value="" class="form-control">
+              <div class="input-group">
+                  <span class="input-group-addon">$</span>
+                  <input name="{{$category}}" id="{{$category}}" value="" class="form-control" readonly>
+              </div>
           </div>
       </div>
    @endif
@@ -41,15 +50,24 @@
         </div>
 
         <div class="form-group col-xs-3  valueTypeTotal planned active">
-            <input readonly name="total_{{$category}}_planned" id="total_{{$category}}_planned" value="" class="form-control totalInput" aria-label="{{$monthlyBudgetCategories[$category]['title']}} Planned Total">
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input readonly name="total_{{$category}}_planned" id="total_{{$category}}_planned" value="" class="form-control totalInput" aria-label="{{$monthlyBudgetCategories[$category]['title']}} Planned Total">
+            </div>
         </div>
 
         <div class="form-group col-xs-3 valueTypeTotal actual active">
-            <input readonly name="total_{{$category}}_actual" id="total_{{$category}}_actual" value="" class="form-control totalInput" aria-label="{{$monthlyBudgetCategories[$category]['title']}} Actual Total">
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input readonly name="total_{{$category}}_actual" id="total_{{$category}}_actual" value="" class="form-control totalInput" aria-label="{{$monthlyBudgetCategories[$category]['title']}} Actual Total">
+            </div>
         </div>
 
         <div class="form-group col-xs-3 valueTypeTotal difference active">
-            <input readonly name="total_{{$category}}_difference" id="total_{{$category}}_difference" value="" class="form-control totalInput" aria-label="{{$monthlyBudgetCategories[$category]['title']}} Difference Total">
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input readonly name="total_{{$category}}_difference" id="total_{{$category}}_difference" value="" class="form-control totalInput" aria-label="{{$monthlyBudgetCategories[$category]['title']}} Difference Total">
+            </div>
         </div>
     </div>
 

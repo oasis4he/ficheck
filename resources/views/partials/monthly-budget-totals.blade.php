@@ -7,7 +7,10 @@
     </div>
 
     <div class="col-xs-5">
-      <input class="form-control" type="text" readonly id="incomeTotal">
+      <div class="input-group">
+        <span class="input-group-addon">$</span>
+        <input class="form-control" type="text" readonly id="incomeTotal">
+      </div>
     </div>
   </div>
 
@@ -19,7 +22,10 @@
     </div>
 
     <div class="col-xs-5">
-      <input class="form-control" type="text" readonly id="expenseTotal">
+      <div class="input-group">
+        <span class="input-group-addon">$</span>
+        <input class="form-control" type="text" readonly id="expenseTotal">
+      </div>
     </div>
   </div>
 
@@ -31,7 +37,10 @@
     </div>
 
     <div class="col-xs-5">
-      <input class="form-control" type="text" readonly id="netTotal">
+      <div class="input-group">
+        <span class="input-group-addon">$</span>
+        <input class="form-control" type="text" readonly id="netTotal">
+      </div>
     </div>
   </div>
 </div>

@@ -1,7 +1,10 @@
 <div class="row">
   <div class="form-group col-xs-12">
     <label for="annual_income">How much do your dependents need for annual income if you were gone?</label>
-    <input name="annual_income" id="annual_income" type="number" value="{{$lifeInsurance->annual_income}}" class="form-control">
+    <div class="input-group">
+      <span class="input-group-addon">$</span>
+      <input name="annual_income" id="annual_income" type="number" value="{{$lifeInsurance->annual_income}}" class="form-control">
+    </div>
   </div>
 </div>
 
@@ -56,7 +59,9 @@
   <br><br>
   <div class="form-group col-xs-12">
     <label for="total_income_replacement">Total for Income Replacement</label>
-    <br>
-    <input name="total_income_replacement" id="total_income_replacement" type="number" value="{{$lifeInsurance->total_income_replacement}}" step="1" class="form-control" readonly>
+    <div class="input-group">
+      <span class="input-group-addon">$</span>
+      <input name="total_income_replacement" id="total_income_replacement" type="number" value="{{$lifeInsurance->total_income_replacement}}" step="1" class="form-control" readonly>
+    </div>
   </div>
 </div>
