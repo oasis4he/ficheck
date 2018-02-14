@@ -49,22 +49,22 @@
                     {{-- <th>Graded</th> --}}
             </thead>
             <tbody>
-                @foreach($users as $user)
+                @foreach($users as $viewUser)
                 <tr>
                     <td>
                       {{-- only let admins add people they are over to groups, they can't add themselves --}}
-                      @if($user->id != $user->id)
+                      @if($user->id != $viewUser->id)
                         <!-- Trigger group add modal -->
-                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#addGroup{{$user->id}}">Add Group</button>
+                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#addGroup{{$viewUser->id}}">Add Group</button>
                       @endif
                     </td>
                     <td>
-                        @if($hasRoot && $user->id != $user->id)
-                            <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#manageRole{{$user->id}}">
+                        @if($hasRoot && $user->id != $viewUser->id)
+                            <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#manageRole{{$viewUser->id}}">
                         @endif
 
-                        @if($user->role)
-                            {{$user->role->name}}
+                        @if($viewUser->role)
+                            {{$viewUser->role->name}}
                         @else
                             User
                         @endif
@@ -74,35 +74,35 @@
                         @endif
                     </td>
                     <td>
-                      @if(count($user->semesters))
-                          @foreach ($user->semesters as $semester)
+                      @if(count($viewUser->semesters))
+                          @foreach ($viewUser->semesters as $semester)
                             <span class="badge">
                               <a href="/admin?search=group:{{$semester->id}}">{{$semester->name}}</a>
-                              <a href="admin/group/delete/{{$user->id}}/{{$semester->id}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                              <a href="admin/group/delete/{{$viewUser->id}}/{{$semester->id}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                             </span>
                           @endforeach
                       @else
                         <a href="/admin?search=group:0">&lt;none&gt;</a>
                       @endif
                     </td>
-                    <td><a href="/monthly-tracking/{{$user->id}}">{{$user->first_name}}</a></td>
-                    <td>{{$user->last_name}}</td>
+                    <td><a href="/monthly-tracking/{{$viewUser->id}}">{{$viewUser->first_name}}</a></td>
+                    <td>{{$viewUser->last_name}}</td>
                     <td>
-                        <div>{{$user->email}}</div>
-                        <div>{{$user->external_id}}</div>
+                        <div>{{$viewUser->email}}</div>
+                        <div>{{$viewUser->external_id}}</div>
                     </td>
                     <td>
-                        <div>{{$user->created_at->diffForHumans()}}</div>
-                        <small><div class="help-block">{{$user->created_at->format('Y-m-d H:i T')}}</div></small>
+                        <div>{{$viewUser->created_at->diffForHumans()}}</div>
+                        <small><div class="help-block">{{$viewUser->created_at->format('Y-m-d H:i T')}}</div></small>
                     </td>
                     {{-- <td>
-                        <div class="form-group" @if($user->graded_at) title="Grader: {{$user->grader->name}} ({{$user->graded_at}})" @endif>
+                        <div class="form-group" @if($viewUser->graded_at) title="Grader: {{$viewUser->grader->name}} ({{$viewUser->graded_at}})" @endif>
                             <label>
-                                <input type="radio" name="graded[{{$user->id}}]" value="1" @if($user->graded_at) checked @endif>
+                                <input type="radio" name="graded[{{$viewUser->id}}]" value="1" @if($viewUser->graded_at) checked @endif>
                                 graded
                             </label> &nbsp;
                             <label>
-                                <input type="radio" name="graded[{{$user->id}}]" value="0" @if(!$user->graded_at) checked @endif >
+                                <input type="radio" name="graded[{{$viewUser->id}}]" value="0" @if(!$viewUser->graded_at) checked @endif >
                                 no grade
                             </label>
                         </div>
@@ -115,9 +115,9 @@
         <!-- <button class="btn btn-primary pull-right">Save</button> -->
     </form>
 
-    @foreach ($users as $user)
+    @foreach ($users as $viewUser)
       <!-- Group Add Modal -->
-      <div id="addGroup{{$user->id}}" class="modal fade" role="dialog">
+      <div id="addGroup{{$viewUser->id}}" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
           <!-- Modal content-->
@@ -127,7 +127,7 @@
               <h4 class="modal-title">Add Group</h4>
             </div>
             <div class="modal-body">
-              <form class="" action="admin/group/add/user/{{$user->id}}" method="post">
+              <form class="" action="admin/group/add/user/{{$viewUser->id}}" method="post">
                 {!! csrf_field() !!}
                 <div class="form-group">
                   <label for="semester">Group Name:</label>
@@ -152,7 +152,7 @@
 
       @if($hasRoot)
         <!-- Role Manage Modal -->
-        <div id="manageRole{{$user->id}}" class="modal fade" role="dialog">
+        <div id="manageRole{{$viewUser->id}}" class="modal fade" role="dialog">
           <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -162,14 +162,14 @@
                 <h4 class="modal-title">Manage Role</h4>
               </div>
               <div class="modal-body">
-                <form class="" action="admin/user/role/{{$user->id}}" method="post">
+                <form class="" action="admin/user/role/{{$viewUser->id}}" method="post">
                   {!! csrf_field() !!}
                   <div class="form-group">
                     <label for="role">Role:</label>
                     <select class="form-control" name="role" id="role">
                         <option value="">User</option>
                         @foreach ($roles as $role)
-                          <option value="{{$role->id}}" @if($role->id == $user->role_id) selected @endif>{{$role->name}}</option>
+                          <option value="{{$role->id}}" @if($role->id == $viewUser->role_id) selected @endif>{{$role->name}}</option>
                         @endforeach
                     </select>
                   </div>
