@@ -1,4 +1,4 @@
-<form method="post" class="financial-goal">
+<form method="post" class="financial-goal panel-collapse">
   {{ csrf_field() }}
 
   <input type="hidden" name="id" value="{{$goal->id}}">

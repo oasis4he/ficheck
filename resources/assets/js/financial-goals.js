@@ -27,6 +27,20 @@
       return false;
     });
 
+      $('.page-financial-goals  a[href=#collapse]').click(function(){
+          $('.financial-goals .financial-goal').slideUp();
+      });
+
+      $('.page-financial-goals  a[href=#expand]').click(function(){
+          $('.financial-goals .financial-goal').slideDown();
+      });
+
+      $('.page-financial-goals  h2').on('click', function(e){
+          $('form', $(this).closest('.ficheck-section-type')).slideToggle();
+
+          return false;
+      });
+
   });
   $('[name=date]').datepicker();
 }(jQuery));

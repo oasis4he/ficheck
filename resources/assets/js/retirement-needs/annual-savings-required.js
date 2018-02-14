@@ -15,10 +15,13 @@
         additionalSavingsNeededForRetirementElement.val(additionalSavingsNeededForRetirement);
 
         var factor = $('[name="entered_retirement_age_factor"]', wrapper).val();
-        var goal = Math.round(additionalSavingsNeededForRetirement / factor * 100) / 100;
 
-        var additionAnnualSavingsRequired = $('[name="addition_annual_savings_required"]', wrapper);
-        additionAnnualSavingsRequired.val(goal);
+        if(factor) {
+            var goal = Math.round(additionalSavingsNeededForRetirement / factor * 100) / 100;
+
+            var additionAnnualSavingsRequired = $('[name="addition_annual_savings_required"]', wrapper);
+            additionAnnualSavingsRequired.val(goal);
+        }
     });
 
     $(retirementGoals).on('change', 'select', function() {

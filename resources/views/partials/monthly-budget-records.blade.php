@@ -15,11 +15,13 @@
     </div>
     @foreach($record['values'] as $index => $value)
             <div class="form-group col-xs-3 valueContainer {{$value['type']}}">
-              <input name="values[{{$value['type']}}][{{$value['id']}}]"
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input name="values[{{$value['type']}}][{{$value['id']}}]"
                       {{$value['type'] == 'difference' ? 'readonly' : ''}}
                       id="value_{{$value->id}}" type="number" step="1"
                       value="{{$value['value']}}" class="form-control valueInput" aria-label="{{$record->description}} {{$value['type']}}">
-
+                </div>
             </div>
     @endforeach
   </div>
@@ -39,16 +41,25 @@
     </div>
 
     <div class="form-group col-xs-3 valueContainer planned">
-        <input name="new_planned" id="new_planned" type="number" step="1"
-                class="form-control valueInput">
+        <div class="input-group">
+            <span class="input-group-addon">$</span>
+            <input name="new_planned" id="new_planned" type="number" step="1"
+                    class="form-control valueInput">
+        </div>
     </div>
     <div class="form-group col-xs-3 valueContainer actual">
-        <input name="new_planned" id="new_planned" type="number" step="1"
+        <div class="input-group">
+            <span class="input-group-addon">$</span>
+            <input name="new_planned" id="new_planned" type="number" step="1"
                 class="form-control valueInput">
+        </div>
     </div>
     <div class="form-group col-xs-3 valueContainer difference">
-        <input name="new_planned" id="new_planned" type="number" step="1" readonly=""
+        <div class="input-group">
+            <span class="input-group-addon">$</span>
+            <input name="new_planned" id="new_planned" type="number" step="1" readonly=""
                 class="form-control valueInput">
+        </div>
     </div>
 
 </div>

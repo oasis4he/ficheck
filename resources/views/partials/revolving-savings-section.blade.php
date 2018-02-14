@@ -7,7 +7,7 @@
 
     <div class="row newItem">
         <div class="form-group col-xs-6 text-left">
-            <label for="new_{{$month}}">Add an Item</label>
+            <label for="new_{{$month}}">Add an Expense</label>
         </div>
     </div>
 

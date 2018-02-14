@@ -8,15 +8,19 @@
         var currentValueSavingsAndInvestments = wrapper.find('[name=retirement_savings_and_investments]').val() / 1;
 
         var factor = $('[name="retirement_years_factor"]', wrapper).val();
-        var goal = Math.round(currentValueSavingsAndInvestments * factor * 100) / 100;
 
-        var futureValueSavingsAndInvestmentsElement = $('[name="future_value_of_savings_and_investments"]', wrapper);
-        var oldGoal = parseFloat(futureValueSavingsAndInvestmentsElement.val());
-        if(oldGoal != goal) {
-          futureValueSavingsAndInvestmentsElement.val(goal);
+        if(currentValueSavingsAndInvestments && factor) {
+            var goal = Math.round(currentValueSavingsAndInvestments * factor * 100) / 100;
 
-          var annualSavingsFutureSavings = $('[name="entered_future_value_of_savings_and_investments"]');
-          annualSavingsFutureSavings.val(goal).trigger('change');
+            var futureValueSavingsAndInvestmentsElement = $('[name="future_value_of_savings_and_investments"]', wrapper);
+            var oldGoal = parseFloat(futureValueSavingsAndInvestmentsElement.val());
+
+            if (oldGoal != goal) {
+                futureValueSavingsAndInvestmentsElement.val(goal);
+
+                var annualSavingsFutureSavings = $('[name="entered_future_value_of_savings_and_investments"]');
+                annualSavingsFutureSavings.val(goal).trigger('change');
+            }
         }
     });
 

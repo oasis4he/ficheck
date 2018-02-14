@@ -1,10 +1,3 @@
-// remove fields or add datepicker (mm/dd/yyyy) - jquery UI
-// monthly tracking hide categories link
-// delete button on right side of category field (removes row)
-// reset button on monthly tracker, with are you sure dialog
-// stage for george
-
-
 //http://stackoverflow.com/questions/15762768/javascript-math-round-to-two-decimal-places
   function roundTo(n, digits) {
      if (digits === undefined) {
@@ -18,15 +11,20 @@
    }
 
    function roundedValue(number) {
-     var value = roundTo(number, 2);
-     if((value.toString().split('.')[1] || []).length == 1){
-       value = value + "0";
-     }
-     return value;
+       var value = parseFloat(number);
+       return Number(Math.round(value+'e2')+'e-2').toFixed(2);
    }
 
-   $('body').on('change', '[type=number]', function() {
+(function($){
+   $('body').on('change', '[type="number"]', function() {
 
      $(this).val(roundedValue($(this).val()));
 
-   });
+   }).find('[type="number"]').trigger('change');
+
+    $('body').on('focus', '[type="number"]', function() {
+
+        $(this).select();
+
+    });
+})(jQuery);

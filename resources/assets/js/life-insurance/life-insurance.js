@@ -17,14 +17,16 @@
         var totalIncomeForReplacement = wrapper.find('[name=total_income_replacement]');
         var factorElement = $('[name="income_replacement_factor"]', wrapper);
 
-        var totalIncomeReplacementValue = roundedValue(insuranceNeeds.val() * factorElement.val());
+        if(factorElement.val()) {
+            var totalIncomeReplacementValue = roundedValue(insureanceNeedValue * factorElement.val());
+            console.log(insureanceNeedValue, factorElement.val(), insureanceNeedValue * factorElement.val());
+            totalIncomeForReplacement.val(totalIncomeReplacementValue);
 
-        totalIncomeForReplacement.val(totalIncomeReplacementValue);
+            var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]');
 
-        var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]');
-
-        enteredTotalIncomeForReplacement.val(totalIncomeForReplacement.val());
-        enteredTotalIncomeForReplacement.trigger("change");
+            enteredTotalIncomeForReplacement.val(totalIncomeForReplacement.val());
+            enteredTotalIncomeForReplacement.trigger("change");
+        }
     });
 
     $(lifeInsurace).on('change', 'select', function() {

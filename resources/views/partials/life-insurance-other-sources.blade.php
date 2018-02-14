@@ -1,7 +1,10 @@
 <div class="row">
   <div class="form-group col-xs-12">
     <label for="government_benefits">Government benefits.</label>
-    <input name="government_benefits" id="government_benefits" type="number" value="{{$lifeInsurance->government_benefits}}" class="form-control">
+    <div class="input-group">
+      <span class="input-group-addon">$</span>
+      <input name="government_benefits" id="government_benefits" type="number" value="{{$lifeInsurance->government_benefits}}" class="form-control">
+    </div>
   </div>
 </div>
 
@@ -23,7 +26,10 @@
 <div class="row">
   <div class="form-group col-xs-12">
     <label for="other_funds">Other funds.</label>
-    <input name="other_funds" id="other_funds" type="number" value="{{$lifeInsurance->other_funds}}" class="form-control">
+    <div class="input-group">
+      <span class="input-group-addon">$</span>
+      <input name="other_funds" id="other_funds" type="number" value="{{$lifeInsurance->other_funds}}" class="form-control">
+    </div>
   </div>
 </div>
 
@@ -46,7 +52,9 @@
   <br><br>
   <div class="form-group col-xs-12">
     <label for="total_funds_from_other_sources">Total Funds from other Sources</label>
-    <br>
-    <input name="total_funds_from_other_sources" id="total_funds_from_other_sources"  type="number" value="{{$lifeInsurance->total_funds_from_other_sources}}" class="form-control" readonly>
+    <div class="input-group">
+      <span class="input-group-addon">$</span>
+      <input name="total_funds_from_other_sources" id="total_funds_from_other_sources"  type="number" value="{{$lifeInsurance->total_funds_from_other_sources}}" class="form-control" readonly>
+    </div>
   </div>
 </div>
