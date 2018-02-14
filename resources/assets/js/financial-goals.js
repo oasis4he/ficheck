@@ -11,7 +11,6 @@
       var newRecord = template.find('form').clone();
 
       if(!goals.length) {
-        console.log('no goals for you');
         goals = $('<div class="body"/>');
         template.before(goals);
       }
@@ -26,5 +25,21 @@
 
       return false;
     });
+
+      $('.page-financial-goals  a[href=#collapse]').click(function(){
+          $('.financial-goals .financial-goal').slideUp();
+      });
+
+      $('.page-financial-goals  a[href=#expand]').click(function(){
+          $('.financial-goals .financial-goal').slideDown();
+      });
+
+      $('.page-financial-goals  h2').on('click', function(e){
+          $('form', $(this).closest('.ficheck-section-type')).slideToggle();
+
+          return false;
+      });
+
   });
+  $('[name=date]').datepicker();
 }(jQuery));

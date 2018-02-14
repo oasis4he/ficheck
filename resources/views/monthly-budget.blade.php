@@ -6,8 +6,7 @@
     <input type="hidden" name="calculator" value="{{$calculator}}">
     <div class="ficheck-sections budget-view-record">
 
-      @if($trackedMonthRecords)
-        @include('layouts.title', ['title'=>$title, 'month'=>$trackedMonth, 'year'=>$trackedYear])
+        @include('layouts.title', ['title'=>$title])
 
         @include('partials.form-errors')
         @if(isset($showTotals))
@@ -23,13 +22,6 @@
 
           </div><!-- .ficheck-section-type -->
         @endforeach
-      @else
-          <div class="well">
-              The Monthly Budget relys on data from entries tracked in the Monthly Tracker.
-              You currently don't have any tracked records for your most recent tracked month of {{$trackedMonth}} {{$trackedYear}}.
-              You will need to update the Montly Tracker for the month of {{$trackedMonth}} {{$trackedYear}} in order to access your Monthly Budget.
-          </div>
-      @endif
 
     </div><!-- .ficheck-sections -->
   </form>

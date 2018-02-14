@@ -1,9 +1,33 @@
-// remove fields or add datepicker (mm/dd/yyyy) - jquery UI
-// monthly tracking hide categories link
-// delete button on right side of category field (removes row)
-// reset button on monthly tracker, with are you sure dialog
-// stage for george
+//http://stackoverflow.com/questions/15762768/javascript-math-round-to-two-decimal-places
+  function roundTo(n, digits) {
+     if (digits === undefined) {
+       digits = 0;
+     }
 
+     var multiplicator = Math.pow(10, digits);
+     n = parseFloat((n * multiplicator).toFixed(11));
+     var test =(Math.round(n) / multiplicator);
+     return +(test.toFixed(2));
+   }
+
+   function roundedValue(number) {
+       var value = parseFloat(number);
+       return Number(Math.round(value+'e2')+'e-2').toFixed(2);
+   }
+
+(function($){
+   $('body').on('change', '[type="number"]', function() {
+
+     $(this).val(roundedValue($(this).val()));
+
+   }).find('[type="number"]').trigger('change');
+
+    $('body').on('focus', '[type="number"]', function() {
+
+        $(this).select();
+
+    });
+})(jQuery);
 (function($){
   $(function(){
 
@@ -25,6 +49,10 @@
 
     sumSections();
 
+    if(onlyActual){
+      sumStatementSections();
+    }
+
     //loop through all sections and sum
     function sumSections()
     {
@@ -32,6 +60,15 @@
       $.each(sections, function(index, section){
         $.each($(section).find(".valueType .valueContainer"), function(index, element){
           sumTotal($(element));
+        })
+      });
+    }
+
+    function sumStatementSections() {
+      var sections = $(".monthly-budget-type");
+      $.each(sections, function(index, section){
+        $.each($(section).find(".valueType"), function(index, element){
+          sumStatmentTotal($(element));
         })
       });
     }
@@ -83,9 +120,15 @@
       var actualValue = actualRow.find(".valueInput").val();
 
       //update difference value based on planned and actual values
-      differenceRow.find(".valueInput").val(plannedValue - actualValue);
+      var differenceValue = roundedValue(plannedValue - actualValue);
+
+      differenceRow.find(".valueInput").val(differenceValue);
 
       sumSections();
+
+      if(onlyActual){
+        sumStatementSections();
+      }
     });
 
     //function to sum total for a type
@@ -119,6 +162,10 @@
       var editableContainer = $(this).closest(".editable");
       var value = editableContainer.find("label[for='" + inputId + "']").text().trim();
 
+      if(revolvingSavings) {
+        var month = $(this).closest(".month").attr("data-month-name");
+      }
+
       $(this).toggleClass("glyphicon-ok");
       $(this).toggleClass("glyphicon-pencil");
 
@@ -130,7 +177,13 @@
       else
       {
         editableContainer.find(".input-group").toggleClass("deleteShow");
-        editableContainer.find(".input-group").prepend("<input type='text' name='names[" + recordId + "][name]' value='" + value + "' class='form-control'>");
+
+        if(revolvingSavings){
+          editableContainer.find(".input-group").prepend("<input type='text' name='names[" + recordId + "][name]' value='" + value + "' aria-label='" + month + " Item Description" + value +"' class='form-control'>");
+        } else {
+          editableContainer.find(".input-group").prepend("<input type='text' name='names[" + recordId + "][name]' value='" + value + "' id='" + recordId + "_name' class='form-control'>");
+        }
+
         editableContainer.find("label").hide();
       }
 
@@ -190,6 +243,8 @@
         ];
       }
 
+      var calculator = $('[name=calculator').val();
+
 
       var category = getCategoryForSave(thisElement);
       var type = getTypeForSave(thisElement);
@@ -197,6 +252,7 @@
       if (revolvingSavings)
       {
         var month = $(thisElement).closest(".month").attr("data-month");
+        var monthName = $(thisElement).closest(".month").attr("data-month-name");
 
         var recordId =  "new_" + month + "_" + newInputCount;
       }
@@ -205,8 +261,7 @@
         var recordId =  "new_" + category + "_" + type + "_" + newInputCount;
       }
 
-      for (var i = 0; i < rowTypes.length; i++) {
-         var inputId = rowTypes[i] + "_" + newInputCount;
+         var inputId = newInputCount;
 
          var template = $(thisElement).closest(".monthly-budget-type").find(".valueTypeTemplate");
          template.find("input").attr("value", $(thisElement).find("input").val());
@@ -221,33 +276,27 @@
          clone.find(".editLabel").attr("input-id", "value_" + inputId);
          clone.find("input").attr("id", "value_" + inputId);
 
-         if (!revolvingSavings)
+         if(calculator == 'net-worth'){
+           clone.find("input").attr("name", "names[" + recordId + "][actual_" + inputId + "][values]");
+         } else if (!revolvingSavings)
          {
-           clone.find("input").attr("name", "names[" + recordId + "][" + inputId + "][values]");
+           clone.find(".planned input").attr("name", "names[" + recordId + "][planned_" + inputId + "][values]");
+           clone.find(".actual input").attr("name", "names[" + recordId + "][actual_" + inputId + "][values]");
+           clone.find(".difference input").attr("name", "names[" + recordId + "][difference_" + inputId + "][values]");
          }
          else
          {
            clone.find("input").attr("name", "names[" + recordId + "][value]");
-         }
-
-
-         if (rowTypes[i] == "difference")
-         {
-           clone.find("input").attr("readonly", "readonly");
+           clone.find("input").attr("aria-label", monthName + " Item Amount ");
          }
 
          //Set up  row to clone
          clone.removeClass("valueTypeTemplate");
-         clone.addClass(rowTypes[i]);
          $(thisElement).before(clone);
-
-         template.find("input").removeAttr("readonly");
-
-      }
 
       //add active to active class
       $(".valueType." + activeClass).addClass(active);
-      var newActiveRow = $(".valueType." + activeClass + "[data-record-id='" + recordId + "']");
+      var newActiveRow = $(".valueType[data-record-id='" + recordId + "']");
       newActiveRow.find(".editLabel").click();
       newActiveRow.show();
       newActiveRow.find(".valueInput").trigger("change");
@@ -270,10 +319,10 @@
 
 
     //hide empty fields
-    $(".budget-view").on("click", ".hide-empty-fields", function(){
+    $("body").on("click", ".hide-empty-fields", function(){
       event.preventDefault()
 
-      var rows = $(this).closest(".monthly-budget-type").find(".valueType." + activeClass);
+      var rows = $(this).closest(".monthly-budget-type").find(".valueType.row, .valueType." + activeClass);
       $.each(rows, function(index, row) {
         var rowVal = $(row).find("input[type='number']").val();
         if((rowVal == "" || rowVal == 0))
@@ -287,7 +336,7 @@
     $(".budget-view").on("click", ".show-all-fields", function(){
       event.preventDefault()
 
-      var rows = $(this).closest(".monthly-budget-type").find(".valueType." + activeClass).slideDown("fast");
+      var rows = $(this).closest(".monthly-budget-type").find(".valueType.row, .valueType." + activeClass).slideDown("fast");
 
     })
 
@@ -359,6 +408,30 @@
 
   }
 
+  //function to sum total for a type
+  function sumStatmentTotal(element)
+  {
+    var type = 'actual';
+    if(type)
+    {
+      var monthlyBudgetType = element.closest(".monthly-budget-type");
+
+      var inputsToUpdate = monthlyBudgetType.find(".valueType." + type);
+
+      var total = 0;
+
+      $.each(inputsToUpdate, function(index, input){
+        var inputTotal = Number($(input).find(".valueInput").val());
+        total += inputTotal;
+      });
+
+      var totalInput = monthlyBudgetType.find("." + type + " .totalInput");
+
+      totalInput.val(total.toFixed(2));
+    }
+
+  }
+
 
 }(jQuery));
 
@@ -375,7 +448,6 @@
       var newRecord = template.find('form').clone();
 
       if(!goals.length) {
-        console.log('no goals for you');
         goals = $('<div class="body"/>');
         template.before(goals);
       }
@@ -390,7 +462,23 @@
 
       return false;
     });
+
+      $('.page-financial-goals  a[href=#collapse]').click(function(){
+          $('.financial-goals .financial-goal').slideUp();
+      });
+
+      $('.page-financial-goals  a[href=#expand]').click(function(){
+          $('.financial-goals .financial-goal').slideDown();
+      });
+
+      $('.page-financial-goals  h2').on('click', function(e){
+          $('form', $(this).closest('.ficheck-section-type')).slideToggle();
+
+          return false;
+      });
+
   });
+  $('[name=date]').datepicker();
 }(jQuery));
 
 (function($){
@@ -399,26 +487,33 @@
     var financialRatiosContainer = $('.financial-ratios');
 
     $('.ficheck-section-type', financialRatiosContainer).on('change', 'input', function() {
+
       var wrapper = $(this).closest('.ficheck-section-type');
       var asset = wrapper.find('[name=asset]');
       var liability = wrapper.find('[name=liability]');
       var ratio = wrapper.find('[name=ratio]');
-      var result;
+      var result = 0;
 
       if(asset.val() && liability.val()) {
         if(wrapper.hasClass('financial-ratio-type-basic-liquidity')) {
-          result = asset.val() / liability.val();
+          if(liability.val() != 0) {
+            result = asset.val() / liability.val();
+          }
         } else if(wrapper.hasClass('financial-ratio-type-debt-to-asset')) {
-          result = asset.val() / liability.val();
+          if(liability.val() != 0) {
+            result = asset.val() / liability.val();
+          }
         } else if(wrapper.hasClass('financial-ratio-type-debt-payment-to-income')) {
-          result = liability.val() / asset.val();
+          if(liability.val() != 0) {
+            result = liability.val() / asset.val();
+          }
         }
       }
 
-      if(result) {
-        result = Math.round(result * 100) / 100;
-        ratio.val(result);
-      }
+      result = Math.round(result * 100) / 100;
+      ratio.val(result);
+
+      $(this).val(roundedValue($(this).val()));
     });
 
   });
@@ -507,7 +602,7 @@
   //
   //   return false;
   // });
-
+monthlyTrackingContainer.find('[name=date]').datepicker();
   // disable in/out if other if filled in  (only one or the other should be active)
   monthlyTrackingContainer.on('change', '[name=in],[name=out]', function(){
     var form = $(this).closest('form');
@@ -521,8 +616,9 @@
     }
   }).find('[name=in],[name=out]').trigger('change');
 
+
   // if an input changes and the form is valid, submit it via ajax
-  monthlyTrackingContainer.on('blur', '.edit input', function(){
+  monthlyTrackingContainer.on('blur', '.edit', function(){
     var form = $(this).closest('form');
     var changed = false;
     $('input', form).each(function(){
@@ -535,27 +631,24 @@
       form.addClass('changed');
     }
 
-    if(form.hasClass('changed') && form.find('[name=date]').val() && (form.find('[name=in]').val() || form.find('[name=out]').val())) {
-      var data = form.serialize();
-
-      $.ajax({
-        url: form.action,
-        data: data,
-        method: "post",
-        success: function() {
-          form.removeClass('changed');
-
-          if(form.hasClass('new')) {
-            form.removeClass('new');
-          }
-        },
-        error: function(e) {
-          $('#errorModal .modal-title').text('Error Updating Entry');
-          $('#errorModal .modal-body p').text(e.message);
-          $('#errorModal').modal('show');
-        }
-      });
+    if(form.hasClass('changed') && form.find('[name=date]').val() && (form.find('[name=in]').val() || form.find('[name=out]').val()) && form.find('[name=category]').val()) {
+      saveEntry(form, false, false);
     }
+  });
+
+  monthlyTrackingContainer.on('click', '[href=#add]', function(){
+
+    var form = $(this).closest('form');
+
+    saveEntry(form, true, true);
+
+  });
+
+  monthlyTrackingContainer.on('click', '[href=#newEntryModal]', function(){
+
+    $('.clicked').removeClass('clicked');
+    $(this).addClass('clicked');
+
   });
 
   monthlyTrackingContainer.on('click', '[href=#delete]', function(){
@@ -571,12 +664,13 @@
           form.closest('.monthly-tracking-section').remove();
         }
 
+        form.next().find('[name=date]').focus();
         form.remove();
 
       },
       error: function(e) {
         $('#errorModal .modal-title').text('Error Deleting Entry');
-        $('#errorModal .modal-body p').text(e.message);
+        $('#errorModal .modal-body p').text('There was an issue deleting this entry. Please try again.');
         $('#errorModal').modal('show');
       }
     });
@@ -604,11 +698,11 @@
     $(this).closest('form').addClass('active');
   });
 
-  $('.dropdown-menu a').click(function() {
+  monthlyTrackingContainer.on('click', '.dropdown-item', function() {
     var collapse = $(this).attr('href');
     $(collapse).collapse('show');
     $('.panel-collapse:not('+collapse+')').collapse('hide');
-    $('#trackedMonthDropdown').html($(this).text() + "<i class='fa fa-chevron-down dropdown-caret' aria-hidden='true'></i>");
+    $('#trackedMonthDropdown').html($(this).find('span:not(.hide)').text() + "<i class='fa fa-chevron-down dropdown-caret' aria-hidden='true'></i>");
 
     $('html, body').animate({
         scrollTop: $(collapse).offset().top
@@ -623,9 +717,31 @@
     $('.monthly-tracking .panel-collapse').collapse('show');
   });
 
-  monthlyTrackingContainer.on('change', '[name=in]', getIncomeCategories);
+  monthlyTrackingContainer.on('change', '[name=in]', function() {
 
-  monthlyTrackingContainer.on('change', '[name=out]', getExpenseCategories);
+    var value = roundTo($(this).val(), 2);
+    if((value.toString().split('.')[1] || []).length == 1){
+      value = value + "0";
+    }
+    $(this).val(value);
+
+    getIncomeCategories();
+  });
+
+  monthlyTrackingContainer.on('change', '[name=out]', function() {
+
+    var value = roundTo($(this).val(), 2);
+    if((value.toString().split('.')[1] || []).length == 1){
+      value = value + "0";
+    }
+    $(this).val(value);
+
+    getIncomeCategories();
+  });
+
+  $('#newEntryModal').on('shown.bs.modal', function () {
+    $('[name=date]').focus();
+})
 
   function getExpenseCategories() {
     $.ajax({
@@ -653,9 +769,238 @@
     });
   }
 
+//http://stackoverflow.com/questions/15762768/javascript-math-round-to-two-decimal-places
+  function roundTo(n, digits) {
+     if (digits === undefined) {
+       digits = 0;
+     }
+
+     var multiplicator = Math.pow(10, digits);
+     n = parseFloat((n * multiplicator).toFixed(11));
+     var test =(Math.round(n) / multiplicator);
+     return +(test.toFixed(2));
+   }
 
 
+   function saveEntry(form, addForm, closeModal) {
+     var data = form.serialize();
 
+     $.ajax({
+       url: form.action,
+       data: data,
+       method: "post",
+       dataType: "json",
+       success: function(data) {
+         form.removeClass('changed');
+
+         if(form.hasClass('new')) {
+           form.removeClass('new');
+         }
+
+         var month = form.find('[name=month_id]').val();
+         var monthName = '';
+
+
+         if(data.records.tracked_month.id != month) {
+           var oldPanel = $('#' + month);
+           var panel = $('#' + data.records.tracked_month.id)
+
+           var entry = `<form method="post" class="edit active">
+             <input class="form-control" name="_token" type="hidden" value="`+ form.find('[name=_token]').val()+`">
+
+             <input class="form-control" name="id" type="hidden" value="`+ data.records.id +`">
+             <input class="form-control" name="month_id" type="hidden" value="`+ data.records.month_id +`">
+
+             <div class="row">
+               <div class="col-xs-4"><input class="form-control" name="date" aria-labelledby="dateTrack" value="`+ data.records.occurred_at+`"></div>
+               <div class="col-xs-2"><input class="form-control" name="in" type="number" step="1" aria-labelledby="inTrack" value="`+ (parseFloat(data.records.value) > 0 ? parseFloat(data.records.value) : "") +`"></div>
+               <div class="col-xs-2"><input class="form-control" name="out" type="number" step="1" aria-labelledby="inTrack" value="`+ (parseFloat(data.records.value) < 0 ? -1 * parseFloat(data.records.value) : "") +`"></div>
+               <div class="col-xs-4"><input class="form-control" name="category" type="text" aria-labelledby="categoryTrack" value="`+ data.records.category +`"></div>
+               <div class="control">
+                 <a href="#delete" class="btn btn-danger delete" class="submit">Delete</a>
+               </div>
+             </div>
+           </form>`;
+
+           var newPanel = $(`<div class="panel panel-default monthly-tracking-section" id="` + data.records.month_id + `">
+           <span class="panel-month hide">` + data.records.tracked_month.month + `</span>
+           <span class="panel-year hide">` + data.records.tracked_month.year + `</span>
+           <div class="panel-heading">
+             <h4 class="panel-title">
+               <a data-toggle="collapse" data-parent="#accordion" href="#`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year+`" aria-expanded="false" class="collapsed">
+                 `+ data.months[data.records.tracked_month.month] +` `+data.records.tracked_month.year+`</a>
+                 <!-- Trigger the modal with a button -->
+                 <a type="button" class="pull-right" data-toggle="modal" data-target="#newEntryModal" href="#newEntryModal" aria-label="` + data.months[data.records.tracked_month.month] +` add new Entry"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+               </h4>
+             </div>
+             <div id="`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year+`" class="panel-collapse collapse" aria-expanded="false">
+               <div class="panel-body">
+                 <div class="row header">
+                   <div class="col-xs-4" id="dateTrack">Date</div>
+                   <div class="col-xs-2" id="inTrack">In</div>
+                   <div class="col-xs-2" id="outTrack">Out</div>
+                   <div class="col-xs-4" id="categoryTrack">Category</div>
+                 </div>
+
+                 <div class="body"></div>
+
+               </div>
+             </div>
+           </div>`);
+
+
+           if(panel.length){
+             var inserted = false;
+               if(data.records.tracked_month.id != month) {
+                 panel.find('form').each(function(index) {
+                   if(data.records.occurred_at >= $(this).find('[name=date]').val()) {
+                     $(this).before(entry);
+                     inserted = true;
+
+                     if(form.hasClass('edit')){
+                       form.next().find('[name=date]').focus();
+                       form.remove();
+                       if(!oldPanel.find('form').length) {
+                         oldPanel.remove();
+                       }
+                     } else {
+                       form[0].reset();
+                       form.find('input:disabled').removeAttr('disabled');
+                     }
+
+                     return false;
+                   }
+                 });
+
+                 if(!inserted){
+                   panel.find('.panel-collapse .panel-body .body').append(entry);
+                   if(form.hasClass('edit')){
+                     form.next().find('[name=date]').focus();
+                     form.remove();
+                     if(!oldPanel.find('form').length) {
+                       oldPanel.remove();
+                     }
+                   } else {
+                     form[0].reset();
+                     form.find('input:disabled').removeAttr('disabled');
+                   }
+                 }
+               }
+           } else {
+             var inserted = false;
+             var dropdownItem = false;
+              $('.panel-month').each(function(index) {
+
+                if(data.records.tracked_month.year > $(this).siblings('.panel-year').text() || (data.records.tracked_month.month > $(this).text() && data.records.tracked_month.year == $(this).siblings('.panel-year').text())) {
+                  newPanel.find('.panel-body .body').append(entry);
+                  $(this).closest('.panel').before(newPanel);
+
+                  if(form.hasClass('edit')){
+                    form.next().find('[name=date]').focus();
+                    form.remove();
+                    if(!oldPanel.find('form').length) {
+                      oldPanel.remove();
+                    }
+                  } else {
+                    form[0].reset();
+                    form.find('input:disabled').removeAttr('disabled');
+                  }
+
+                  inserted = true;
+
+                  return false;
+                }
+              });
+              if(!inserted) {
+                newPanel.find('.panel-body .body').append(entry);
+                $('.panel-group').append(newPanel);
+
+                if(form.hasClass('edit')){
+                  form.next().find('[name=date]').focus();
+                  form.remove();
+                  if(!oldPanel.find('form').length) {
+                    oldPanel.remove();
+                  }
+                } else {
+                  form[0].reset();
+                  form.find('input:disabled').removeAttr('disabled');
+                }
+              }
+
+              var link = $(`<a  class="dropdown-item" data-parent="#accordion" href="#`+ data.months[data.records.tracked_month.month] +``+data.records.tracked_month.year +`">
+              <span class="dropdown-month hide">`+data.records.tracked_month.month+`</span>
+              <span class="dropdown-year hide">`+data.records.tracked_month.year+`</span>
+              <span>`+ data.months[data.records.tracked_month.month] +` `+ data.records.tracked_month.year+`</span>
+              </a>`);
+
+              $('.dropdown-item').each(function(index){
+                if(data.records.tracked_month.year > $(this).find('.dropdown-year').text()){
+                  $(this).before(link);
+                  dropdownItem = true;
+                  return false;
+                } else if(data.records.tracked_month.month > $(this).find('.dropdown-month').text() && data.records.tracked_month.year == $(this).find('.dropdown-year').text()) {
+                    $(this).before(link);
+                    dropdownItem = true;
+                    return false;
+                }
+
+              });
+
+              if(!dropdownItem) {
+                $('.dropdown-menu').append(link)
+              }
+          }
+         }
+
+         if(addForm) {
+           form.find('[name=date]').focus();
+
+         }
+
+         if(closeModal) {
+           $('#newEntryModal').modal('hide');
+           $('.clicked').focus();
+           $('.clicked').removeClass('clicked');
+         }
+
+         $('[name=date]').datepicker();
+       },
+       error: function(e) {
+         $('#errorModal .modal-title').text('Error Updating Entry');
+         $('#errorModal .modal-body p').text(e.message);
+         $('#errorModal').modal('show');
+       }
+     });
+
+   }
+
+
+}(jQuery));
+
+
+(function($){
+    $(function(){
+        var revolvingSavingsContainer = $('.page-revolving-savings .ficheck-sections');
+        var totalsContainer = $('.budget-sums', revolvingSavingsContainer);
+        var wrapper = $('.ficheck-section-type', revolvingSavingsContainer);
+
+        $('.ficheck-section-type', revolvingSavingsContainer).on('change', 'input', function() {
+
+            var inputs = $(wrapper).find('input[type="number"]');
+            var sum = 0;
+
+            inputs.each(function(a){
+                var value = parseFloat($(a).val());
+                sum += value;
+            });
+
+            var monthly = roundedValue(sum / 12);
+
+            $('#perYearTotal', totalsContainer).val(sum);
+            $('#perMonthTotal', totalsContainer).val(monthly);
+        });
+
+    });
 }(jQuery));
 
 
@@ -673,7 +1018,8 @@
         var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]').val();
 
         var totalExpenses = wrapper.find('[name=total_expenses]');
-        totalExpenses.val(Number(funeralExpense) + Number(debt) + Number(otherExpenses) + Number(enteredTotalIncomeForReplacement));
+        var totalExpensesValue = roundedValue(Number(funeralExpense) + Number(debt) + Number(otherExpenses) + Number(enteredTotalIncomeForReplacement));
+        totalExpenses.val(totalExpensesValue);
 
         var enteredTotalExpenses = $('[name=entered_total_expenses]');
         enteredTotalExpenses.val(totalExpenses.val());
@@ -695,7 +1041,8 @@
         var otherFunds = (wrapper.find('[name=other_funds]').val());
 
         var totalFundsFromOtherSources = (wrapper.find('[name=total_funds_from_other_sources]'));
-        totalFundsFromOtherSources.val(Number(governmentBenefits) + Number(otherFunds));
+        var totalFundsValue = roundedValue(Number(governmentBenefits) + Number(otherFunds))
+        totalFundsFromOtherSources.val(totalFundsValue);
 
         var enteredTotalFundsFromOtherSources = $('[name=entered_total_funds_from_other_sources]');
         enteredTotalFundsFromOtherSources.val(totalFundsFromOtherSources.val());
@@ -717,7 +1064,9 @@
         var enteredTotalExpenses = wrapper.find('[name=entered_total_expenses]').val();
         var enteredTotalFundsFromOtherSources = wrapper.find('[name=entered_total_funds_from_other_sources]').val();
 
-        wrapper.find("[name=insurance_needed]").val(Number(enteredTotalExpenses) - Number(enteredTotalFundsFromOtherSources));
+        var insuranceNeededValue = roundedValue(Number(enteredTotalExpenses) - Number(enteredTotalFundsFromOtherSources));
+
+        wrapper.find("[name=insurance_needed]").val(insuranceNeededValue);
     });
   });
 }(jQuery));
@@ -725,6 +1074,7 @@
 (function($){
   $(function(){
     var lifeInsurace = $('.life-insurance-type-income-replacement');
+    var lifeInsuranceContainer = $('.life-insurance');
 
     $(lifeInsurace).on('change', 'input', function() {
         var wrapper = $(this).closest('.ficheck-section-type');
@@ -732,16 +1082,23 @@
         var enteredAnnualIncome = (wrapper.find('[name=annual_income]').val() || 0) / 1;
 
         var insuranceNeeds = $('[name="insurance_needs"]', wrapper);
-        insuranceNeeds.val(enteredAnnualIncome * .75);
+
+        var insureanceNeedValue = roundedValue(enteredAnnualIncome * .75);
+
+        insuranceNeeds.val(insureanceNeedValue);
 
         var totalIncomeForReplacement = wrapper.find('[name=total_income_replacement]');
         var factorElement = $('[name="income_replacement_factor"]', wrapper);
 
-        totalIncomeForReplacement.val(insuranceNeeds.val() * factorElement.val());
+        if(factorElement.val()) {
+            var totalIncomeReplacementValue = roundedValue(insureanceNeedValue * factorElement.val());
+            totalIncomeForReplacement.val(totalIncomeReplacementValue);
 
-        var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]');
-        enteredTotalIncomeForReplacement.val(totalIncomeForReplacement.val());
-        enteredTotalIncomeForReplacement.trigger("change");
+            var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]');
+
+            enteredTotalIncomeForReplacement.val(totalIncomeForReplacement.val());
+            enteredTotalIncomeForReplacement.trigger("change");
+        }
     });
 
     $(lifeInsurace).on('change', 'select', function() {
@@ -757,6 +1114,12 @@
 
     });
 
+    lifeInsuranceContainer.on('change', 'input', function() {
+
+      $(this).val(roundedValue($(this).val()));
+
+    });
+
   });
 }(jQuery));
 
@@ -764,6 +1127,7 @@
 (function($){
   $(function(){
     var retirementGoals = $('.retirement-needs-type-annual-savings-required');
+    var retirementNeedsContainer = $('.retirement-needs');
 
     $(retirementGoals).on('change', 'input', function() {
         var wrapper = $(this).closest('.ficheck-section-type');
@@ -772,16 +1136,17 @@
         var enteredFutureValueOfSavingsAndInvestments = (wrapper.find('[name=entered_future_value_of_savings_and_investments]').val() || 0) / 1;
         var additionalSavingsNeededForRetirementElement = wrapper.find('[name=additional_savings_needed_for_retirement]');
 
-        console.log(additionalSavingsNeededForRetirementElement);
-
         var additionalSavingsNeededForRetirement = enteredretirementGoal - enteredFutureValueOfSavingsAndInvestments;
         additionalSavingsNeededForRetirementElement.val(additionalSavingsNeededForRetirement);
 
         var factor = $('[name="entered_retirement_age_factor"]', wrapper).val();
-        var goal = Math.round(additionalSavingsNeededForRetirement / factor * 100) / 100;
 
-        var additionAnnualSavingsRequired = $('[name="addition_annual_savings_required"]', wrapper);
-        additionAnnualSavingsRequired.val(goal);
+        if(factor) {
+            var goal = Math.round(additionalSavingsNeededForRetirement / factor * 100) / 100;
+
+            var additionAnnualSavingsRequired = $('[name="addition_annual_savings_required"]', wrapper);
+            additionAnnualSavingsRequired.val(goal);
+        }
     });
 
     $(retirementGoals).on('change', 'select', function() {
@@ -793,6 +1158,12 @@
         var factorElement = $('[name="entered_retirement_age_factor"]', wrapper);
 
         factorElement.val(factor).trigger('change');
+    });
+
+    retirementNeedsContainer.on('change', 'input', function() {
+
+      $(this).val(roundedValue($(this).val()));
+
     });
 
   });
@@ -808,13 +1179,20 @@
         var currentValueSavingsAndInvestments = wrapper.find('[name=retirement_savings_and_investments]').val() / 1;
 
         var factor = $('[name="retirement_years_factor"]', wrapper).val();
-        var goal = Math.round(currentValueSavingsAndInvestments * factor * 100) / 100;
 
-        var futureValueSavingsAndInvestmentsElement = $('[name="future_value_of_savings_and_investments"]', wrapper);
-        futureValueSavingsAndInvestmentsElement.val(goal);
+        if(currentValueSavingsAndInvestments && factor) {
+            var goal = Math.round(currentValueSavingsAndInvestments * factor * 100) / 100;
 
-        var annualSavingsFutureSavings = $('[name="entered_future_value_of_savings_and_investments"]');
-        annualSavingsFutureSavings.val(goal);
+            var futureValueSavingsAndInvestmentsElement = $('[name="future_value_of_savings_and_investments"]', wrapper);
+            var oldGoal = parseFloat(futureValueSavingsAndInvestmentsElement.val());
+
+            if (oldGoal != goal) {
+                futureValueSavingsAndInvestmentsElement.val(goal);
+
+                var annualSavingsFutureSavings = $('[name="entered_future_value_of_savings_and_investments"]');
+                annualSavingsFutureSavings.val(goal).trigger('change');
+            }
+        }
     });
 
     $(futureSavingsInvestments).on('change', 'select', function() {
@@ -846,13 +1224,20 @@
         additionalAnnualIncomeRequiredElement.val(additionalAnnualIncomeRequired);
 
         var factor = $('[name="retirement_age_factor"]', wrapper).val();
-        var goal = Math.round(additionalAnnualIncomeRequired * factor * 100) / 100;
 
-        var retirementGoal = $('[name="retirement_goal"]', wrapper);
-        retirementGoal.val(goal);
+        if(factor) {
+            var goal = Math.round(additionalAnnualIncomeRequired * factor * 100) / 100;
 
-        var annualSavingsRetirementGoal = $('[name="entered_retirement_goal"]');
-        annualSavingsRetirementGoal.val(goal);
+            var retirementGoal = $('[name="retirement_goal"]', wrapper);
+            var oldGoal = parseFloat(retirementGoal.val());
+            if (oldGoal != goal) {
+                retirementGoal.val(goal);
+                var annualSavingsRetirementGoal = $('[name="entered_retirement_goal"]');
+                annualSavingsRetirementGoal.val(goal).trigger('change');
+
+            }
+        }
+
     });
 
     $(retirementGoals).on('change', 'select', function() {

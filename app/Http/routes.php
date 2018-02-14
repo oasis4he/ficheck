@@ -63,4 +63,24 @@ Route::group([
 ], function() {
     Route::get('/', ['uses'=>'AdminController@index']);
     Route::post('/grade', ['uses'=>'AdminController@grade']);
+
+});
+
+Route::group([
+    'prefix' => '/admin',
+    'middleware' => ['web', 'auth', 'roles'],
+    'roles' => ['administrator']
+], function() {
+    Route::post('/group/add/user/{id}', ['uses'=>'AdminController@addGroupUser']);
+    Route::get('/group/delete/{userID}/{semesterID}', ['uses'=>'AdminController@deleteGroupUser']);
+});
+
+Route::group([
+    'prefix' => '/admin',
+    'middleware' => ['web', 'auth', 'roles'],
+    'roles' => ['root']
+], function() {
+    Route::get('/groups', ['uses'=>'AdminController@groups']);
+    Route::post('/groups', ['uses'=>'AdminController@saveGroups']);
+    Route::post('/user/role/{userID}', ['uses' => 'AdminController@saveRole']);
 });

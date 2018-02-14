@@ -7,7 +7,10 @@
     </div>
 
     <div class="col-xs-5">
-      <input class="form-control" type="text" readonly id="perYearTotal">
+      <div class="input-group">
+        <span class="input-group-addon">$</span>
+        <input class="form-control" type="text" readonly id="perYearTotal">
+      </div>
     </div>
   </div>
 
@@ -19,7 +22,10 @@
     </div>
 
     <div class="col-xs-5">
-      <input class="form-control" type="text" readonly id="perMonthTotal">
+      <div class="input-group">
+        <span class="input-group-addon">$</span>
+        <input class="form-control" type="text" readonly id="perMonthTotal">
+      </div>
     </div>
   </div>
 

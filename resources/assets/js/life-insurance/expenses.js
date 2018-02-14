@@ -13,7 +13,8 @@
         var enteredTotalIncomeForReplacement = $('[name=entered_total_income_replacement]').val();
 
         var totalExpenses = wrapper.find('[name=total_expenses]');
-        totalExpenses.val(Number(funeralExpense) + Number(debt) + Number(otherExpenses) + Number(enteredTotalIncomeForReplacement));
+        var totalExpensesValue = roundedValue(Number(funeralExpense) + Number(debt) + Number(otherExpenses) + Number(enteredTotalIncomeForReplacement));
+        totalExpenses.val(totalExpensesValue);
 
         var enteredTotalExpenses = $('[name=entered_total_expenses]');
         enteredTotalExpenses.val(totalExpenses.val());

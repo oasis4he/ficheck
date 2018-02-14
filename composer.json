@@ -8,7 +8,9 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "doctrine/dbal": "^2.5",
-        "aws/aws-sdk-php": "~3.0"
+        "aws/aws-sdk-php": "~3.0",
+        "barryvdh/laravel-debugbar": "^2.4",
+        "rollbar/rollbar-laravel": "^2.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

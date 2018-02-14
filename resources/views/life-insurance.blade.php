@@ -63,10 +63,11 @@
           </div><!-- .ficheck-section-body -->
 
         </div><!-- .body -->
-
-        <br>
-        <div class="control pull-right">
+        <div class="col-sm-12">
+          <br>
+          <div class="control pull-right">
             <button type="submit" class="btn btn-primary">Save</button>
+          </div>
         </div>
       </div><!-- .ficheck-section-type -->
 

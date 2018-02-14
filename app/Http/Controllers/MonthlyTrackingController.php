@@ -68,7 +68,8 @@ class MonthlyTrackingController extends Controller
         ],
         'currentMonth' => $selectedMonth,
         'currentYear' => $selectedYear,
-        'saved' => $request->session()->has('saved') ? $request->session()->get('saved') : false
+        'saved' => $request->session()->has('saved') ? $request->session()->get('saved') : false,
+        'title' => 'Monthly Tracking'
       ];
 
       $request->session()->forget('saved');
@@ -79,31 +80,27 @@ class MonthlyTrackingController extends Controller
     function saveRecord(MonthlyTrackingRequest $request)
     {
       $record = MonthlyTrackingRecord::findOrNew($request->input('id'));
+
+      if($record->user_id && $record->user_id != Auth::user()->id) {
+          abort(403, 'Unauthorized action.');
+      }
+
       $date = new Carbon($request->get('date'));
       $oldCategory = $record->category;
 
-
       if($request->has('month_id')) {
         $trackedMonth = TrackedMonth::where('id', $request->get('month_id'))->first();
+        if($trackedMonth) {
+          $trackedMonthStartDate = Carbon::createFromDate($trackedMonth->year, $trackedMonth->month)->startOfMonth();
+          $trackedMonthEndDate = Carbon::createFromDate($trackedMonth->year, $trackedMonth->month)->endOfMonth();
+          if(!$date->between($trackedMonthStartDate, $trackedMonthEndDate)){
+            // updated date falls outside of the current tracked month attached to the updated entry so it needs to be moved to the correct month
+            $trackedMonth = TrackedMonth::where('user_id', Auth::user()->id)->where('month', $date->format('m'))->where('year', $date->format('Y'))->first();
+          }
 
-        $trackedMonthStartDate = Carbon::createFromDate($trackedMonth->year, $trackedMonth->month)->startOfMonth();
-        $trackedMonthEndDate = Carbon::createFromDate($trackedMonth->year, $trackedMonth->month)->endOfMonth();
-        if(!$date->between($trackedMonthStartDate, $trackedMonthEndDate)){
-          // updated date falls outside of the current tracked month attached to the updated entry so it needs to be moved to the correct month
-          $trackedMonth = TrackedMonth::where('user_id', Auth::user()->id)->where('month', $date->format('m'))->where('year', $date->format('Y'))->first();
         }
       } else {
         $trackedMonth = TrackedMonth::where('user_id', Auth::user()->id)->where('month', $date->format('m'))->where('year', $date->format('Y'))->first();
-      }
-
-      if($request->has('in')){
-        $category = MonthlyBudgetRecord::where('user_id', Auth::user()->id)->where('type','income')->where('description', $request->get('category'))->first();
-      } else {
-        $category = MonthlyBudgetRecord::where('user_id', Auth::user()->id)->where('type','expense')->where('description', $request->get('category'))->first();
-      }
-
-      if(!$category) {
-        $this->createCategory($request->all());
       }
 
       if(!$trackedMonth) {
@@ -113,9 +110,6 @@ class MonthlyTrackingController extends Controller
         $trackedMonth->year = $date->format('Y');
         $trackedMonth->save();
       }
-      // if($record->user_id && $record->user_id != Auth::user()->id) {
-      //   abort(403, 'Unauthorized action.');
-      // }
 
       $record->month_id = $trackedMonth->id;
 
@@ -136,15 +130,44 @@ class MonthlyTrackingController extends Controller
       }
 
       $record->save();
-      $request->session()->put('selectedMonth', $trackedMonth->month);
-      $request->session()->put('selectedYear', $trackedMonth->year);
-      $request->session()->put('saved', $record->occurred_at);
+
+      //check if there are any remaining records for the iltracked month, if not delete it.
+      $monthRecords = MonthlyTrackingRecord::where('month_id', $request->get('month_id'))->get();
+      if($monthRecords->isEmpty()){
+        $this->deleteMonth($request->get('month_id'));
+        $request->session()->forget('selectedMonth');
+        $request->session()->forget('selectedYear');
+        $request->session()->forget('saved');
+      } else {
+        $request->session()->put('selectedMonth', $trackedMonth->month);
+        $request->session()->put('selectedYear', $trackedMonth->year);
+        $request->session()->put('saved', $record->occurred_at);
+      }
+
 
       if($oldCategory && $oldCategory != $record->category){
         $this->checkCategory(Auth::user()->id, $oldCategory);
       }
 
-      return Redirect::back();
+      $data = [
+        'records' => $record->load('trackedMonth'),
+        'months'=> [
+          '12' => 'December',
+          '11' => 'November',
+          '10' => 'October',
+          '09' => 'September',
+          '08' => 'August',
+          '07' => 'July',
+          '06' => 'June',
+          '05' => 'May',
+          '04' => 'April',
+          '03' => 'March',
+          '02' => 'February',
+          '01' => 'January'
+        ]
+      ];
+
+      return json_encode($data);
     }
 
     function deleteRecord(Request $request, $id)
@@ -208,13 +231,14 @@ class MonthlyTrackingController extends Controller
 
     function deleteMonth($id)
     {
-      $record = TrackedMonth::findOrFail($id);
+      $record = TrackedMonth::find($id);
+      if($record) {
+        if($record->user_id && $record->user_id != Auth::user()->id) {
+          abort(403, 'Unauthorized action.');
+        }
 
-      if($record->user_id && $record->user_id != Auth::user()->id) {
-        abort(403, 'Unauthorized action.');
+        $record->delete();
       }
-
-      $record->delete();
 
       return;
     }

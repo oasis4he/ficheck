@@ -30,8 +30,8 @@ class FinancialRatioTypesSeeder extends Seeder
                 'order' => '1',
             ],
             [
-                'title' => 'Debt-to-Asset Ratio',
-                'slug' => 'debt-to-asset',
+                'title' => 'Asset to Debt Ratio',
+                'slug' => 'asset-to-debt',
                 'asset_label' => 'Total Assets',
                 'asset_description' => '<p>Your <em>total assets</em> amount is a single figure that represents the cash value of everything you own.  If you have completed the <strong>Net Worth Statement</strong>, use the <strong>Total Assets</strong> amount here.</p>',
                 'asset_link' => '/net-worth-statement',
@@ -40,9 +40,9 @@ class FinancialRatioTypesSeeder extends Seeder
                 'liability_description' => '<p>Your <em>total liabilities</em> amount is a single figure that represents the total of all debt balances that you are responsible for paying back.   If you have completed the <strong>Net Worth Statement</strong>, use the <strong>Total Liabilities</strong> amount here.</p>',
                 'liability_link' => '/net-worth-statement',
                 'liability_link_text' => 'view Net Worth Statement',
-                'ratio_label' => 'Debt-to-Asset Ratio',
+                'ratio_label' => 'Asset-to-Debt Ratio',
                 'ratio_description' => '<p>If your asset-to-debt ratio is <strong>above 1.0</strong>, you could pay all of your liabilities by selling all of your assets--your are <em>solvent</em>.</p>
-<p>If your <em>debt-to-asset ratio</em> is <strong>below 1.0</strong> you would not be able to pay all of your liabilities by selling all of your assets--your are <em>insolvent</em>.</p>',
+<p>If your <em>asset-to-debt ratio</em> is <strong>below 1.0</strong> you would not be able to pay all of your liabilities by selling all of your assets--your are <em>insolvent</em>.</p>',
                 'order' => '2',
             ],
             [

@@ -1,4 +1,4 @@
-<form method="post" class="financial-goal">
+<form method="post" class="financial-goal panel-collapse">
   {{ csrf_field() }}
 
   <input type="hidden" name="id" value="{{$goal->id}}">
@@ -28,7 +28,7 @@
 
     <div class="form-group col-xs-6">
       <label for="date">Date</label>
-      <input name="date" id="date" type="date" value="{{$goal->date}}" class="form-control">
+      <input name="date" id="date-{{$goalType->id}}" value="{{$goal->date}}" class="form-control">
     </div>
   </div>
 

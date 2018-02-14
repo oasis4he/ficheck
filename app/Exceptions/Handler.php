@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
+use Auth;
+use Log;
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -33,6 +36,21 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
+        if (parent::shouldReport($e)) {
+            if(env('APP_ENV') == 'production') {
+                $user = Auth::user();
+
+                if($user) {
+                    $user = [
+                        'id' => $user->id,
+                        'email' => $user->email
+                    ];
+                }
+
+                Log::error($e, [ 'person'=>$user ]); //rollbar
+            }
+        }
+
         parent::report($e);
     }
 

@@ -1,6 +1,35 @@
+.headerSortUp,
+.headerSortDown {
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: 700 !important;
+  color: #1ca8dd !important;
+  border-bottom-color: #1ca8dd !important; }
+
+.headerSortUp:after,
+.headerSortDown:after {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  content: "";
+  margin-right: -10px;
+  margin-bottom: 2px;
+  margin-left: 5px;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent; }
+
+.headerSortUp:after {
+  border-top: 4px solid; }
+
+.headerSortDown:after {
+  border-bottom: 4px solid; }
+
 body {
   margin-top: 60px;
   font-family: 'Lato'; }
+
+.badge a {
+  color: #fff; }
 
 body.page-monthly-tracking .navbar-nav > li > a[href*=monthly-tracking] {
   background-color: #fff;
@@ -158,10 +187,10 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
     background: transparent;
     padding: 0;
     box-shadow: none; }
-    .monthly-tracking .body [class^=col-] input.form-control {
-      background-color: #ffcc99; }
     .monthly-tracking .body [class^=col-] input:focus {
       box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); }
+  .monthly-tracking .body [class^=col-] input[type=date]::-webkit-inner-spin-button {
+    margin-top: 7px; }
   .monthly-tracking .body form .new {
     opacity: .6; }
   .monthly-tracking .body form .control {
@@ -184,7 +213,7 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
     .monthly-tracking .body form.active .control {
       display: block; }
   .monthly-tracking .body .changed [class^=col-] {
-    background-color: #f90; }
+    background-color: #fffeda; }
 
 .monthly-tracking #accordion .monthly-tracking-section {
   margin-top: 0px;
@@ -207,19 +236,19 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
     border-top-color: #767676; }
 
 .page-monthly-tracking .dropdown {
-  margin-top: 15px;
-  margin-left: -15px; }
+  margin-top: 15px; }
 
 .page-monthly-tracking .dropdown-toggle {
   font-size: 20px;
   text-align: left;
   border-radius: 0px;
-  width: 100%; }
+  width: 230px; }
 
 .page-monthly-tracking .dropdown-menu {
   position: absolute;
   background-color: #ddd;
-  border-radius: 0px; }
+  border-radius: 0px;
+  width: 200px; }
   .page-monthly-tracking .dropdown-menu .dropdown-item {
     display: block;
     padding: 10px; }
@@ -229,7 +258,8 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
   float: right; }
 
 .page-monthly-tracking .modal-body {
-  margin-bottom: 20px; }
+  margin-bottom: 70px;
+  padding: 0; }
   .page-monthly-tracking .modal-body .row {
     margin-left: 0;
     margin-right: 0; }
@@ -241,8 +271,45 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
     .page-monthly-tracking .modal-body .body form .control {
       right: 0; }
 
+@media (max-width: 425px) {
+  .page-monthly-tracking [class^=col-] {
+    padding-left: 0;
+    padding-right: 0; }
+  .page-monthly-tracking .form-control {
+    font-size: 12px; } }
+
 .page-income-and-expense-statement .btn-primary {
   display: none; }
+
+.page-income-and-expense-statement .dropdown {
+  margin-top: 15px; }
+  .page-income-and-expense-statement .dropdown button {
+    color: #000;
+    padding: 5px 10px;
+    max-width: 230px;
+    margin-bottom: 20px; }
+
+.page-income-and-expense-statement .dropdown-toggle {
+  font-size: 20px;
+  text-align: left;
+  border-radius: 0px;
+  width: 230px; }
+
+.page-income-and-expense-statement .dropdown-menu {
+  position: absolute;
+  background-color: #ddd;
+  border-radius: 0px;
+  width: 230px; }
+  .page-income-and-expense-statement .dropdown-menu .dropdown-item {
+    display: block;
+    padding: 10px; }
+
+.page-income-and-expense-statement .dropdown-caret {
+  margin-top: 5px;
+  float: right; }
+
+.page-income-and-expense-statement .well {
+  margin-left: -15px; }
 
 .budget-view .valueType.planned, .budget-view .valueType.actual, .budget-view .valueType.difference, .budget-view .valueTypeTotal.planned, .budget-view .valueTypeTotal.actual, .budget-view .valueTypeTotal.difference {
   visibility: hidden;
@@ -352,7 +419,6 @@ body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
     .budget-view .budget-sums .budget-sum label {
       background: #fff;
       width: 100%;
-      height: 34px;
       padding-top: .5em; }
     .budget-view .budget-sums .budget-sum input {
       border-radius: 0; }
