@@ -68,7 +68,7 @@ class AdminController extends Controller
         // limit view to groups the user has access to if they aren't a global user
         if(!$globalUser){
           $usersQuery = $usersQuery->whereHas('semesters', function($query) use ($groups){
-            $query->whereIn('semester_id', $groups->pluck('semester_id')->toArray());
+            $query->whereIn('semester_id', $groups->pluck('id')->toArray());
           });
         }
 
