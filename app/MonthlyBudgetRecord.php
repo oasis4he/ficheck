@@ -78,6 +78,12 @@ class MonthlyBudgetRecord extends Model
                 'Interest & Dividends',
             ],
 
+            'variableExpenses' => [
+                'Groceries',
+                'Entertainment',
+                'Eating Out',
+            ],
+
             'fixedExpenses' => [
                 'Rent or Mortgage',
                 'Revolving Savings',
