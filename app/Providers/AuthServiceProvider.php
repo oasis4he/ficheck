@@ -37,7 +37,7 @@ class AuthServiceProvider extends ServiceProvider
           });
         }
         catch(\Exception $e){
-          echo 'Caught Exception :'. $e->getMessage();
+          // echo 'Caught Exception :'. $e->getMessage();
         }
     }
 }
