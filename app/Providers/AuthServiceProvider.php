@@ -28,11 +28,16 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies($gate);
 
-        // assign new users to the latest group (for now)
-        $defaultGroup = Semester::orderBy('id', 'desc')->first();
+        try{
+          // assign new users to the latest group (for now)
+          $defaultGroup = Semester::orderBy('id', 'desc')->first();
 
-        User::created(function ($user) use ($defaultGroup) {
-            $user->semesters()->attach($defaultGroup->id);
-        });
+          User::created(function ($user) use ($defaultGroup) {
+              $user->semesters()->attach($defaultGroup->id);
+          });
+        }
+        catch(\Exception $e){
+          // echo 'Caught Exception :'. $e->getMessage();
+        }
     }
 }
