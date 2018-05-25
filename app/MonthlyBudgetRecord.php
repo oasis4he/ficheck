@@ -84,7 +84,6 @@ class MonthlyBudgetRecord extends Model
                 'Eating Out',
             ],
 
-
             'fixedExpenses' => [
                 'Rent or Mortgage',
                 'Revolving Savings',
