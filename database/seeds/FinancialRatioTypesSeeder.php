@@ -42,7 +42,7 @@ class FinancialRatioTypesSeeder extends Seeder
                 'liability_link_text' => 'view Net Worth Statement',
                 'ratio_label' => 'Asset-to-Debt Ratio',
                 'ratio_description' => '<p>If your asset-to-debt ratio is <strong>above 1.0</strong>, you could pay all of your liabilities by selling all of your assets--your are <em>solvent</em>.</p>
-<p>If your <em>asset-to-debt ratio</em> is <strong>below 1.0</strong> you would not be able to pay all of your liabilities by selling all of your assets--your are <em>insolvent</em>.</p>',
+                <p>If your <em>asset-to-debt ratio</em> is <strong>below 1.0</strong> you would not be able to pay all of your liabilities by selling all of your assets--your are <em>insolvent</em>.</p>',
                 'order' => '2',
             ],
             [

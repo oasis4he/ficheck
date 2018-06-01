@@ -499,7 +499,7 @@
           if(liability.val() != 0) {
             result = asset.val() / liability.val();
           }
-        } else if(wrapper.hasClass('financial-ratio-type-debt-to-asset')) {
+        } else if(wrapper.hasClass('financial-ratio-type-asset-to-debt')) {
           if(liability.val() != 0) {
             result = asset.val() / liability.val();
           }
