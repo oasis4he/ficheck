@@ -1,4 +1,4 @@
-@servers(['local' => 'localhost', 'stage' => 'ficheck-stage', 'production' => 'ficheck', 'vagrant' => 'vagrant'])
+@servers(['local' => 'localhost', 'stage' => 'popetech-stage', 'production' => 'popetech-ficheck', 'vagrant' => 'vagrant'])
 
 @setup
     $env = (isset($env)) ? $env : 'stage';
@@ -35,4 +35,3 @@
 @task('nginx-restart', ['on' => $env])
     sudo service nginx restart
 @endtask
-
