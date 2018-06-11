@@ -1,0 +1,452 @@
+.headerSortUp,
+.headerSortDown {
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: 700 !important;
+  color: #1ca8dd !important;
+  border-bottom-color: #1ca8dd !important; }
+
+.headerSortUp:after,
+.headerSortDown:after {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  content: "";
+  margin-right: -10px;
+  margin-bottom: 2px;
+  margin-left: 5px;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent; }
+
+.headerSortUp:after {
+  border-top: 4px solid; }
+
+.headerSortDown:after {
+  border-bottom: 4px solid; }
+
+body {
+  margin-top: 60px;
+  font-family: 'Lato'; }
+
+.badge a {
+  color: #fff; }
+
+body.page-monthly-tracking .navbar-nav > li > a[href*=monthly-tracking] {
+  background-color: #fff;
+  color: #080808; }
+
+body.page-financial-goals .navbar-nav > li > a[href*=financial-goals] {
+  background-color: #fff;
+  color: #080808; }
+
+body.page-financial-ratios .navbar-nav > li > a[href*=financial-ratios] {
+  background-color: #fff;
+  color: #080808; }
+
+body.page-retirement-needs .navbar-nav > li > a[href*=retirement-needs] {
+  background-color: #fff;
+  color: #080808; }
+
+body.page-net-worth-statement .navbar-nav > li > a[href*=net-worth-statement] {
+  background-color: #fff;
+  color: #080808; }
+
+body.page-life-insurance .navbar-nav > li > a[href*=life-insurance] {
+  background-color: #fff;
+  color: #080808; }
+
+body.page-income-and-expense-statement .navbar-nav > li > a[href*=income-and-expense-statement] {
+  background-color: #fff;
+  color: #080808; }
+
+body.page-monthly-budget .navbar-nav > li > a[href*=monthly-budget] {
+  background-color: #fff;
+  color: #080808; }
+
+body.page-revolving-savings .navbar-nav > li > a[href*=revolving-savings] {
+  background-color: #fff;
+  color: #080808; }
+
+.navbar-header {
+  float: none; }
+
+.navbar-toggle {
+  display: block; }
+
+.navbar-collapse.collapse {
+  display: none !important;
+  max-height: none; }
+
+.navbar-nav {
+  float: none !important; }
+
+.navbar-nav > li {
+  float: none; }
+  .navbar-nav > li a {
+    padding: 5px;
+    font-size: 1.1em;
+    border-bottom: 1px solid #767676; }
+
+.navbar-collapse.collapse.in {
+  display: block !important; }
+
+.dropdown-menu {
+  width: 100%;
+  background: #222;
+  position: static; }
+  .dropdown-menu li a {
+    color: #fff; }
+
+.page-title {
+  border-bottom: solid 35px #767676; }
+  .page-title h1 {
+    font-size: 2em; }
+  .page-title .toggler {
+    margin-top: 25px; }
+    .page-title .toggler a {
+      white-space: nowrap;
+      display: inline-block;
+      margin-left: 15px;
+      text-decoration: underline; }
+      .page-title .toggler a.active, .page-title .toggler a:active, .page-title .toggler aa:focus {
+        text-decoration: none;
+        color: inherit; }
+
+.ficheck-sections .ficheck-section-type {
+  padding-bottom: 3em;
+  border-bottom: solid 35px #767676; }
+  .ficheck-sections .ficheck-section-type h2 {
+    color: #fff;
+    padding: 15px;
+    font-size: 2em;
+    cursor: pointer; }
+  .ficheck-sections .ficheck-section-type:nth-of-type(2n), .ficheck-sections .ficheck-section-type:nth-of-type(2n) .description {
+    background-color: #039; }
+  .ficheck-sections .ficheck-section-type:nth-of-type(2n+1), .ficheck-sections .ficheck-section-type:nth-of-type(2n+1) .description {
+    background-color: #036; }
+  .ficheck-sections .ficheck-section-type form, .ficheck-sections .ficheck-section-type .ficheck-section-body {
+    background-color: #fafafa;
+    overflow: hidden;
+    padding: 15px; }
+  .ficheck-sections .ficheck-section-type .delete {
+    background-color: #f00;
+    color: #fff; }
+  .ficheck-sections .ficheck-section-type .template .delete, .ficheck-sections .ficheck-section-type .new .delete {
+    display: none; }
+  .ficheck-sections .ficheck-section-type .body + .template {
+    display: none; }
+  .ficheck-sections .ficheck-section-type .control {
+    float: right;
+    margin-bottom: 1em; }
+  .ficheck-sections .ficheck-section-type > a {
+    clear: both;
+    padding: 15px;
+    display: inline-block;
+    color: #fff;
+    text-decoration: underline; }
+
+.ficheck-sections .description {
+  padding: 1.5em;
+  margin: 3em 0;
+  display: none; }
+  .ficheck-sections .description .description-content {
+    padding: 1.5em;
+    background: #fff; }
+
+.monthly-tracking [class^=col-] {
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top: #767676 solid 4px;
+  border-right: #767676 solid 4px; }
+  .monthly-tracking [class^=col-]:nth-child(4) {
+    border-right: 0 none; }
+
+.monthly-tracking .header [class^=col-] {
+  font-size: 1.4em;
+  background-color: #333;
+  color: #fff;
+  padding: 8px; }
+
+.monthly-tracking .header :nth-child(2) {
+  background: #090; }
+
+.monthly-tracking .header :nth-child(3) {
+  background: #f00; }
+
+.monthly-tracking .body {
+  margin-left: -15px;
+  margin-right: -15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 30px;
+  border-bottom: #767676 solid 4px; }
+  .monthly-tracking .body [class^=col-]:nth-of-type(even) {
+    background-color: #fafafa; }
+  .monthly-tracking .body [class^=col-] input {
+    border: 0 none;
+    background: transparent;
+    padding: 0;
+    box-shadow: none; }
+    .monthly-tracking .body [class^=col-] input:focus {
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); }
+  .monthly-tracking .body [class^=col-] input[type=date]::-webkit-inner-spin-button {
+    margin-top: 7px; }
+  .monthly-tracking .body form .new {
+    opacity: .6; }
+  .monthly-tracking .body form .control {
+    display: none;
+    position: absolute;
+    bottom: -64px;
+    z-index: 9;
+    right: -15px;
+    background: #036;
+    padding: 15px;
+    border-radius: 0 0 5px 5px; }
+  .monthly-tracking .body form.active {
+    position: relative;
+    z-index: 99; }
+    .monthly-tracking .body form.active .new {
+      opacity: 1; }
+    .monthly-tracking .body form.active [class^=col-] {
+      border-color: #036;
+      border-bottom: solid 5px #036; }
+    .monthly-tracking .body form.active .control {
+      display: block; }
+  .monthly-tracking .body .changed [class^=col-] {
+    background-color: #fffeda; }
+
+.monthly-tracking #accordion .monthly-tracking-section {
+  margin-top: 0px;
+  border-top: 5px solid #333;
+  border-radius: 0px;
+  border-left: none;
+  border-right: none;
+  border-bottom: none; }
+  .monthly-tracking #accordion .monthly-tracking-section .panel-heading {
+    background-color: #767676;
+    border-radius: 0px;
+    color: #fff; }
+    .monthly-tracking #accordion .monthly-tracking-section .panel-heading a {
+      font-size: 1.4em; }
+  .monthly-tracking #accordion .monthly-tracking-section .panel-collapse .panel-body {
+    padding-top: 0px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+    border-top-color: #767676; }
+
+.page-monthly-tracking .dropdown {
+  margin-top: 15px; }
+
+.page-monthly-tracking .dropdown-toggle {
+  font-size: 20px;
+  text-align: left;
+  border-radius: 0px;
+  width: 230px; }
+
+.page-monthly-tracking .dropdown-menu {
+  position: absolute;
+  background-color: #ddd;
+  border-radius: 0px;
+  width: 200px; }
+  .page-monthly-tracking .dropdown-menu .dropdown-item {
+    display: block;
+    padding: 10px; }
+
+.page-monthly-tracking .dropdown-caret {
+  margin-top: 5px;
+  float: right; }
+
+.page-monthly-tracking .modal-body {
+  margin-bottom: 70px;
+  padding: 0; }
+  .page-monthly-tracking .modal-body .row {
+    margin-left: 0;
+    margin-right: 0; }
+  .page-monthly-tracking .modal-body .body {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0; }
+    .page-monthly-tracking .modal-body .body form .control {
+      right: 0; }
+
+@media (max-width: 425px) {
+  .page-monthly-tracking [class^=col-] {
+    padding-left: 0;
+    padding-right: 0; }
+  .page-monthly-tracking .form-control {
+    font-size: 12px; } }
+
+.page-income-and-expense-statement .btn-primary {
+  display: none; }
+
+.page-income-and-expense-statement .dropdown {
+  margin-top: 15px; }
+  .page-income-and-expense-statement .dropdown button {
+    color: #000;
+    padding: 5px 10px;
+    max-width: 230px;
+    margin-bottom: 20px; }
+
+.page-income-and-expense-statement .dropdown-toggle {
+  font-size: 20px;
+  text-align: left;
+  border-radius: 0px;
+  width: 230px; }
+
+.page-income-and-expense-statement .dropdown-menu {
+  position: absolute;
+  background-color: #ddd;
+  border-radius: 0px;
+  width: 230px; }
+  .page-income-and-expense-statement .dropdown-menu .dropdown-item {
+    display: block;
+    padding: 10px; }
+
+.page-income-and-expense-statement .dropdown-caret {
+  margin-top: 5px;
+  float: right; }
+
+.page-income-and-expense-statement .well {
+  margin-left: -15px; }
+
+.budget-view .valueType.planned, .budget-view .valueType.actual, .budget-view .valueType.difference, .budget-view .valueTypeTotal.planned, .budget-view .valueTypeTotal.actual, .budget-view .valueTypeTotal.difference {
+  visibility: hidden;
+  position: absolute;
+  z-index: -100; }
+  .budget-view .valueType.planned.active, .budget-view .valueType.actual.active, .budget-view .valueType.difference.active, .budget-view .valueTypeTotal.planned.active, .budget-view .valueTypeTotal.actual.active, .budget-view .valueTypeTotal.difference.active {
+    visibility: visible;
+    position: static; }
+
+.budget-view .valueTypeTemplate {
+  display: none; }
+
+.budget-view .page-title {
+  border-bottom: 0; }
+
+.budget-view .toggleBudgetSection {
+  background: #767676; }
+  .budget-view .toggleBudgetSection.affix {
+    top: 50px;
+    left: 0;
+    right: 0;
+    margin: 0;
+    z-index: 999; }
+
+.budget-view .toggleBudgetInputs {
+  background: #000;
+  color: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  margin-left: 3px; }
+  .budget-view .toggleBudgetInputs:hover {
+    background: #ff9900;
+    opacity: .7; }
+  .budget-view .toggleBudgetInputs.active {
+    background: #ff9900; }
+    .budget-view .toggleBudgetInputs.active:hover {
+      background: #000000; }
+
+.budget-view .btn {
+  border-radius: 0;
+  color: #fff;
+  width: 100%;
+  max-width: 200px;
+  padding: .2em 1.5em;
+  margin-top: 1em; }
+
+.budget-view .btn-black {
+  background: #000; }
+
+.budget-view .btn-grey {
+  background: #666; }
+
+.budget-view .ficheck-sections .ficheck-section-type {
+  padding-bottom: 0; }
+
+.budget-view .ficheck-sections .record-type-income {
+  background: #009900; }
+
+.budget-view .ficheck-sections .record-type-expense {
+  background: #ff0000; }
+
+.budget-view .ficheck-sections .record-type-month {
+  background: #000;
+  border-bottom-width: 5px; }
+  .budget-view .ficheck-sections .record-type-month:nth-child(2n) {
+    background: #D9D9D9; }
+    .budget-view .ficheck-sections .record-type-month:nth-child(2n) h2 {
+      color: #000; }
+
+.budget-view .ficheck-sections h2 {
+  font-size: 1.4em;
+  margin: 0;
+  padding-bottom: 5px; }
+
+.budget-view .ficheck-sections p {
+  color: #fff;
+  padding-left: 15px;
+  font-size: .9em;
+  font-style: italic; }
+
+.budget-view label {
+  padding-left: 10px; }
+
+.budget-view .editable {
+  position: relative; }
+  .budget-view .editable .editLabel {
+    font-size: .8em;
+    color: #68aa68;
+    position: absolute;
+    left: 5px;
+    top: 5px; }
+    .budget-view .editable .editLabel.glyphicon-ok {
+      left: 0;
+      top: 10px; }
+
+.budget-view .budget-sums {
+  background: #767676; }
+  .budget-view .budget-sums .budget-sum {
+    padding: 1em; }
+    .budget-view .budget-sums .budget-sum.budget-sum-income {
+      background: #009900; }
+    .budget-view .budget-sums .budget-sum.budget-sum-expenses {
+      background: #ff0000; }
+    .budget-view .budget-sums .budget-sum.budget-sum-net {
+      background: #000; }
+    .budget-view .budget-sums .budget-sum label {
+      background: #fff;
+      width: 100%;
+      padding-top: .5em; }
+    .budget-view .budget-sums .budget-sum input {
+      border-radius: 0; }
+
+.budget-view .btn-primary {
+  margin-bottom: 1em; }
+
+.budget-view .deleteGroup {
+  display: none; }
+  .budget-view .deleteGroup.deleteShow {
+    display: table; }
+
+.budget-view .section-header {
+  font-weight: 700;
+  margin-bottom: 5px; }
+
+@media (max-width: 430px) {
+  .budget-view .valueContainer, .budget-view .valueTypeTotal {
+    padding-left: 5px;
+    padding-right: 5px; }
+  .budget-view .section-header {
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px; }
+  .budget-view .valueInput, .budget-view .totalInput {
+    font-size: 11px;
+    padding: 5px 3px; }
+  .budget-view label {
+    font-size: 12px; } }
+
+/*# sourceMappingURL=app.css.map */
