@@ -90,7 +90,11 @@
       var actualValue = actualRow.find(".valueInput").val();
 
       //update difference value based on planned and actual values
-      var differenceValue = roundedValue(plannedValue - actualValue);
+      if ($(this).parents('.income').length){
+        var differenceValue = roundedValue(actualValue - plannedValue);
+      } else {
+        var differenceValue = roundedValue(plannedValue - actualValue);
+      }
 
       differenceRow.find(".valueInput").val(differenceValue);
 
